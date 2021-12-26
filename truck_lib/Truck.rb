@@ -10,15 +10,16 @@ class Truck
 	end
 
 	def view_nodes()
-		return @file.to_a.select {
 
-			|a| 
-			a if ((a.length == 5) && !(a[0].match(";")))
+		first_selection = @file.to_a.select {
+			|a|
+
+			a if (a.length == 5 || a.length == 4) && 
+			!(/\D/.match(a[0])) &&
+			(/\d/.match(a[1])) &&
+			(/\d/.match(a[2])) &&
+			(/\d/.match(a[3]))
 
 		}.inspect
 	end
 end
-
-test = Truck.new("C://Users//Summe//Desktop//ThomasShorty.truck")
-
-puts test.view_nodes
