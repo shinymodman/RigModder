@@ -23,4 +23,28 @@ class Flare
 	def get_total_flares()
 		return @flare_count
 	end
+
+	def get_reference_node()
+		return @flare_coord_info[:ref_node]
+	end
+
+	def get_reference_x()
+		return @flare_coord_info[:ref_x]
+	end
+
+	def get_reference_y()
+		return @flare_coord_info[:ref_y]
+	end
+
+	def get_coord_x()
+		return @flare_coord_info[:pos_x]
+	end
+
+	def get_coord_y()
+		return @flare_coord_info[:pos_y]
+	end
+
+	def get_flare_type()
+		return @flare_coord_info[:f_type]
+	end
 end
