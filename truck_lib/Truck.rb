@@ -36,8 +36,9 @@ class Truck
 
 			a if (a.length == 3) && # The amount content that a beam object is only supposed to have
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
-			(/\d/.match(a[1])) # Checks if it has only numbers, which is only supported in the beams section
-
+			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
+			!(/\d/.match(a[2])) && # Checks if it has only numbers on the last argument of the beam itself.
+			(a[0] > a.last) # Checks if the first argument of the beam is bigger than the last node id.
 		}
 		# Lists beam objects in flare section
 	end
@@ -53,4 +54,13 @@ class Truck
 		}
 		# Lists flare objects in flare section
 	end
+
+	def strip_arg(str)
+		if /\s/.match(str.to_s) then
+			return str.to_s.strip!
+		else
+			return str.to_s
+		end
+	end
 end
+

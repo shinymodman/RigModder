@@ -2,35 +2,39 @@ require './Truck'
 
 class Node
 	def initialize(req, node_index)
-		truck = req
+		@truck = req
+		nodes = @truck.view_nodes()
 
-		nodes = truck.view_nodes()
 		@main_node = {
-			node_id: nodes[node_index][0],
-			node_x: nodes[node_index][1],
-			node_y: nodes[node_index][2],
-			node_z: nodes[node_index][3],
-			node_opt: nodes[node_index][4]
+			node_id: nodes[node_index.to_i][0],
+			node_x: nodes[node_index.to_i][1],
+			node_y: nodes[node_index.to_i][2],
+			node_z: nodes[node_index.to_i][3],
+			node_opt: nodes[node_index.to_i][4]
 		}
 	end
 
+	def show_node_properties()
+		return @main_node
+	end
+
 	def show_id()
-		return @main_node[:node_id]
+		return @truck.strip_arg(@main_node[:node_id]).to_i
 	end
 
 	def show_x()
-		return @main_node[:node_x].strip!
+		return @truck.strip_arg(@main_node[:node_x]).to_f
 	end
 
 	def show_y()
-		return @main_node[:node_y].strip!
+		return @truck.strip_arg(@main_node[:node_y]).to_f
 	end
 
 	def show_z()
-		return @main_node[:node_z].strip!
+		return @truck.strip_arg(@main_node[:node_z]).to_f
 	end
 
 	def show_options()
-		return @main_node[:node_opt].strip!
+		return @truck.strip_arg(@main_node[:node_opt])
 	end
 end
