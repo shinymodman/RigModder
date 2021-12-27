@@ -33,4 +33,14 @@ class Truck
 
 		}.inspect
 	end
+
+	def view_flares()
+		return @file.to_a.select {
+			|a|
+
+			a if (a.length == 9 || a.length == 10) && 
+			!(/\D/.match(a[0])) &&
+			(/[a-zA-Z]/.match(a[5]))
+		}
+	end
 end
