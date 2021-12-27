@@ -15,7 +15,7 @@ class Node
 	end
 
 	def show_id()
-		return @main_node[:node_id].strip!
+		return @main_node[:node_id]
 	end
 
 	def show_x()
