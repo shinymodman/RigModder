@@ -24,7 +24,6 @@ class Truck
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 			(/\d/.match(a[2])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 			(/\d/.match(a[3])) # Checks if it has only numbers, which is only supported in the beams and this column and section
-
 		}
 		# Lists node objects in flare section
 	end
@@ -63,4 +62,3 @@ class Truck
 		end
 	end
 end
-
