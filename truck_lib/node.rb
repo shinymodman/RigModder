@@ -1,5 +1,3 @@
-# node.rb
-
 require_relative 'truck'
 
 class Node

@@ -1,5 +1,3 @@
-# beam.rb
-
 require_relative 'node'
 
 class Beam
