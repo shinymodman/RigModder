@@ -1,4 +1,6 @@
-require './Truck'
+# node.rb
+
+require_relative 'truck'
 
 class Node
 	def initialize(req, node_index)

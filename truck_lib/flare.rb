@@ -1,4 +1,6 @@
-require './Truck'
+# flare.rb
+
+require_relative 'truck'
 
 class Flare
 

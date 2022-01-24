@@ -1,4 +1,6 @@
-require './Node'
+# beam.rb
+
+require_relative 'node'
 
 class Beam
 	def initialize(req, beam_index)
