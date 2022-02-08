@@ -14,6 +14,21 @@ class MyApp < Gtk::Window
 		@grid = Gtk::Box.new(:vertical)
 		# Declares grid object for holding a couple of gtk widgets
 
+		@menu = Gtk::MenuBar.new()
+
+		@file_menu = Gtk::Menu.new()
+		@file_sel = Gtk::MenuItem.new(:label => "File")
+		@file_sel.set_submenu(@file_menu)
+		@menu.append(@file_sel)
+
+		@open_item = Gtk::MenuItem.new(:label => "Open")
+		@file_menu.append(@open_item)
+
+		#@bar = Gtk::MenuItem.new(:label => "Open")
+		#@file_sel.group = @bar
+
+		@grid.add(@menu)
+
 		@canvas = Gtk::DrawingArea.new()
 		@canvas.expand = true
 		# Creates Drawing widget to sketch N/B object of truck file.
