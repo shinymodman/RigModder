@@ -7,51 +7,9 @@ require './truck_lib/beam'
 
 class MyApp < Gtk::Window
 
-	def initialize
-		super("Hello")
-		self.set_default_size(1080, 720)
-
-		@grid = Gtk::Box.new(:vertical)
-		# Declares grid object for holding a couple of gtk widgets
-
-		@menu = Gtk::MenuBar.new()
-
-		@file_menu = Gtk::Menu.new()
-		@file_sel = Gtk::MenuItem.new(:label => "File")
-		@file_sel.set_submenu(@file_menu)
-		@menu.append(@file_sel)
-
-		@open_item = Gtk::MenuItem.new(:label => "Open")
-		@file_menu.append(@open_item)
-
-		#@bar = Gtk::MenuItem.new(:label => "Open")
-		#@file_sel.group = @bar
-
-		@grid.add(@menu)
-
-		@canvas = Gtk::DrawingArea.new()
-		@canvas.expand = true
-		# Creates Drawing widget to sketch N/B object of truck file.
-
-		@grid.add(@canvas)
-		# Adds Drawing widget to grid object for interface.
-
-		@button_left = Gtk::Button.new(:label => "Left")
-		@button_right = Gtk::Button.new(:label => "Right")
-		# Creates buttons for rotating object
-
-		@grid.add(@button_left)
-		@grid.add(@button_right)
-		# Adds button widgets to grid object for interface
-
-		self.add(@grid)
-		# Adds whole grid to window object
-
-		self.show_all()
-		# Shows all widgets inside window at startup
-
+	def load_truck(trk)
 		i = 0
-		trk = Truck.new("./sample_truck.truck")
+		trk = Truck.new(trk)
 		# Initializes truck file to app
 
 		truck_beam_x = []
@@ -87,13 +45,6 @@ class MyApp < Gtk::Window
 			i = i + 1
 		end
 		# Iterates through each node and puts its coords to its respective arrays
-
-
-		self.signal_connect("destroy") {
-			|a|
-			Gtk::main_quit
-		}
-		# Will tell gtk to end program when program is x'ed out
 
 		i = 0
 
@@ -142,6 +93,55 @@ class MyApp < Gtk::Window
 				b.fill()
 				# This loop places the nodes to its respective areas
 			}
+	end
+
+	def initialize
+		super("Hello")
+		self.set_default_size(1080, 720)
+
+		@grid = Gtk::Box.new(:vertical)
+		# Declares grid object for holding a couple of gtk widgets
+
+		@menu = Gtk::MenuBar.new()
+
+		@file_menu = Gtk::Menu.new()
+		@file_sel = Gtk::MenuItem.new(:label => "File")
+		@file_sel.set_submenu(@file_menu)
+		@menu.append(@file_sel)
+
+		@open_item = Gtk::MenuItem.new(:label => "Open")
+		@file_menu.append(@open_item)
+
+		@grid.add(@menu)
+
+		@canvas = Gtk::DrawingArea.new()
+		@canvas.expand = true
+		# Creates Drawing widget to sketch N/B object of truck file.
+
+		@grid.add(@canvas)
+		# Adds Drawing widget to grid object for interface.
+
+		@button_left = Gtk::Button.new(:label => "Left")
+		@button_right = Gtk::Button.new(:label => "Right")
+		# Creates buttons for rotating object
+
+		@grid.add(@button_left)
+		@grid.add(@button_right)
+		# Adds button widgets to grid object for interface
+
+		self.add(@grid)
+		# Adds whole grid to window object
+
+		self.show_all()
+		# Shows all widgets inside window at startup
+
+		self.signal_connect("destroy") {
+			|a|
+			Gtk::main_quit
+		}
+		# Will tell gtk to end program when program is x'ed out
+
+		self.load_truck("./sample_truck.truck")
 	end
 end
 
