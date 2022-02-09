@@ -46,20 +46,6 @@ class MyApp < Gtk::Window
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
-		i = 0
-
-		@button_left.signal_connect("clicked") {
-			i -= 90
-			@canvas.queue_draw()
-		}
-		# When left button is clicked, it will tell program to rotate structure to the left
-
-		@button_right.signal_connect("clicked") {
-			i += 90
-			@canvas.queue_draw()
-		}
-		# When right button is clicked, it will tell progran to rotate structure to the right
-
     	size = 250
     	# Initial size for the whole n/b structure
 
@@ -72,7 +58,7 @@ class MyApp < Gtk::Window
 				b.set_matrix(mat)
 				# This matrix will flip structure in order for it to display correctly
 
-				b.translate(500, 350)
+				b.translate(@canvas.allocated_width / 2, @canvas.allocated_height / 2)
 				# Helps move structure anywhere in the Drawing Area
 
 				truck_beam_x.length.times {
@@ -141,7 +127,21 @@ class MyApp < Gtk::Window
 		}
 		# Will tell gtk to end program when program is x'ed out
 
-		self.load_truck("./sample_truck.truck")
+		@open_item.signal_connect("activate") {
+			|a|
+			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
+			
+			only_truck = Gtk::FileFilter.new()
+			only_truck.name = "RoR Truck Files"
+			only_truck.add_pattern("*.truck")
+			open_win.add_filter(only_truck)
+
+			if open_win.run == Gtk::ResponseType::ACCEPT then
+				self.load_truck(open_win.filename())
+			end
+			open_win.destroy()
+		}
+		# Lets user choose which truck file to load.
 	end
 end
 
