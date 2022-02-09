@@ -58,7 +58,7 @@ class MyApp < Gtk::Window
 				b.set_matrix(mat)
 				# This matrix will flip structure in order for it to display correctly
 
-				b.translate(@canvas.allocated_width / 2, @canvas.allocated_height / 2)
+				b.translate(@inc, @canvas.allocated_height / 2)
 				# Helps move structure anywhere in the Drawing Area
 
 				truck_beam_x.length.times {
@@ -141,7 +141,20 @@ class MyApp < Gtk::Window
 			end
 			open_win.destroy()
 		}
-		# Lets user choose which truck file to load.
+
+		@inc = 0
+
+		@button_left.signal_connect("clicked") {
+			|a|
+			@inc -= 100
+			@canvas.queue_draw()
+		}
+		
+		@button_right.signal_connect("clicked") {
+			|a|
+			@inc += 100
+			@canvas.queue_draw()
+		}
 	end
 end
 
