@@ -6,6 +6,10 @@ class Truck
 	end
 	# Gathers all content of file if the file exists or is valid and has the .truck extension. Otherwise writes the string: "invaid_file"
 
+	def self.verify_file(truck_file)
+		return (File.exist?(truck_file) && File.extname(".truck")) ? "valid" : "invalid_file"
+	end
+
 	def verify_file()
 		return @file
 		
