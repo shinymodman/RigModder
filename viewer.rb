@@ -5,7 +5,7 @@ require 'matrix'
 require './truck_lib/node'
 require './truck_lib/beam'
 
-class MyApp < Gtk::Window
+class RigModder < Gtk::Window
 
 	def load_truck(trk)
 		i = 0
@@ -159,6 +159,6 @@ class MyApp < Gtk::Window
 	end
 end
 
-app = MyApp.new()
+app = RigModder.new()
 Gtk.main
 # Loads the window when this program is executed
