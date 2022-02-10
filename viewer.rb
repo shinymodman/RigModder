@@ -46,25 +46,24 @@ class MyApp < Gtk::Window
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
-    	size = 250
-    	# Initial size for the whole n/b structure
+  	@size = 250
+  	# Initial size for the whole n/b structure
 
 		@canvas.signal_connect("draw") {
 			|a, b|
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
 
-				mat = Cairo::Matrix.new(1, 0, 0, -1, 0, 1080)
-				b.set_matrix(mat)
 				# This matrix will flip structure in order for it to display correctly
 
-				b.translate(@inc, @canvas.allocated_height / 2)
+				b.translate(@real_x, @real_y)
+				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
 
 				truck_beam_x.length.times {
 					|i|
-					b.move_to(truck_beam_z[i][0] * size, truck_beam_y[i][0] * size)
-					b.line_to(truck_beam_z[i][1] * size, truck_beam_y[i][1] * size)
+					b.move_to(truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
+					b.line_to(truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
 				}
 				b.stroke()
 				# This loop draws out the beams
@@ -74,7 +73,7 @@ class MyApp < Gtk::Window
 
 				truck_node_x.length.times {
 					|i|
-					b.rectangle(truck_node_z[i] * size, truck_node_y[i] * size, 10, 10)
+					b.rectangle(truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
 				}
 				b.fill()
 				# This loop places the nodes to its respective areas
@@ -82,7 +81,7 @@ class MyApp < Gtk::Window
 	end
 
 	def initialize
-		super("Hello")
+		super("RigModder")
 		self.set_default_size(1080, 720)
 
 		@grid = Gtk::Box.new(:vertical)
@@ -99,7 +98,8 @@ class MyApp < Gtk::Window
 		@file_menu.append(@open_item)
 
 		@grid.add(@menu)
-
+		
+		
 		@canvas = Gtk::DrawingArea.new()
 		@canvas.expand = true
 		# Creates Drawing widget to sketch N/B object of truck file.
@@ -107,25 +107,17 @@ class MyApp < Gtk::Window
 		@grid.add(@canvas)
 		# Adds Drawing widget to grid object for interface.
 
-		@button_left = Gtk::Button.new(:label => "Left")
-		@button_right = Gtk::Button.new(:label => "Right")
-		# Creates buttons for rotating object
-
-		@grid.add(@button_left)
-		@grid.add(@button_right)
-		# Adds button widgets to grid object for interface
-
 		self.add(@grid)
-		# Adds whole grid to window object
+		# Adds whole grid to window object.
 
 		self.show_all()
-		# Shows all widgets inside window at startup
+		# Shows all widgets inside window at startup.
 
 		self.signal_connect("destroy") {
 			|a|
 			Gtk::main_quit
 		}
-		# Will tell gtk to end program when program is x'ed out
+		# Will tell gtk to end program when program is x'ed out.
 
 		@open_item.signal_connect("activate") {
 			|a|
@@ -142,18 +134,27 @@ class MyApp < Gtk::Window
 			open_win.destroy()
 		}
 
-		@inc = 0
+		@real_x = @canvas.allocated_width / 2
+		@real_y = @canvas.allocated_height / 2
+		
+		button_clicked = nil
 
-		@button_left.signal_connect("clicked") {
-			|a|
-			@inc -= 100
-			@canvas.queue_draw()
+		self.signal_connect("button-press-event") {
+      button_clicked = Gdk::BUTTON_PRIMARY
 		}
 		
-		@button_right.signal_connect("clicked") {
-			|a|
-			@inc += 100
-			@canvas.queue_draw()
+		self.signal_connect("motion-notify-event") {
+		  |a, b|
+		  
+		  if (button_clicked & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
+		      @real_x = b.x
+		      @real_y = b.y
+		      @canvas.queue_draw()
+		  end
+		}
+		
+		self.signal_connect("button-release-event") {
+		  button_clicked = nil
 		}
 	end
 end
