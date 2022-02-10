@@ -7,6 +7,8 @@ require './truck_lib/beam'
 
 class RigModder < Gtk::Window
 
+  @view = 0
+  
 	def load_truck(trk)
 		i = 0
 		trk = Truck.new(trk)
@@ -46,7 +48,7 @@ class RigModder < Gtk::Window
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
-  	@size = 250
+  	@size = 50
   	# Initial size for the whole n/b structure
 
 		@canvas.signal_connect("draw") {
@@ -62,8 +64,20 @@ class RigModder < Gtk::Window
 
 				truck_beam_x.length.times {
 					|i|
-					b.move_to(truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
-					b.line_to(truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
+					
+					case @view
+				  when 0
+				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
+				    b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+				    #Camera on front angle
+				  when 1
+				    b.move_to(truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
+				    b.line_to(truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+				    #Camera on back angle
+				  else
+				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
+            b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+          end
 				}
 				b.stroke()
 				# This loop draws out the beams
@@ -73,7 +87,15 @@ class RigModder < Gtk::Window
 
 				truck_node_x.length.times {
 					|i|
-					b.rectangle(truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+          case @view
+           when 0
+            b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+           when 1
+             b.rectangle(truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+           else
+             b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+           end
+					
 				}
 				b.fill()
 				# This loop places the nodes to its respective areas
@@ -96,6 +118,18 @@ class RigModder < Gtk::Window
 
 		@open_item = Gtk::MenuItem.new(:label => "Open")
 		@file_menu.append(@open_item)
+		
+		@view_menu = Gtk::Menu.new()
+		@view_sel = Gtk::MenuItem.new(:label => "View")
+    @view_sel.set_submenu(@view_menu)
+
+    @front = Gtk::MenuItem.new(:label => "Front")
+    @view_menu.append(@front)
+    
+    @back = Gtk::MenuItem.new(:label => "Back")
+    @view_menu.append(@back)
+    
+		@menu.append(@view_sel)
 
 		@grid.add(@menu)
 		
@@ -119,6 +153,16 @@ class RigModder < Gtk::Window
 		}
 		# Will tell gtk to end program when program is x'ed out.
 
+		@front.signal_connect("activate") {
+		  @view = 0
+		  @canvas.queue_draw()
+		}
+		
+		@back.signal_connect("activate") {
+		  @view = 1
+		  @canvas.queue_draw()
+		}
+		
 		@open_item.signal_connect("activate") {
 			|a|
 			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
