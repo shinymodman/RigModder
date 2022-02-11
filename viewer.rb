@@ -69,23 +69,25 @@ class RigModder < Gtk::Window
 				  when 0
 				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
 				    b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
-				    #Camera on front angle
+				    #Camera on front direction
 				  when 1
 				    b.move_to(truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
 				    b.line_to(truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
-				    #Camera on back angle
+				    #Camera on back direction
 				  when 2
 				    b.move_to(truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
-            #Camera on left angle
+            #Camera on left direction
           when 3
             b.move_to(-truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(-truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
-            #Camera on left angle
+            #Camera on left direction
 				  else
 				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
           end
+          
+          # Sets the camera direction based on what's changed from the @view instance variable.
 				}
 				b.stroke()
 				# This loop draws out the beams
@@ -98,14 +100,25 @@ class RigModder < Gtk::Window
           case @view
            when 0
              b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+             # Default front camera direction
            when 1
              b.rectangle(truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+             # Default back camera direction
            when 2
              b.rectangle(truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+             # Default right camera direction
            when 3
-             b.rectangle(-truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)            
+             b.rectangle(-truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+             # Default left camera direction
+           when 4
+             b.rectangle(truck_node_x[i] * @size, truck_node_z[i] * @size, 10, 10)
+             # Default top camera direction 
+           when 5
+             b.rectangle(-truck_node_x[i] * @size, truck_node_z[i] * @size, 10, 10)
+             # Default bottom camera direction         
            else
              b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+             # Default camera direction
            end
 					
 				}
@@ -122,35 +135,51 @@ class RigModder < Gtk::Window
 		# Declares grid object for holding a couple of gtk widgets
 
 		@menu = Gtk::MenuBar.new()
-
+		# Adds the entire menu on the top of the interface.
+		
 		@file_menu = Gtk::Menu.new()
 		@file_sel = Gtk::MenuItem.new(:label => "File")
 		@file_sel.set_submenu(@file_menu)
 		@menu.append(@file_sel)
-
+		# This adds the File dropdown to the top menu.
+		
 		@open_item = Gtk::MenuItem.new(:label => "Open")
 		@file_menu.append(@open_item)
+    # Creates and adds the selection saying Open to the View dropdown.
 		
 		@view_menu = Gtk::Menu.new()
 		@view_sel = Gtk::MenuItem.new(:label => "View")
     @view_sel.set_submenu(@view_menu)
-
+    # This adds the View dropdown to the top menu.
+    
+    
     @front = Gtk::MenuItem.new(:label => "Front")
     @view_menu.append(@front)
+    # Creates and adds the selection saying front to the View dropdown.
     
     @back = Gtk::MenuItem.new(:label => "Back")
     @view_menu.append(@back)
-
+    # Creates and adds the selection saying back to the View dropdown.
+    
     @left = Gtk::MenuItem.new(:label => "Left")
     @view_menu.append(@left)
+    # Creates and adds the selection saying left to the View dropdown.
     
     @right = Gtk::MenuItem.new(:label => "Right")
     @view_menu.append(@right)
-        
+    # Creates and adds the selection saying right to the View dropdown.
+    
+    @top = Gtk::MenuItem.new(:label => "Top")
+    @view_menu.append(@top)
+    # Creates and adds the selection saying top to the View dropdown.
+    
+    @bottom = Gtk::MenuItem.new(:label => "Bottom")
+    @view_menu.append(@bottom)
+    # Creates and adds the selection saying bottom to the View dropdown.
+    
 		@menu.append(@view_sel)
-
 		@grid.add(@menu)
-		
+		# Creates and inserts the dropdown menu widget to the window.
 		
 		@canvas = Gtk::DrawingArea.new()
 		@canvas.expand = true
@@ -175,45 +204,55 @@ class RigModder < Gtk::Window
 		  @view = 0
 		  @canvas.queue_draw()
 		}
+		# Sets the camera direction to front using the menu selection's activate signal.
 		
 		@back.signal_connect("activate") {
 		  @view = 1
 		  @canvas.queue_draw()
 		}
-
+    # Sets the camera direction to back using the menu selection's activate signal.
+		
     @left.signal_connect("activate") {
       @view = 2
       @canvas.queue_draw()
     }
-		
+    # Sets the camera direction to left using the menu selection's activate signal.
+    
     @right.signal_connect("activate") {
       @view = 3
       @canvas.queue_draw()
     }
+    # Sets the camera direction to right using the menu selection's activate signal.
 				
 		@open_item.signal_connect("activate") {
 			|a|
 			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
-			
+			# Creates the configuration to load a truck file to the program.
+			  
 			only_truck = Gtk::FileFilter.new()
 			only_truck.name = "RoR Truck Files"
 			only_truck.add_pattern("*.truck")
 			open_win.add_filter(only_truck)
-
+			# Creates the filter so other files without the extension ".truck" are excluded from the file chooser.
+			
 			if open_win.run == Gtk::ResponseType::ACCEPT then
 				self.load_truck(open_win.filename())
 			end
+			# This will start the file handling after file is selected and accepted by the file chooser.
+			
 			open_win.destroy()
 		}
 
 		@real_x = @canvas.allocated_width / 2
 		@real_y = @canvas.allocated_height / 2
+		# The starting coords that will draw out the truck structure and will place them on the center by default.
 		
 		button_clicked = nil
 
 		self.signal_connect("button-press-event") {
       button_clicked = Gdk::BUTTON_PRIMARY
 		}
+		# The signal that will detect a left click
 		
 		self.signal_connect("motion-notify-event") {
 		  |a, b|
@@ -224,10 +263,13 @@ class RigModder < Gtk::Window
 		      @canvas.queue_draw()
 		  end
 		}
+		# The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
 		
 		self.signal_connect("button-release-event") {
 		  button_clicked = nil
 		}
+		# The signal that will detect the left button release in order for the user to confirm the position of the structure.
+		
 	end
 end
 
