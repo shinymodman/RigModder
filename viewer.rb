@@ -82,6 +82,14 @@ class RigModder < Gtk::Window
             b.move_to(-truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(-truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
             #Camera on left direction
+          when 4
+            b.move_to(truck_beam_x[i][0] * @size, truck_beam_z[i][0] * @size)
+            b.line_to(truck_beam_x[i][1] * @size, truck_beam_z[i][1] * @size)
+            # Default top camera direction 
+          when 5
+            b.move_to(-truck_beam_x[i][0] * @size, truck_beam_z[i][0] * @size)
+            b.line_to(-truck_beam_x[i][1] * @size, truck_beam_z[i][1] * @size)
+            # Default bottom camera direction         
 				  else
 				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
@@ -223,7 +231,19 @@ class RigModder < Gtk::Window
       @canvas.queue_draw()
     }
     # Sets the camera direction to right using the menu selection's activate signal.
-				
+
+    @top.signal_connect("activate") {
+      @view = 4
+      @canvas.queue_draw()
+    }
+    # Sets the camera direction to top using the menu selection's activate signal.
+    
+    @bottom.signal_connect("activate") {
+      @view = 5
+      @canvas.queue_draw()
+    }
+    # Sets the camera direction to bottom using the menu selection's activate signal.
+    				
 		@open_item.signal_connect("activate") {
 			|a|
 			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
