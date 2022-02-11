@@ -74,6 +74,14 @@ class RigModder < Gtk::Window
 				    b.move_to(truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
 				    b.line_to(truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
 				    #Camera on back angle
+				  when 2
+				    b.move_to(truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
+            b.line_to(truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
+            #Camera on left angle
+          when 3
+            b.move_to(-truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
+            b.line_to(-truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
+            #Camera on left angle
 				  else
 				    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
             b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
@@ -89,9 +97,13 @@ class RigModder < Gtk::Window
 					|i|
           case @view
            when 0
-            b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+             b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
            when 1
              b.rectangle(truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+           when 2
+             b.rectangle(truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+           when 3
+             b.rectangle(-truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)            
            else
              b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
            end
@@ -128,7 +140,13 @@ class RigModder < Gtk::Window
     
     @back = Gtk::MenuItem.new(:label => "Back")
     @view_menu.append(@back)
+
+    @left = Gtk::MenuItem.new(:label => "Left")
+    @view_menu.append(@left)
     
+    @right = Gtk::MenuItem.new(:label => "Right")
+    @view_menu.append(@right)
+        
 		@menu.append(@view_sel)
 
 		@grid.add(@menu)
@@ -162,7 +180,17 @@ class RigModder < Gtk::Window
 		  @view = 1
 		  @canvas.queue_draw()
 		}
+
+    @left.signal_connect("activate") {
+      @view = 2
+      @canvas.queue_draw()
+    }
 		
+    @right.signal_connect("activate") {
+      @view = 3
+      @canvas.queue_draw()
+    }
+				
 		@open_item.signal_connect("activate") {
 			|a|
 			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
