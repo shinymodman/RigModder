@@ -48,7 +48,7 @@ class RigModder < Gtk::Window
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
-  	@size = 50
+  	@size = 250
   	# Initial size for the whole n/b structure
 
 		@canvas.signal_connect("draw") {
