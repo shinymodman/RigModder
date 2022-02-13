@@ -3,7 +3,11 @@ For Rigs of Rods, it edits and maybe visualizes objects attached to nodes. Such 
 
 ### App Preview
 
-![main_app_window](./rm_screenshots/app_preview.png)
+- With a sample box that comes with this repo:
+![main_app_window_1](./rm_screenshots/app_preview.png)
+
+- With actual vehicle:
+![main_app_window_2](./rm_screenshots/app_preview_2.png)
 
 ### Please Note:
 This software is still under development and I will not actually release it or put it into beta just yet. As this is an okay functioning program, you are more than welcome to test it out.
