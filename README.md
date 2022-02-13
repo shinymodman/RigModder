@@ -1,6 +1,10 @@
 # RigModder
 For Rigs of Rods, it edits and maybe visualizes objects attached to nodes. Such as flares.
 
+# App Preview
+
+![main_app_window](./rm_screenshots/app_preview.png)
+
 ### Please Note:
 This software is still under development and I will not actually release it or put it into beta just yet. As this is an okay functioning program, you are more than welcome to test it out.
 
