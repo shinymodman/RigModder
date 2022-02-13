@@ -11,15 +11,15 @@ This software is still under development and I will not actually release it or p
 What you need to do by steps:
 
 	1. Install ruby 2.7.5+ with the devkit from the Ruby download page. (**NOT** ruby without the devkit)
-	1. Install gtk3 as a ruby gem like this: ``gem install gtk3``
+	1. Install gtk3 as a ruby gem like this: `gem install gtk3`
 		- **Please note if you're on Windows, you are going to have to start "Command Prompt with Ruby" shortcut that came with ruby.
 		- If it installation doesn't work as of read/write permissions, 
-			- Use ``sudo`` on Linux
+			- Use `sudo` on Linux
 			- Or if your'e on Windows, try running the Command Prompt with Ruby with admin privileges.
-	1. After the installation of the ``gtk3`` ruby gem, run the software like this:
+	1. After the installation of the `gtk3` ruby gem, run the software like this:
 		- On Windows, press Win + R, then type in ``cmd``
 			- Please note that with Linux platforms, you have to load Terminal from their app menu.
-		- On the command line via ``cmd`` or ``bash``, type in ``ruby viewer.rb`` to execute the app.
+		- On the command line via `cmd` or `bash`, type in `ruby viewer.rb` to execute the app.
 
 ### Known Bugs and Perfromance Issues
 **Please note that I have not been tought many algorithms for mouse movement within the structure, performance optimization and somewhat others. As these issues will mainly relate to these topics.** As you know, I've tought myself basic code via videos and websites.
