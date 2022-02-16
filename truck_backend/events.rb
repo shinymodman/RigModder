@@ -13,6 +13,7 @@ module EVENT_FOR_STRUCTURE
       		@click_result = Gdk::BUTTON_PRIMARY
       		canvas.queue_draw()
 		}
+		# The signal that will detect the left button press in order for the user to move the position of the structure.
 
 		widget.signal_connect("button-release-event") {
 			|a, b|
@@ -58,14 +59,17 @@ module EVENT_FOR_STRUCTURE
 	def get_size(canvas)
 		return @size
 	end
+	# Returns size value of structure.
 
 	def get_x(canvas)
 		return @real_x
 		canvas.queue_draw()
 	end
+	# Returns x value of cursor
 
 	def get_y(canvas)
 		return @real_y
 		canvas.queue_draw()
 	end
+	# Returns y value of cursor.
 end
