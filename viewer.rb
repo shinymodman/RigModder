@@ -1,9 +1,15 @@
 require 'gtk3'
 require 'cairo'
 require 'matrix'
+# Gems required for the user interface
 
 require './truck_lib/node'
 require './truck_lib/beam'
+# Scripts required for sketeching nodes/beams
+
+require './events.rb'
+include EVENT_FOR_STRUCTURE
+# Scripts and module required for handling Gtk signals and events
 
 class RigModder < Gtk::Window
 
@@ -48,11 +54,14 @@ class RigModder < Gtk::Window
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
-  	@size = 250
-  	# Initial size for the whole n/b structure
-
 		@canvas.signal_connect("draw") {
 			|a, b|
+
+				@size = EVENT_FOR_STRUCTURE.get_size(@canvas)
+  				@real_x = EVENT_FOR_STRUCTURE.get_x(@canvas)
+  				@real_y = EVENT_FOR_STRUCTURE.get_y(@canvas)
+  				# Initial size for the whole n/b structure
+  				
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
 
@@ -267,45 +276,12 @@ class RigModder < Gtk::Window
 		@real_y = @canvas.allocated_height / 2
 		# The starting coords that will draw out the truck structure and will place them on the center by default.
 		
-		button_clicked = nil
-
-		self.signal_connect("button-press-event") {
-      button_clicked = Gdk::BUTTON_PRIMARY
-		}
-		# The signal that will detect a left click
+		EVENT_FOR_STRUCTURE.click(self, @canvas)
 		
-		self.add_events(Gdk::EventMask::SCROLL_MASK)
-		self.signal_connect("scroll-event") {
-			|a, b|
-			if (b.direction == Gdk::ScrollDirection::UP)
-		  	  @size += 10
-		  	  @canvas.queue_draw()
-		  	  # Shrinks structure
-		  	elsif (b.direction == Gdk::ScrollDirection::DOWN)
-		  	  @size -= 10
-		  	  @canvas.queue_draw()
-		  	  # Grows structure
-		  	end
-		}
-		# The signal is for zooming in/out the Truck structure.
+		EVENT_FOR_STRUCTURE.drag_struct(self, @canvas)
+		EVENT_FOR_STRUCTURE.drag_struct(self, @canvas)
 
-
-		self.signal_connect("motion-notify-event") {
-		  |a, b|
-		  
-		  if (button_clicked & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
-		      @real_x = b.x
-		      @real_y = b.y
-		      @canvas.queue_draw()
-		  end
-		}
-		# The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
-
-		self.signal_connect("button-release-event") {
-		  button_clicked = nil
-		}
-		# The signal that will detect the left button release in order for the user to confirm the position of the structure.
-		
+		EVENT_FOR_STRUCTURE.zoom_in_or_out(self, @canvas)
 	end
 end
 
