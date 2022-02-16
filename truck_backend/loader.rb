@@ -4,7 +4,7 @@ require 'cairo'
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
 
-require './events.rb'
+require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
 
 module DRAW_STRUCTURE

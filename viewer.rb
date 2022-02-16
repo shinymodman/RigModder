@@ -3,10 +3,10 @@ require 'cairo'
 require 'matrix'
 # Gems required for the user interface
 
-require './loader.rb'
+require './truck_backend/loader.rb'
 include	DRAW_STRUCTURE
 
-require './events.rb'
+require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
 # Scripts and module required for handling Gtk signals and events
 
