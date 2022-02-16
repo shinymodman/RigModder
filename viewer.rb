@@ -274,6 +274,22 @@ class RigModder < Gtk::Window
 		}
 		# The signal that will detect a left click
 		
+		self.add_events(Gdk::EventMask::SCROLL_MASK)
+		self.signal_connect("scroll-event") {
+			|a, b|
+			if (b.direction == Gdk::ScrollDirection::UP)
+		  	  @size += 10
+		  	  @canvas.queue_draw()
+		  	  # Shrinks structure
+		  	elsif (b.direction == Gdk::ScrollDirection::DOWN)
+		  	  @size -= 10
+		  	  @canvas.queue_draw()
+		  	  # Grows structure
+		  	end
+		}
+		# The signal is for zooming in/out the Truck structure.
+
+
 		self.signal_connect("motion-notify-event") {
 		  |a, b|
 		  
@@ -284,7 +300,7 @@ class RigModder < Gtk::Window
 		  end
 		}
 		# The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
-		
+
 		self.signal_connect("button-release-event") {
 		  button_clicked = nil
 		}
