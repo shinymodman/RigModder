@@ -131,7 +131,7 @@ module DRAW_STRUCTURE
 				truck_node_x.length.times {
 					|i|
 		          	case @view
-		           		when 0
+		           	when 0
 			            b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
 			            # Default front camera direction
 		           	when 1
@@ -159,4 +159,52 @@ module DRAW_STRUCTURE
 					# This loop places the nodes to its respective areas
 			}
 		end
+
+		def front_selection(widget, canvas) 
+			widget.signal_connect("activate") {
+			  @view = 0
+			  canvas.queue_draw()
+			}
+		end
+		# Sets the camera direction to front using the menu selection's activate signal.
+
+		def back_selection(widget, canvas)
+			widget.signal_connect("activate") {
+			  @view = 1
+			  canvas.queue_draw()
+			}
+		end
+	    # Sets the camera direction to back using the menu selection's activate signal.
+		
+		def right_selection(widget, canvas)
+		    widget.signal_connect("activate") {
+		      @view = 2
+		      canvas.queue_draw()
+		    }
+		end
+		# Sets the camera direction to left using the menu selection's activate signal.
+
+		def left_selection(widget, canvas)
+		    widget.signal_connect("activate") {
+		      @view = 3
+		      canvas.queue_draw()
+		    }
+		end
+		# Sets the camera direction to right using the menu selection's activate signal.
+
+		def top_selection(widget, canvas)
+		    widget.signal_connect("activate") {
+		      @view = 4
+		      canvas.queue_draw()
+		    }
+	    end
+	    # Sets the camera direction to top using the menu selection's activate signal.
+	    
+	    def bottom_selection(widget, canvas)
+	    	widget.signal_connect("activate") {
+	      	  @view = 5
+	      	  canvas.queue_draw()
+	    	}
+	    end
+	    # Sets the camera direction to bottom using the menu selection's activate signal.
 end
