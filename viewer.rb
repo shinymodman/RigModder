@@ -85,47 +85,18 @@ class RigModder < Gtk::Window
 		}
 		# Will tell gtk to end program when program is x'ed out.
 
-		@front.signal_connect("activate") {
-		  @view = 0
-		  @canvas.queue_draw()
-		}
-		# Sets the camera direction to front using the menu selection's activate signal.
-		
-		@back.signal_connect("activate") {
-		  @view = 1
-		  @canvas.queue_draw()
-		}
-    # Sets the camera direction to back using the menu selection's activate signal.
-		
-    @left.signal_connect("activate") {
-      @view = 2
-      @canvas.queue_draw()
-    }
-    # Sets the camera direction to left using the menu selection's activate signal.
-    
-    @right.signal_connect("activate") {
-      @view = 3
-      @canvas.queue_draw()
-    }
-    # Sets the camera direction to right using the menu selection's activate signal.
-
-    @top.signal_connect("activate") {
-      @view = 4
-      @canvas.queue_draw()
-    }
-    # Sets the camera direction to top using the menu selection's activate signal.
-    
-    @bottom.signal_connect("activate") {
-      @view = 5
-      @canvas.queue_draw()
-    }
-    # Sets the camera direction to bottom using the menu selection's activate signal.
-
 		@real_x = @canvas.allocated_width / 2
 		@real_y = @canvas.allocated_height / 2
 		# The starting coords that will draw out the truck structure and will place them on the center by default.
-		
+
 		DRAW_STRUCTURE.show_loader(@open_item, @canvas)
+
+		DRAW_STRUCTURE.top_selection(@top, @canvas)
+		DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
+		DRAW_STRUCTURE.left_selection(@left, @canvas)
+		DRAW_STRUCTURE.right_selection(@right, @canvas)
+		DRAW_STRUCTURE.front_selection(@front, @canvas)
+		DRAW_STRUCTURE.back_selection(@back, @canvas)
 
 		EVENT_FOR_STRUCTURE.click(self, @canvas)
 		EVENT_FOR_STRUCTURE.drag_struct(self, @canvas)
