@@ -70,18 +70,22 @@ module DRAW_STRUCTURE
 		end
 		# Iterates through each node and puts its coords to its respective arrays
 
+
+		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
+		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
+		
+
 		canvas.signal_connect("draw") {
 			|a, b|
 
-				@size = EVENT_FOR_STRUCTURE.get_size(@canvas)
-  				@real_x = EVENT_FOR_STRUCTURE.get_x(@canvas)
-  				@real_y = EVENT_FOR_STRUCTURE.get_y(@canvas)
+				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
+  				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
+				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
+
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
-
-				# This matrix will flip structure in order for it to display correctly
 
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
