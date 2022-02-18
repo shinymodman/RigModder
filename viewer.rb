@@ -85,12 +85,9 @@ class RigModder < Gtk::Window
 		}
 		# Will tell gtk to end program when program is x'ed out.
 
-		@real_x = @canvas.allocated_width / 2
-		@real_y = @canvas.allocated_height / 2
-		# The starting coords that will draw out the truck structure and will place them on the center by default.
-
 		DRAW_STRUCTURE.show_loader(@open_item, @canvas)
-
+		@canvas.queue_draw()
+		
 		DRAW_STRUCTURE.top_selection(@top, @canvas)
 		DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
 		DRAW_STRUCTURE.left_selection(@left, @canvas)
@@ -99,7 +96,6 @@ class RigModder < Gtk::Window
 		DRAW_STRUCTURE.back_selection(@back, @canvas)
 
 		EVENT_FOR_STRUCTURE.click(self, @canvas)
-		EVENT_FOR_STRUCTURE.drag_struct(self, @canvas)
 		EVENT_FOR_STRUCTURE.drag_struct(self, @canvas)
 		EVENT_FOR_STRUCTURE.zoom_in_or_out(self, @canvas)
 	end
