@@ -31,44 +31,52 @@ module DRAW_STRUCTURE
 		}
   	end
 
+  def load_beams(trk, pos)
+      truck_beam_x = []
+      truck_beam_y = []
+      truck_beam_z = []
+      # Organizes beam coords to its respective arrays
+  
+      while i != trk.view_beams.length do
+        truck_beam_counter = Beam.new(trk, i)
+  
+        truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
+        truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
+        truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
+
+        i = i + 1
+      end
+      # This loop iterates through all node arguments for each beam and places its respective coords in their array
+      
+      return truck_beam_x[0] if pos == 0
+      return truck_beam_x[0] if pos == 1
+      return truck_beam_x[0] if pos == 2
+  end
+  
+  def load_nodes()
+      truck_node_x = []
+      truck_node_y = []
+      truck_node_z = []
+      # Similar to the beam arrays, puts its coords in these respective arrays
+  
+      i = 0
+  
+      while i != trk.view_nodes.length do
+        truck_node_counter = Node.new(trk, i)
+  
+        truck_node_x[i] = truck_node_counter.show_x
+        truck_node_y[i] = truck_node_counter.show_y
+        truck_node_z[i] = truck_node_counter.show_z
+  
+        i = i + 1
+      end
+      # Iterates through each node and puts its coords to its respective arrays
+  end
+  
 	def load_truck(trk, canvas)
 		i = 0
 		trk = Truck.new(trk)
 		# Initializes truck file to app
-
-		truck_beam_x = []
-		truck_beam_y = []
-		truck_beam_z = []
-		# Organizes beam coords to its respective arrays
-
-		while i != trk.view_beams.length do
-			truck_beam_counter = Beam.new(trk, i)
-
-			truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
-			truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
-			truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
-
-			i = i + 1
-		end
-		# This loop iterates through all node arguments for each beam and places its respective coords in their array
-
-		truck_node_x = []
-		truck_node_y = []
-		truck_node_z = []
-		# Similar to the beam arrays, puts its coords in these respective arrays
-
-		i = 0
-
-		while i != trk.view_nodes.length do
-			truck_node_counter = Node.new(trk, i)
-
-			truck_node_x[i] = truck_node_counter.show_x
-			truck_node_y[i] = truck_node_counter.show_y
-			truck_node_z[i] = truck_node_counter.show_z
-
-			i = i + 1
-		end
-		# Iterates through each node and puts its coords to its respective arrays
 
 
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
