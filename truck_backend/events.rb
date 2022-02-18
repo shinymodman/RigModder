@@ -72,4 +72,17 @@ module EVENT_FOR_STRUCTURE
 		canvas.queue_draw()
 	end
 	# Returns y value of cursor.
+
+	def centered_x(canvas)
+		return 1080 / 2
+		canvas.queue_draw
+	end
+	# Returns the x coord that centers the whole structure
+
+	def centered_y(canvas)
+		return 720 / 2
+		canvas.queue_draw
+	end
+	# Returns the y coord that centers the whole structure
+
 end
