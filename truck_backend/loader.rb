@@ -82,6 +82,9 @@ module DRAW_STRUCTURE
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
 		
 
+    load_nodes(trk)
+    load_beams(trk)
+    
 		canvas.signal_connect("draw") {
 			|a, b|
 
