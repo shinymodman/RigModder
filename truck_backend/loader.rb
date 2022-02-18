@@ -31,9 +31,9 @@ module DRAW_STRUCTURE
 		}
   	end
 
-  truck_beam_x = []
-  truck_beam_y = []
-  truck_beam_z = []
+  @truck_beam_x = []
+  @truck_beam_y = []
+  @truck_beam_z = []
   # Organizes beam coords to its respective arrays
     
   def load_beams(trk)
@@ -42,18 +42,18 @@ module DRAW_STRUCTURE
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
   
-        truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
-        truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
-        truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
+        @truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
+        @truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
+        @truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
 
         i = i + 1
       end
       # This loop iterates through all node arguments for each beam and places its respective coords in their array
   end
   
-  truck_node_x = []
-  truck_node_y = []
-  truck_node_z = []
+  @truck_node_x = []
+  @truck_node_y = []
+  @truck_node_z = []
   # Similar to the beam arrays, puts its coords in these respective arrays
   
   def load_nodes(trk)
@@ -63,9 +63,9 @@ module DRAW_STRUCTURE
       while i != trk.view_nodes.length do
         truck_node_counter = Node.new(trk, i)
   
-        truck_node_x[i] = truck_node_counter.show_x
-        truck_node_y[i] = truck_node_counter.show_y
-        truck_node_z[i] = truck_node_counter.show_z
+        @truck_node_x[i] = truck_node_counter.show_x
+        @truck_node_y[i] = truck_node_counter.show_y
+        @truck_node_z[i] = truck_node_counter.show_z
   
         i = i + 1
       end
@@ -101,37 +101,37 @@ module DRAW_STRUCTURE
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
 
-				truck_beam_x.length.times {
+				@truck_beam_x.length.times {
 					|i|
 					
 					case @view
 					  when 0
-					    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
-					    b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+					    b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
+					    b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
 					    #Camera on front direction
 					  when 1
-					    b.move_to(truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
-					    b.line_to(truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+					    b.move_to(@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
+					    b.line_to(@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
 					    #Camera on back direction
 				 	  when 2
-				    	b.move_to(truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
-            			b.line_to(truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
+				    	b.move_to(@truck_beam_z[i][0] * @size, @truck_beam_y[i][0] * @size)
+            			b.line_to(@truck_beam_z[i][1] * @size, @truck_beam_y[i][1] * @size)
             	    #Camera on left direction
 	          		  when 3
-			            b.move_to(-truck_beam_z[i][0] * @size, truck_beam_y[i][0] * @size)
-			            b.line_to(-truck_beam_z[i][1] * @size, truck_beam_y[i][1] * @size)
+			            b.move_to(-@truck_beam_z[i][0] * @size, @truck_beam_y[i][0] * @size)
+			            b.line_to(-@truck_beam_z[i][1] * @size, @truck_beam_y[i][1] * @size)
 			            #Camera on left direction
 		          	  when 4
-			            b.move_to(truck_beam_x[i][0] * @size, truck_beam_z[i][0] * @size)
-			            b.line_to(truck_beam_x[i][1] * @size, truck_beam_z[i][1] * @size)
+			            b.move_to(@truck_beam_x[i][0] * @size, @truck_beam_z[i][0] * @size)
+			            b.line_to(@truck_beam_x[i][1] * @size, @truck_beam_z[i][1] * @size)
 			            # Default top camera direction 
 		          	  when 5
-			            b.move_to(-truck_beam_x[i][0] * @size, truck_beam_z[i][0] * @size)
-			            b.line_to(-truck_beam_x[i][1] * @size, truck_beam_z[i][1] * @size)
+			            b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_z[i][0] * @size)
+			            b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_z[i][1] * @size)
 			            # Default bottom camera direction         
 					  else
-					    b.move_to(-truck_beam_x[i][0] * @size, truck_beam_y[i][0] * @size)
-	            		b.line_to(-truck_beam_x[i][1] * @size, truck_beam_y[i][1] * @size)
+					    b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
+	            		b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
           			end
           		}
           		# Sets the camera direction based on what's changed from the @view instance variable.
@@ -142,29 +142,29 @@ module DRAW_STRUCTURE
 				b.set_source_rgba(0, 0.5, 0, 0.45)
 				# Sets default color to a dark shade of green for the nodes
 
-				truck_node_x.length.times {
+				@truck_node_x.length.times {
 					|i|
 		          	case @view
 		           	when 0
-			            b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+			            b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
 			            # Default front camera direction
 		           	when 1
-		             	b.rectangle(truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
 		             	# Default back camera direction
 		           	when 2
-		             	b.rectangle(truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+		             	b.rectangle(@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
 		             	# Default right camera direction
 		           	when 3
-		             	b.rectangle(-truck_node_z[i] * @size, truck_node_y[i] * @size, 10, 10)
+		             	b.rectangle(-@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
 		             	# Default left camera direction
 		           	when 4
-		             	b.rectangle(truck_node_x[i] * @size, truck_node_z[i] * @size, 10, 10)
+		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
 		             	# Default top camera direction 
 		           	when 5
-		             	b.rectangle(-truck_node_x[i] * @size, truck_node_z[i] * @size, 10, 10)
+		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
 		             	# Default bottom camera direction         
 		           	else
-		             	b.rectangle(-truck_node_x[i] * @size, truck_node_y[i] * @size, 10, 10)
+		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
 		             	# Default camera direction
 		           	end
 							
