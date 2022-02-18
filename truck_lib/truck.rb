@@ -1,8 +1,11 @@
 require 'csv'
 
 class Truck
+	@req = nil
+
 	def initialize(req)
-		@file = (File.exist?(req) && File.extname(".truck")) ? CSV.parse(File.new(req)) : "invalid_file" 
+		@file = (File.exist?(req) && File.extname(".truck")) ? CSV.parse(File.new(req)) : "invalid_file"
+		@req = req
 	end
 	# Gathers all content of file if the file exists or is valid and has the .truck extension. Otherwise writes the string: "invaid_file"
 
@@ -62,5 +65,9 @@ class Truck
 		else
 			return str.to_s
 		end
+	end
+
+	def filename()
+		return @req
 	end
 end
