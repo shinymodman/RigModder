@@ -31,11 +31,13 @@ module DRAW_STRUCTURE
 		}
   	end
 
-  def load_beams(trk, pos)
-      truck_beam_x = []
-      truck_beam_y = []
-      truck_beam_z = []
-      # Organizes beam coords to its respective arrays
+  truck_beam_x = []
+  truck_beam_y = []
+  truck_beam_z = []
+  # Organizes beam coords to its respective arrays
+    
+  def load_beams(trk)
+      i = 0
   
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
@@ -47,17 +49,14 @@ module DRAW_STRUCTURE
         i = i + 1
       end
       # This loop iterates through all node arguments for each beam and places its respective coords in their array
-      
-      return truck_beam_x[0] if pos == 0
-      return truck_beam_x[0] if pos == 1
-      return truck_beam_x[0] if pos == 2
   end
   
-  def load_nodes()
-      truck_node_x = []
-      truck_node_y = []
-      truck_node_z = []
-      # Similar to the beam arrays, puts its coords in these respective arrays
+  truck_node_x = []
+  truck_node_y = []
+  truck_node_z = []
+  # Similar to the beam arrays, puts its coords in these respective arrays
+  
+  def load_nodes(trk)
   
       i = 0
   
@@ -89,8 +88,11 @@ module DRAW_STRUCTURE
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
-  				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
+  			@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
+				
+				self.load_nodes(trk)
+				self.load_beams(trk)
 
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
