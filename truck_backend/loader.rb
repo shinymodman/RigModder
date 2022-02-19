@@ -23,8 +23,8 @@ module DRAW_STRUCTURE
 			# Creates the filter so other files without the extension ".truck" are excluded from the file chooser.
 			
 			if open_win.run == Gtk::ResponseType::ACCEPT then
-				canvas.queue_draw_area(0, 0, EVENT_FOR_STRUCTURE.centered_x(canvas), EVENT_FOR_STRUCTURE.centered_y(canvas))
 				self.load_truck(open_win.filename(), canvas)
+				canvas.queue_draw()
 			end
 			# This will start the file handling after file is selected and accepted by the file chooser.
 			
@@ -82,15 +82,14 @@ module DRAW_STRUCTURE
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
 		
-
-    load_nodes(trk)
-    load_beams(trk)
+		load_nodes(trk)
+    	load_beams(trk)
 
 		canvas.signal_connect("draw") {
 			|a, b|
 
 				b.new_path()
-				
+
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
