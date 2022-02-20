@@ -85,7 +85,7 @@ module DRAW_STRUCTURE
 		load_nodes(trk)
     	load_beams(trk)
 
-		canvas.signal_connect("draw", :expose) {
+		canvas.signal_connect("draw") {
 			|a, b|
 
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
