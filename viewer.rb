@@ -100,7 +100,3 @@ class RigModder < Gtk::Window
 		EVENT_FOR_STRUCTURE.zoom_in_or_out(self, @canvas)
 	end
 end
-
-app = RigModder.new()
-Gtk.main
-# Loads the window when this program is executed
