@@ -39,7 +39,11 @@ module DRAW_STRUCTURE
     
   def load_beams(trk)
       i = 0
-  
+  	
+  	  @truck_beam_x.clear()
+  	  @truck_beam_y.clear()
+  	  @truck_beam_z.clear()
+
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
   
@@ -60,6 +64,10 @@ module DRAW_STRUCTURE
   def load_nodes(trk)
   
       i = 0
+
+      @truck_node_x.clear()
+  	  @truck_node_y.clear()
+  	  @truck_node_z.clear()
   
       while i != trk.view_nodes.length do
         truck_node_counter = Node.new(trk, i)
