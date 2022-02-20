@@ -24,7 +24,7 @@ module DRAW_STRUCTURE
 			
 			if open_win.run == Gtk::ResponseType::ACCEPT then
 				self.load_truck(open_win.filename(), canvas)
-				canvas.queue_draw()
+				canvas.queue_draw
 			end
 			# This will start the file handling after file is selected and accepted by the file chooser.
 			
