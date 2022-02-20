@@ -86,7 +86,6 @@ class RigModder < Gtk::Window
 		# Will tell gtk to end program when program is x'ed out.
 
 		DRAW_STRUCTURE.show_loader(@open_item, @canvas)
-		@canvas.queue_draw()
 		
 		DRAW_STRUCTURE.top_selection(@top, @canvas)
 		DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
