@@ -85,10 +85,8 @@ module DRAW_STRUCTURE
 		load_nodes(trk)
     	load_beams(trk)
 
-		canvas.signal_connect("draw") {
+		canvas.signal_connect("draw", :expose) {
 			|a, b|
-
-				b.new_path()
 
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
@@ -174,6 +172,8 @@ module DRAW_STRUCTURE
 				}
 					b.fill()
 					# This loop places the nodes to its respective areas
+
+					b.new_path()
 			}
 		end
 
