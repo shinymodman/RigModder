@@ -12,7 +12,7 @@ include EVENT_FOR_STRUCTURE
 
 class RigModder < Gtk::Window
 
-	def initialize
+	def initialize()
 		super("RigModder")
 		self.set_default_size(1080, 720)
 
@@ -86,7 +86,7 @@ class RigModder < Gtk::Window
 		# Will tell gtk to end program when program is x'ed out.
 
 		DRAW_STRUCTURE.show_loader(@open_item, @canvas)
-		
+
 		DRAW_STRUCTURE.top_selection(@top, @canvas)
 		DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
 		DRAW_STRUCTURE.left_selection(@left, @canvas)
@@ -99,7 +99,3 @@ class RigModder < Gtk::Window
 		EVENT_FOR_STRUCTURE.zoom_in_or_out(self, @canvas)
 	end
 end
-
-app = RigModder.new()
-Gtk.main
-# Loads the window when this program is executed
