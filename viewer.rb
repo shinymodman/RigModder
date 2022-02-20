@@ -30,37 +30,37 @@ class RigModder < Gtk::Window
 		
 		@open_item = Gtk::MenuItem.new(:label => "Open")
 		@file_menu.append(@open_item)
-    # Creates and adds the selection saying Open to the View dropdown.
+    	# Creates and adds the selection saying Open to the View dropdown.
 		
 		@view_menu = Gtk::Menu.new()
 		@view_sel = Gtk::MenuItem.new(:label => "View")
-    @view_sel.set_submenu(@view_menu)
-    # This adds the View dropdown to the top menu.
-    
-    
-    @front = Gtk::MenuItem.new(:label => "Front")
-    @view_menu.append(@front)
-    # Creates and adds the selection saying front to the View dropdown.
-    
-    @back = Gtk::MenuItem.new(:label => "Back")
-    @view_menu.append(@back)
-    # Creates and adds the selection saying back to the View dropdown.
-    
-    @left = Gtk::MenuItem.new(:label => "Left")
-    @view_menu.append(@left)
-    # Creates and adds the selection saying left to the View dropdown.
-    
-    @right = Gtk::MenuItem.new(:label => "Right")
-    @view_menu.append(@right)
-    # Creates and adds the selection saying right to the View dropdown.
-    
-    @top = Gtk::MenuItem.new(:label => "Top")
-    @view_menu.append(@top)
-    # Creates and adds the selection saying top to the View dropdown.
-    
-    @bottom = Gtk::MenuItem.new(:label => "Bottom")
-    @view_menu.append(@bottom)
-    # Creates and adds the selection saying bottom to the View dropdown.
+	    @view_sel.set_submenu(@view_menu)
+	    # This adds the View dropdown to the top menu.
+	    
+	    
+	    @front = Gtk::MenuItem.new(:label => "Front")
+	    @view_menu.append(@front)
+	    # Creates and adds the selection saying front to the View dropdown.
+	    
+	    @back = Gtk::MenuItem.new(:label => "Back")
+	    @view_menu.append(@back)
+	    # Creates and adds the selection saying back to the View dropdown.
+	    
+	    @left = Gtk::MenuItem.new(:label => "Left")
+	    @view_menu.append(@left)
+	    # Creates and adds the selection saying left to the View dropdown.
+	    
+	    @right = Gtk::MenuItem.new(:label => "Right")
+	    @view_menu.append(@right)
+	    # Creates and adds the selection saying right to the View dropdown.
+	    
+	    @top = Gtk::MenuItem.new(:label => "Top")
+	    @view_menu.append(@top)
+	    # Creates and adds the selection saying top to the View dropdown.
+	    
+	    @bottom = Gtk::MenuItem.new(:label => "Bottom")
+	    @view_menu.append(@bottom)
+	    # Creates and adds the selection saying bottom to the View dropdown.
     
 		@menu.append(@view_sel)
 		@grid.add(@menu)
@@ -100,3 +100,7 @@ class RigModder < Gtk::Window
 		EVENT_FOR_STRUCTURE.zoom_in_or_out(self, @canvas)
 	end
 end
+
+app = RigModder.new()
+Gtk.main
+# Loads window on screen.
