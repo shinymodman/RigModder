@@ -50,6 +50,11 @@ The features of this software I'm thinking about implementing are the following:
 	- Of course, nodes and beams.
 	- Next, flare positioning.
 
+**UPDATE**
+- What will be next thing to work on:
+	- Creating more interfaces for manipulating the structure.
+**UPDATE**
+	
 - What I am thinking about implementing soon:
 	- Support for:
 		- Wheels
