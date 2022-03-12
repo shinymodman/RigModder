@@ -47,6 +47,20 @@ class Truck
 		# Lists beam objects in flare section
 	end
 
+	def view_hydros()
+
+		return @file.to_a.select {
+			|a|
+
+			a if (a.length == 3) && # The amount content that a beam object is only supposed to have
+			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+			!(/\d*[.]/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
+			(/\d*[.]/.match(a[2])) && # Checks if the argument is only an decimal/floating point number which is only supported there.
+			(a[0] > a.last) # Checks if the first argument of the beam is bigger than the last node id.
+		}
+		# Lists beam objects in flare section
+	end
+
 	def view_flares()
 
 		return @file.to_a.select {
