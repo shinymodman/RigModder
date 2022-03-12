@@ -3,6 +3,7 @@ require 'cairo'
 
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
+require './truck_lib/hydrolic.rb'
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -55,6 +56,30 @@ module DRAW_STRUCTURE
       end
       # This loop iterates through all node arguments for each beam and places its respective coords in their array
   end
+
+  @truck_hydro_x = []
+  @truck_hydro_y = []
+  @truck_hydro_z = []
+  # Organizes beam coords to its respective arrays
+    
+  def load_hydros(trk)
+      i = 0
+  	
+  	  @truck_hydro_x.clear()
+  	  @truck_hydro_y.clear()
+  	  @truck_hydro_z.clear()
+
+      while i != trk.view_hydros.length do
+        truck_hydro_counter = Hydrolic.new(trk, i)
+  
+        @truck_hydro_x[i] = [truck_hydro_counter.show_source_x, truck_hydro_counter.show_dest_x]
+        @truck_hydro_y[i] = [truck_hydro_counter.show_source_y, truck_hydro_counter.show_dest_y]
+        @truck_hydro_z[i] = [truck_hydro_counter.show_source_z, truck_hydro_counter.show_dest_z]
+
+        i = i + 1
+      end
+      # This loop iterates through all node arguments for each beam and places its respective coords in their array
+  end
   
   @truck_node_x = []
   @truck_node_y = []
@@ -92,6 +117,7 @@ module DRAW_STRUCTURE
 		
 		load_nodes(trk)
     	load_beams(trk)
+    	load_hydros(trk)
 
 		canvas.signal_connect("draw") {
 			|a, b|
@@ -105,12 +131,47 @@ module DRAW_STRUCTURE
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
 				
 
-				b.set_source_rgb(1, 0.5, 0)
-				# Sets default color to orange
-
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
+
+				b.set_source_rgba(0, 0.5, 0, 0.45)
+				# Sets default color to a dark shade of green for the nodes
+
+
+				@truck_node_x.length.times {
+					|i|
+		          	case @view
+		           	when 0
+			            b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
+			            # Default front camera direction
+		           	when 1
+		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
+		             	# Default back camera direction
+		           	when 2
+		             	b.rectangle(@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
+		             	# Default right camera direction
+		           	when 3
+		             	b.rectangle(-@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
+		             	# Default left camera direction
+		           	when 4
+		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
+		             	# Default top camera direction 
+		           	when 5
+		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
+		             	# Default bottom camera direction         
+		           	else
+		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
+		             	# Default camera direction
+		           	end
+							
+				}
+
+				b.fill()
+				# This loop places the nodes to its respective areas
+
+				b.set_source_rgb(1, 0.5, 0)
+				# Sets default color to orange
 
 				@truck_beam_x.length.times {
 					|i|
@@ -150,40 +211,48 @@ module DRAW_STRUCTURE
 				b.stroke()
 				# This loop draws out the beams
 
-				b.set_source_rgba(0, 0.5, 0, 0.45)
-				# Sets default color to a dark shade of green for the nodes
+				b.set_source_rgb(0.5, 0.3, 0.5)
+				b.set_line_width(5)
 
-				@truck_node_x.length.times {
+				@truck_hydro_x.length.times {
 					|i|
-		          	case @view
-		           	when 0
-			            b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-			            # Default front camera direction
-		           	when 1
-		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default back camera direction
-		           	when 2
-		             	b.rectangle(@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default right camera direction
-		           	when 3
-		             	b.rectangle(-@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default left camera direction
-		           	when 4
-		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
-		             	# Default top camera direction 
-		           	when 5
-		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
-		             	# Default bottom camera direction         
-		           	else
-		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default camera direction
-		           	end
-							
-				}
-					b.fill()
-					# This loop places the nodes to its respective areas
+					
+					case @view
+					  when 0
+					    b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
+					    b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
+					    #Camera on front direction
+					  when 1
+					    b.move_to(@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
+					    b.line_to(@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
+					    #Camera on back direction
+				 	  when 2
+				    	b.move_to(@truck_hydro_z[i][0] * @size, @truck_hydro_y[i][0] * @size)
+            			b.line_to(@truck_hydro_z[i][1] * @size, @truck_hydro_y[i][1] * @size)
+            	    #Camera on left direction
+	          		  when 3
+			            b.move_to(-@truck_hydro_z[i][0] * @size, @truck_hydro_y[i][0] * @size)
+			            b.line_to(-@truck_hydro_z[i][1] * @size, @truck_hydro_y[i][1] * @size)
+			            #Camera on left direction
+		          	  when 4
+			            b.move_to(@truck_hydro_x[i][0] * @size, @truck_hydro_z[i][0] * @size)
+			            b.line_to(@truck_hydro_x[i][1] * @size, @truck_hydro_z[i][1] * @size)
+			            # Default top camera direction 
+		          	  when 5
+			            b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_z[i][0] * @size)
+			            b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_z[i][1] * @size)
+			            # Default bottom camera direction         
+					  else
+					    b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
+	            		b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
+          			end
+          		}
+          		# Sets the camera direction based on what's changed from the @view instance variable.
 
-					b.new_path()
+          		b.stroke()
+          		# This loop draws out the beams
+
+				b.new_path()
 			}
 		end
 
