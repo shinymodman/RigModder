@@ -47,8 +47,7 @@ What you need to do by steps:
 The features of this software I'm thinking about implementing are the following:
 
 - The features being worked on:
-	- Of course, nodes and beams.
-	- Next, flare positioning.
+	- Interface enhancements.
 
 **UPDATE**
 - What will be next thing to work on:
@@ -59,5 +58,6 @@ The features of this software I'm thinking about implementing are the following:
 	- Support for:
 		- Wheels
 		- Shocks
-		- Hydros (Hyrdraulics)
+		- Flare positioning.
+		- ~~Hydros (Hyrdraulics)~~ (Already finished this one)
 	- Maybe also implementing ways to edit the truck itself with visualization.
