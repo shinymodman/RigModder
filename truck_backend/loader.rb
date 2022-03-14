@@ -71,7 +71,7 @@ module DRAW_STRUCTURE
 
       while i != trk.view_hydros.length do
         truck_hydro_counter = Hydrolic.new(trk, i)
-  
+
         @truck_hydro_x[i] = [truck_hydro_counter.show_source_x, truck_hydro_counter.show_dest_x]
         @truck_hydro_y[i] = [truck_hydro_counter.show_source_y, truck_hydro_counter.show_dest_y]
         @truck_hydro_z[i] = [truck_hydro_counter.show_source_z, truck_hydro_counter.show_dest_z]
@@ -105,7 +105,44 @@ module DRAW_STRUCTURE
       end
       # Iterates through each node and puts its coords to its respective arrays
   end
-  
+
+	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, angle, line_to_enabled)
+
+		case angle
+		  when 0
+		    context.move_to(-sketch_x * size, sketch_y * size)
+		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
+		    #Camera on front direction
+		  when 1
+            context.move_to(sketch_x * size, sketch_y * size)
+            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
+		    #Camera on back direction
+	 	  when 2
+            context.move_to(sketch_x * size, sketch_y * size)
+            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
+	    #Camera on left direction
+  		  when 3
+		    context.move_to(-sketch_x * size, sketch_y * size)
+		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
+            #Camera on left direction
+      	  when 4
+            context.move_to(sketch_x * size, sketch_y * size)
+            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
+            # Default top camera direction 
+      	  when 5
+		    context.move_to(-sketch_x * size, sketch_y * size)
+		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
+            # Default bottom camera direction         
+		  else
+		    context.move_to(-sketch_x * size, sketch_y * size)
+		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
+		end
+	end
+	# Wrapper for line creation in cairo w/ line_to (on/off) switch
+	# ^^
+	# On if true
+	# Off if false
+
 	def load_truck(trk, canvas)
 		i = 0
 		trk = Truck.new(trk)
@@ -175,82 +212,38 @@ module DRAW_STRUCTURE
 
 				@truck_beam_x.length.times {
 					|i|
-					
-					case @view
-					  when 0
-					    b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
-					    b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
-					    #Camera on front direction
-					  when 1
-					    b.move_to(@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
-					    b.line_to(@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
-					    #Camera on back direction
-				 	  when 2
-				    	b.move_to(@truck_beam_z[i][0] * @size, @truck_beam_y[i][0] * @size)
-            			b.line_to(@truck_beam_z[i][1] * @size, @truck_beam_y[i][1] * @size)
-            	    #Camera on left direction
-	          		  when 3
-			            b.move_to(-@truck_beam_z[i][0] * @size, @truck_beam_y[i][0] * @size)
-			            b.line_to(-@truck_beam_z[i][1] * @size, @truck_beam_y[i][1] * @size)
-			            #Camera on left direction
-		          	  when 4
-			            b.move_to(@truck_beam_x[i][0] * @size, @truck_beam_z[i][0] * @size)
-			            b.line_to(@truck_beam_x[i][1] * @size, @truck_beam_z[i][1] * @size)
-			            # Default top camera direction 
-		          	  when 5
-			            b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_z[i][0] * @size)
-			            b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_z[i][1] * @size)
-			            # Default bottom camera direction         
-					  else
-					    b.move_to(-@truck_beam_x[i][0] * @size, @truck_beam_y[i][0] * @size)
-	            		b.line_to(-@truck_beam_x[i][1] * @size, @truck_beam_y[i][1] * @size)
-          			end
+					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_y[i][0], @truck_beam_x[i][1], @truck_beam_y[i][1], @size, 0, true) if @view == 0
+					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_y[i][0], @truck_beam_x[i][1], @truck_beam_y[i][1], @size, 1, true) if @view == 1
+					load_beam_sketch(b, @truck_beam_z[i][0], @truck_beam_y[i][0], @truck_beam_z[i][1], @truck_beam_y[i][1], @size, 2, true) if @view == 2
+					load_beam_sketch(b, @truck_beam_z[i][0], @truck_beam_y[i][0], @truck_beam_z[i][1], @truck_beam_y[i][1], @size, 3, true) if @view == 3
+					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_z[i][0], @truck_beam_x[i][1], @truck_beam_z[i][1], @size, 4, true) if @view == 4
+					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_z[i][0], @truck_beam_x[i][1], @truck_beam_z[i][1], @size, 5, true) if @view == 5
           		}
           		# Sets the camera direction based on what's changed from the @view instance variable.
 
 				b.stroke()
 				# This loop draws out the beams
 
+
+          		# Adds the extra beams since it doesn't get visualized.
+
 				b.set_source_rgb(0.5, 0.3, 0.5)
 				b.set_line_width(5)
 
 				@truck_hydro_x.length.times {
 					|i|
-					
-					case @view
-					  when 0
-					    b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
-					    b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
-					    #Camera on front direction
-					  when 1
-					    b.move_to(@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
-					    b.line_to(@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
-					    #Camera on back direction
-				 	  when 2
-				    	b.move_to(@truck_hydro_z[i][0] * @size, @truck_hydro_y[i][0] * @size)
-            			b.line_to(@truck_hydro_z[i][1] * @size, @truck_hydro_y[i][1] * @size)
-            	    #Camera on left direction
-	          		  when 3
-			            b.move_to(-@truck_hydro_z[i][0] * @size, @truck_hydro_y[i][0] * @size)
-			            b.line_to(-@truck_hydro_z[i][1] * @size, @truck_hydro_y[i][1] * @size)
-			            #Camera on left direction
-		          	  when 4
-			            b.move_to(@truck_hydro_x[i][0] * @size, @truck_hydro_z[i][0] * @size)
-			            b.line_to(@truck_hydro_x[i][1] * @size, @truck_hydro_z[i][1] * @size)
-			            # Default top camera direction 
-		          	  when 5
-			            b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_z[i][0] * @size)
-			            b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_z[i][1] * @size)
-			            # Default bottom camera direction         
-					  else
-					    b.move_to(-@truck_hydro_x[i][0] * @size, @truck_hydro_y[i][0] * @size)
-	            		b.line_to(-@truck_hydro_x[i][1] * @size, @truck_hydro_y[i][1] * @size)
-          			end
-          		}
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_y[i][0], @truck_hydro_x[i][1], @truck_hydro_y[i][1], @size, 0, true) if @view == 0
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_y[i][0], @truck_hydro_x[i][1], @truck_hydro_y[i][1], @size, 1, true) if @view == 1
+					load_beam_sketch(b, @truck_hydro_z[i][0], @truck_hydro_y[i][0], @truck_hydro_z[i][1], @truck_hydro_y[i][1], @size, 2, true) if @view == 2
+					load_beam_sketch(b, @truck_hydro_z[i][0], @truck_hydro_y[i][0], @truck_hydro_z[i][1], @truck_hydro_y[i][1], @size, 3, true) if @view == 3
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_z[i][0], @truck_hydro_x[i][1], @truck_hydro_z[i][1], @size, 4, true) if @view == 4
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_z[i][0], @truck_hydro_x[i][1], @truck_hydro_z[i][1], @size, 5, true) if @view == 5
+
           		# Sets the camera direction based on what's changed from the @view instance variable.
+          		}
 
           		b.stroke()
-          		# This loop draws out the beams
+          		# This loop draws out the hydraulics.
 
 				b.new_path()
 			}
