@@ -3,12 +3,13 @@ require_relative 'node'
 class Hydrolic
 	def initialize(req, hydro_index)
 		@truck = req
-		hydros = hydro_index > 0 ? @truck.view_hydros : "invalid_index"
+		hydros = hydro_index >= 0 ? @truck.view_hydros : "invalid_index"
 
 		@hydro_properties = {
 			node1: Node.new(@truck, hydros[hydro_index.to_i][0]),
 			node2: Node.new(@truck, hydros[hydro_index.to_i][1]),
-			options: hydros[hydro_index][2]
+			len_factor: hydros[hydro_index.to_i][2],
+			options: hydros[hydro_index][3]
 		}
 
 	end

@@ -3,7 +3,7 @@ require_relative 'node'
 class Beam
 	def initialize(req, beam_index)
 		@truck = req
-		beams = beam_index > 0 ? @truck.view_beams : "invalid_index"
+		beams = beam_index >= 0 ? @truck.view_beams : "invalid_index"
 
 		@beam_properties = {
 			node1: Node.new(@truck, beams[beam_index.to_i][0]),
