@@ -46,14 +46,13 @@ What you need to do by steps:
 ### Program Features
 The features of this software I'm thinking about implementing are the following:
 
-- The features being worked on:
-	- Interface enhancements.
+- The features currently being worked on:
+	1. Shocks
+	1. Wheels
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
 	1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
-	1. Shocks
-	1. Wheels
 	1. Flare positioning.
 **UPDATE**
 	
