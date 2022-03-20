@@ -51,10 +51,10 @@ The features of this software I'm thinking about implementing are the following:
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
-		1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
-		1. Shocks
-		1. Wheels
-		1. Flare positioning.
+	1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
+	1. Shocks
+	1. Wheels
+	1. Flare positioning.
 **UPDATE**
 	
 - What I am thinking about implementing soon:
