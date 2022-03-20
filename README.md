@@ -58,5 +58,5 @@ The features of this software I'm thinking about implementing are the following:
 **UPDATE**
 	
 - What I am thinking about implementing soon:
-	- Support for:
-		- Implementing ways to edit the truck itself with visualization.
+- Support for:
+	- Implementing ways to edit the truck itself with visualization.
