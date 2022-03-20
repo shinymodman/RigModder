@@ -50,14 +50,13 @@ The features of this software I'm thinking about implementing are the following:
 	- Interface enhancements.
 
 **UPDATE**
-- What will be next thing to work on:
-	- Creating more interfaces for manipulating the structure.
+- What will be next thing to work on (**In Order**):
+		1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
+		1. Shocks
+		1. Wheels
+		1. Flare positioning.
 **UPDATE**
 	
 - What I am thinking about implementing soon:
 	- Support for:
-		- Wheels
-		- Shocks
-		- Flare positioning.
-		- ~~Hydros (Hyrdraulics)~~ (Already finished this one)
-	- Maybe also implementing ways to edit the truck itself with visualization.
+		- Implementing ways to edit the truck itself with visualization.
