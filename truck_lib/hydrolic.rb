@@ -83,4 +83,10 @@ class Hydrolic
 	end
 
 	# Shows the first node inside the hydro (The node in the first column of the hydro)
+
+	def show_lengthening_factor()
+		return @truck.strip_arg(@hydro_properties[:len_factor]).to_i
+	end
+
+	# Shows the lengthening factor of the specific hydraulic.
 end
