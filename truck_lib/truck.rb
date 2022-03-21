@@ -62,6 +62,16 @@ class Truck
 		# Lists beam objects in flare section
 	end
 
+	def view_shocks()
+
+		return @file.to_a.select {
+			|a|
+
+			a if (a.length == 8 || a.length == 7) && # The amount content that a beam object is only supposed to have	
+			!(/\D/.match(a[0])) # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+		}
+		# Lists shock objects in flare section
+	end
 	def view_flares()
 
 		return @file.to_a.select {
