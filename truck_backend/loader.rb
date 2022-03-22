@@ -4,6 +4,8 @@ require 'cairo'
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
+require './truck_lib/shock.rb'
+
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -78,7 +80,32 @@ module DRAW_STRUCTURE
 
         i = i + 1
       end
-      # This loop iterates through all node arguments for each beam and places its respective coords in their array
+      # This loop iterates through all node arguments for each hydraulic and places its respective coords in their array
+  end
+
+  @truck_shock_x = []
+  @truck_shock_y = []
+  @truck_shock_z = []
+  # Organizes beam coords to its respective arrays
+
+
+  def load_shocks(trk)
+      i = 0
+  	
+  	  @truck_shock_x.clear()
+  	  @truck_shock_y.clear()
+  	  @truck_shock_z.clear()
+
+      while i != trk.view_shocks.length do
+        truck_shock_counter = Shock.new(trk, i)
+
+        @truck_shock_x[i] = [truck_shock_counter.show_source_x, truck_shock_counter.show_dest_x]
+        @truck_shock_y[i] = [truck_shock_counter.show_source_y, truck_shock_counter.show_dest_y]
+        @truck_shock_z[i] = [truck_shock_counter.show_source_z, truck_shock_counter.show_dest_z]
+
+        i = i + 1
+      end
+      # This loop iterates through all node arguments for each shock and places its respective coords in their array
   end
   
   @truck_node_x = []
@@ -155,6 +182,7 @@ module DRAW_STRUCTURE
 		load_nodes(trk)
     	load_beams(trk)
     	load_hydros(trk)
+    	load_shocks(trk)
 
 		canvas.signal_connect("draw") {
 			|a, b|
@@ -244,6 +272,23 @@ module DRAW_STRUCTURE
 
           		b.stroke()
           		# This loop draws out the hydraulics.
+
+          		b.set_source_rgb(0.8, 0.8, 0.1)
+				b.set_line_width(5)
+
+				@truck_shock_x.length.times {
+					|i|
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_y[i][0], @truck_shock_x[i][1], @truck_shock_y[i][1], @size, 0, true) if @view == 0
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_y[i][0], @truck_shock_x[i][1], @truck_shock_y[i][1], @size, 1, true) if @view == 1
+					load_beam_sketch(b, @truck_shock_z[i][0], @truck_shock_y[i][0], @truck_shock_z[i][1], @truck_shock_y[i][1], @size, 2, true) if @view == 2
+					load_beam_sketch(b, @truck_shock_z[i][0], @truck_shock_y[i][0], @truck_shock_z[i][1], @truck_shock_y[i][1], @size, 3, true) if @view == 3
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_z[i][0], @truck_shock_x[i][1], @truck_shock_z[i][1], @size, 4, true) if @view == 4
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_z[i][0], @truck_shock_x[i][1], @truck_shock_z[i][1], @size, 5, true) if @view == 5
+
+          		# Sets the camera direction based on what's changed from the @view instance variable.
+          		}
+
+          		b.stroke()
 
 				b.new_path()
 			}
