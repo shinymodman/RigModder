@@ -47,13 +47,14 @@ What you need to do by steps:
 The features of this software I'm thinking about implementing are the following:
 
 - The features currently being worked on:
-	1. Shocks
-	1. Wheels
+	1. ~~Shocks~~ (Finished this one)
+	1. Interfaces for better sight of the truck file.
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
 	1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
-	1. Flare positioning.
+	1. Flare positioning
+	1. Wheels
 **UPDATE**
 	
 - What I am thinking about implementing soon:
