@@ -341,17 +341,4 @@ module DRAW_STRUCTURE
 	    	}
 	    end
 	    # Sets the camera direction to bottom using the menu selection's activate signal.
-
-	   	def load_dialog(widget, height, width, *inner_widgets)
-	    	widget.signal_connect("activate") {
-	      	  widget.set_default_size(height, width)
-	      	  inner_widgets.each {
-	      	  	|i|
-	      	  	widget.add(inner_widgets)
-	      	  }
-
-	      	  widget.show()
-	    	}
-	    end
-	    # Shows a dialog using the menu selection's activate signal.
 end
