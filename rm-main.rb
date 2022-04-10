@@ -64,7 +64,11 @@ class RMApp < Gtk::Application
 		    @bottom = Gtk::MenuItem.new(:label => "Bottom")
 		    @view_menu.append(@bottom)
 		    # Creates and adds the selection saying bottom to the View dropdown.
-	    
+	    	
+	    	@node_dialog = Gtk::MenuItem.new(:label => "Node List")
+	    	@view_menu.append(@node_dialog)
+	    	# Creates a way to view dialog with a node list
+
 			@menu.append(@view_sel)
 			@grid.add(@menu)
 			# Creates and inserts the dropdown menu widget to the window.
@@ -100,6 +104,62 @@ class RMApp < Gtk::Application
 			EVENT_FOR_STRUCTURE.click(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.drag_struct(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.zoom_in_or_out(@main_window, @canvas)
+
+
+			@window = Gtk::Window.new()
+			@window.set_title("Nodes")
+
+			@dialog_grid = Gtk::Box.new(:vertical)
+			@node_list = Gtk::ListBox.new()
+			@node_list.expand = true
+			@dialog_grid.add(@node_list)
+
+			@node_property_grid = Gtk::Box.new(:horizontal)
+			@node_property_x_grid = Gtk::Box.new(:horizontal)
+			@node_property_y_grid = Gtk::Box.new(:horizontal)
+			@node_property_z_grid = Gtk::Box.new(:horizontal)
+			@node_property_opt_grid = Gtk::Box.new(:horizontal)
+
+			@label_node = Gtk::Label.new()
+			@node_entry = Gtk::Entry.new()
+			@label_node.set_text("Node:")
+			@node_property_grid.add(@label_node)
+			@node_property_grid.pack_end(@node_entry, :expand => true, :fill => true, :padding => 0)
+
+
+			@label_node_x = Gtk::Label.new()
+			@node_x_entry = Gtk::Entry.new()
+			@label_node_x.set_text("X:")			
+			@node_property_x_grid.add(@label_node_x)
+			@node_property_x_grid.pack_end(@node_x_entry, :expand => true, :fill => true, :padding => 0)
+
+
+
+			@label_node_y = Gtk::Label.new()
+			@node_y_entry = Gtk::Entry.new()
+			@label_node_y.set_text("Y:")			
+			@node_property_y_grid.add(@label_node_y)
+			@node_property_y_grid.pack_end(@node_y_entry, :expand => true, :fill => true, :padding => 0)
+
+			@label_node_z = Gtk::Label.new()
+			@node_z_entry = Gtk::Entry.new()
+			@label_node_z.set_text("Z:")			
+			@node_property_z_grid.add(@label_node_z)
+			@node_property_z_grid.pack_end(@node_z_entry, :expand => true, :fill => true, :padding => 0)
+
+			@label_node_opt = Gtk::Label.new()
+			@node_opt_entry = Gtk::Entry.new()
+			@label_node_opt.set_text("Opt:")			
+			@node_property_opt_grid.add(@label_node_opt)
+			@node_property_opt_grid.pack_end(@node_opt_entry, :expand => true, :fill => true, :padding => 0)
+
+			@dialog_grid.add(@node_property_grid)
+			@dialog_grid.add(@node_property_x_grid)
+			@dialog_grid.add(@node_property_y_grid)
+			@dialog_grid.add(@node_property_z_grid)
+			@dialog_grid.add(@node_property_opt_grid)
+
+			EVENT_FOR_STRUCTURE.load_dialog(@window, @node_dialog, 800, 350, @dialog_grid)
 		}
 	end
 end
