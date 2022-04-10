@@ -85,15 +85,22 @@ module EVENT_FOR_STRUCTURE
 	end
 	# Returns the y coord that centers the whole structure
 
-	def load_dialog(widget, height, width, *inner_widgets)
-    	widget.signal_connect("activate") {
-      	  widget.set_default_size(height, width)
+	def load_dialog(window, widget_signaler, height, width, *inner_widgets)
+    	widget_signaler.signal_connect("activate") {
+      	  window.set_default_size(height, width)
+      	  window.set_resizable(false)
+      	  window.set_type_hint(:dialog)
+
+      	  container = Gtk::Box.new(:vertical)
+
       	  inner_widgets.each {
       	  	|i|
-      	  	widget.add(inner_widgets)
+      	  	i.expand = true
+      	  	container.add(i)
       	  }
 
-      	  widget.show()
+      	  window.add(container)
+      	  window.show_all()
     	}
     end
     # Shows a dialog using the menu selection's activate signal.
