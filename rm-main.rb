@@ -2,6 +2,7 @@ require 'gtk3'
 
 require './truck_backend/loader.rb'
 include	DRAW_STRUCTURE
+include LOAD_TRUCK
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -92,8 +93,12 @@ class RMApp < Gtk::Application
 			}
 			# Will tell gtk to end program when program is x'ed out.
 
-			DRAW_STRUCTURE.show_loader(@open_item, @canvas)
-			
+			file = LOAD_TRUCK.show_loader(@open_item)
+
+			if file == nil then
+				DRAW_STRUCTURE.load_truck(file, @canvas) 
+			end
+
 			DRAW_STRUCTURE.top_selection(@top, @canvas)
 			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
 			DRAW_STRUCTURE.left_selection(@left, @canvas)
