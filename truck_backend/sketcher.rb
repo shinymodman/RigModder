@@ -1,7 +1,6 @@
 require 'gtk3'
-require './truck_lib/truck.rb'
+require 'cairo'
 
-<<<<<<<< HEAD:truck_backend/sketcher.rb
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
@@ -9,31 +8,16 @@ require './truck_lib/shock.rb'
 
 require './truck_backend/loader.rb'
 include LOAD_TRUCK_FILE
-========
->>>>>>>> expanded-interface:truck_backend/loader.rb
 
-module LOAD_TRUCK_FILE
-	def load_selected_file()
-		filename = ''
-		open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
-			# Creates the configuration to load a truck file to the program.
+require './truck_backend/events.rb'
+include EVENT_FOR_STRUCTURE
 
-		only_truck = Gtk::FileFilter.new()
-		only_truck.name = "RoR Truck Files"
-		only_truck.add_pattern("*.truck")
-		open_win.add_filter(only_truck)
-		# Creates the filter so other files without the extension ".truck" are excluded from the file chooser.
-		
-		if open_win.run == Gtk::ResponseType::ACCEPT then
-			filename = open_win.filename() if open_win.filename().is_a?(String)
-		end
-		# This will start the file handling after file is selected and accepted by the file chooser.
-		
-		open_win.destroy()
+module DRAW_STRUCTURE
+	@view = 0
 
-<<<<<<<< HEAD:truck_backend/sketcher.rb
   	def show_loader(widget, canvas)
-		self.load_truck(LOAD_TRUCK_FILE.load_selected_file(), canvas)
+  		filename = LOAD_TRUCK_FILE.load_selected_file()
+		self.load_truck(filename, canvas) if !(filename.empty?)
 		canvas.queue_draw
   	end
 
@@ -176,7 +160,6 @@ module LOAD_TRUCK_FILE
 		i = 0
 		trk = Truck.new(trk)
 		# Initializes truck file to app
-
 
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
@@ -342,12 +325,4 @@ module LOAD_TRUCK_FILE
 	    	}
 	    end
 	    # Sets the camera direction to bottom using the menu selection's activate signal.
-========
-		while Gtk.events_pending?
-		  	Gtk.main_iteration
-		end
-
-		return filename
-  	end
->>>>>>>> expanded-interface:truck_backend/loader.rb
 end
