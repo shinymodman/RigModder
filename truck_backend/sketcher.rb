@@ -16,7 +16,8 @@ module DRAW_STRUCTURE
 	@view = 0
 
   	def show_loader(widget, canvas)
-		self.load_truck(LOAD_TRUCK_FILE.load_selected_file(), canvas)
+  		filename = LOAD_TRUCK_FILE.load_selected_file()
+		self.load_truck(filename, canvas) if !(filename.empty?)
 		canvas.queue_draw
   	end
 
@@ -159,7 +160,6 @@ module DRAW_STRUCTURE
 		i = 0
 		trk = Truck.new(trk)
 		# Initializes truck file to app
-
 
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0

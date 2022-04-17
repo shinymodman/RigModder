@@ -14,8 +14,8 @@ module LOAD_TRUCK_FILE
 		open_win.add_filter(only_truck)
 		# Creates the filter so other files without the extension ".truck" are excluded from the file chooser.
 		
-		if open_win.run == Gtk::ResponseType::ACCEPT then
-			filename = open_win.filename() if open_win.filename().is_a?(String)
+		if open_win.run == Gtk::ResponseType::ACCEPT
+			filename = open_win.filename()
 		end
 		# This will start the file handling after file is selected and accepted by the file chooser.
 		
