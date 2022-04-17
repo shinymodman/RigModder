@@ -159,7 +159,7 @@ class RMApp < Gtk::Application
 			@dialog_grid.add(@node_property_z_grid)
 			@dialog_grid.add(@node_property_opt_grid)
 
-			EVENT_FOR_STRUCTURE.load_dialog(@window, @node_dialog, 800, 350, @dialog_grid)
+			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 		}
 	end
 end
