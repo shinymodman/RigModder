@@ -16,9 +16,11 @@ module DRAW_STRUCTURE
 	@view = 0
 
   	def show_loader(widget, canvas)
-  		filename = LOAD_TRUCK_FILE.load_selected_file()
-		self.load_truck(filename, canvas) if !(filename.empty?)
-		canvas.queue_draw
+  		widget.signal_connect("activate") {
+  			filename = LOAD_TRUCK_FILE.load_selected_file()
+			self.load_truck(filename, canvas) if !(filename.empty?)
+			canvas.queue_draw
+  		}
   	end
 
   @truck_beam_x = []
