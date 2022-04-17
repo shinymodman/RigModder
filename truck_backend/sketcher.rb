@@ -6,6 +6,8 @@ require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
 require './truck_lib/shock.rb'
 
+require './truck_backend/loader.rb'
+include LOAD_TRUCK_FILE
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -16,22 +18,8 @@ module DRAW_STRUCTURE
   	def show_loader(widget, canvas)
   		widget.signal_connect("activate") {
 			|a|
-			open_win = Gtk::FileChooserDialog.new(:title => "Load File", :action => :open, :buttons => [[Gtk::Stock::OPEN, :accept],[Gtk::Stock::CANCEL, :cancel]])
-  			# Creates the configuration to load a truck file to the program.
-
-			only_truck = Gtk::FileFilter.new()
-			only_truck.name = "RoR Truck Files"
-			only_truck.add_pattern("*.truck")
-			open_win.add_filter(only_truck)
-			# Creates the filter so other files without the extension ".truck" are excluded from the file chooser.
-			
-			if open_win.run == Gtk::ResponseType::ACCEPT then
-				self.load_truck(open_win.filename(), canvas)
-				canvas.queue_draw
-			end
-			# This will start the file handling after file is selected and accepted by the file chooser.
-			
-			open_win.destroy()
+			self.load_truck(LOAD_TRUCK_FILE.load_selected_file(), canvas)
+			canvas.queue_draw
 		}
   	end
 
