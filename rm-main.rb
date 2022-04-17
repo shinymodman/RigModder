@@ -1,6 +1,6 @@
 require 'gtk3'
 
-require './truck_backend/loader.rb'
+require './truck_backend/sketcher.rb'
 include	DRAW_STRUCTURE
 
 require './truck_backend/events.rb'
