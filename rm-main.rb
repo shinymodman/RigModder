@@ -93,7 +93,7 @@ class RMApp < Gtk::Application
 			# Will tell gtk to end program when program is x'ed out.
 
 			DRAW_STRUCTURE.show_loader(@open_item, @canvas)
-
+			
 			DRAW_STRUCTURE.top_selection(@top, @canvas)
 			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
 			DRAW_STRUCTURE.left_selection(@left, @canvas)

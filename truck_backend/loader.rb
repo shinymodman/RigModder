@@ -27,4 +27,22 @@ module LOAD_TRUCK_FILE
 
 		return filename
   	end
+
+  	def list_nodes(file, selected_content)
+  		nodes_in_hash = Hash.new()
+
+  		Truck.new(file).view_nodes.each {
+  			|id, x, y, z, o|
+  			nodes_in_hash[id.to_i] = {
+  				id: id.to_i,
+  				x: x.to_i,
+  				y: y.to_i,
+  				z: z.to_i,
+  				opt: o.to_s.strip!,
+  				is_selected: id.to_i == selected_content.to_i 
+  			}
+  		}
+
+  		return nodes_in_hash
+  	end
 end
