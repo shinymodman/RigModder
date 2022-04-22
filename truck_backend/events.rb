@@ -85,15 +85,15 @@ module EVENT_FOR_STRUCTURE
 	end
 	# Returns the y coord that centers the whole structure
 
-	def load_dialog(widget, height, width, *inner_widgets)
+	def load_dialog(widget, window, height, width, *inner_widgets)
     	widget.signal_connect("activate") {
-      	  widget.set_default_size(height, width)
+      	  window.set_default_size(height, width)
       	  inner_widgets.each {
       	  	|i|
-      	  	widget.add(inner_widgets)
+      	  	window.add(i)
       	  }
 
-      	  widget.show()
+      	  window.show_all()
     	}
     end
     # Shows a dialog using the menu selection's activate signal.
