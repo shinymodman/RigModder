@@ -94,8 +94,6 @@ class RMApp < Gtk::Application
 				@main_window.destroy()
 			}
 			# Will tell gtk to end program when program is x'ed out.
-
-			LOAD_TRUCK_FILE.load_content(@open_item, @canvas)
 			
 			DRAW_STRUCTURE.top_selection(@top, @canvas)
 			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
@@ -163,6 +161,7 @@ class RMApp < Gtk::Application
 			@dialog_grid.add(@node_property_opt_grid)
 
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
+			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list)
 		}
 	end
 end

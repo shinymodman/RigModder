@@ -1,5 +1,6 @@
 require 'gtk3'
 require './truck_lib/truck.rb'
+require './truck_lib/node.rb'
 
 require_relative './sketcher.rb'
 include DRAW_STRUCTURE
@@ -30,30 +31,26 @@ module LOAD_TRUCK_FILE
 		return filename
   	end
 
+	def node_data_for_list(widget, file)
+  		nodes_in_hash = Hash.new()
+  		node_list = Array.new()
+  		truck = Truck.new(file)
+
+  		truck.view_nodes.count.times {
+  			|i|
+  			node = Node.new(truck, i).show_node_properties()
+  			node_list[i] = Gtk::Label.new("#{node[:node_id]}, #{node[:node_x]}, #{node[:node_y]}, #{node[:node_z]}, #{node[:node_opt]}")
+  			widget.add(node_list[i])
+  		}
+  	end
+
+
   	def load_content(loader_widget, *inner_widgets_needed)
   		loader_widget.signal_connect("activate") {
   			|a|
   			filename = self.load_selected_file()
 			DRAW_STRUCTURE.load_truck(filename, inner_widgets_needed[0])
-			inner_widgets_needed[0].queue_draw
+			self.node_data_for_list(inner_widgets_needed[1], filename)
   		}
-  	end
-
-  	def list_nodes(file, selected_content)
-  		nodes_in_hash = Hash.new()
-
-  		Truck.new(file).view_nodes.each {
-  			|id, x, y, z, o|
-  			nodes_in_hash[id.to_i] = {
-  				id: id.to_i,
-  				x: x.to_i,
-  				y: y.to_i,
-  				z: z.to_i,
-  				opt: o.to_s.strip!,
-  				is_selected: id.to_i == selected_content.to_i 
-  			}
-  		}
-
-  		return nodes_in_hash
   	end
 end
