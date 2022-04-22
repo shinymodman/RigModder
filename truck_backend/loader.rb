@@ -1,6 +1,8 @@
 require 'gtk3'
 require './truck_lib/truck.rb'
 
+require_relative './sketcher.rb'
+include DRAW_STRUCTURE
 
 module LOAD_TRUCK_FILE
 	def load_selected_file()
@@ -26,6 +28,15 @@ module LOAD_TRUCK_FILE
 		end
 
 		return filename
+  	end
+
+  	def load_content(loader_widget, *inner_widgets_needed)
+  		loader_widget.signal_connect("activate") {
+  			|a|
+  			filename = self.load_selected_file()
+			DRAW_STRUCTURE.load_truck(filename, inner_widgets_needed[0])
+			inner_widgets_needed[0].queue_draw
+  		}
   	end
 
   	def list_nodes(file, selected_content)

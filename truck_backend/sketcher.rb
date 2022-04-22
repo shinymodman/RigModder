@@ -6,8 +6,9 @@ require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
 require './truck_lib/shock.rb'
 
-require './truck_backend/loader.rb'
-include LOAD_TRUCK_FILE
+=begin
+
+=end
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -15,12 +16,9 @@ include EVENT_FOR_STRUCTURE
 module DRAW_STRUCTURE
 	@view = 0
 
-  	def show_loader(widget, canvas)
-  		widget.signal_connect("activate") {
-  			filename = LOAD_TRUCK_FILE.load_selected_file()
-			self.load_truck(filename, canvas) if !(filename.empty?)
-			canvas.queue_draw
-  		}
+  	def show_loader(filename, canvas)
+		self.load_truck(filename, canvas) if !(filename.empty?)
+		canvas.queue_draw
   	end
 
   @truck_beam_x = []

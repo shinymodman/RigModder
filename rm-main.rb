@@ -3,6 +3,9 @@ require 'gtk3'
 require './truck_backend/sketcher.rb'
 include	DRAW_STRUCTURE
 
+require './truck_backend/loader.rb'
+include LOAD_TRUCK_FILE
+
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
 # Scripts and module required for handling Gtk signals and events
@@ -92,7 +95,7 @@ class RMApp < Gtk::Application
 			}
 			# Will tell gtk to end program when program is x'ed out.
 
-			DRAW_STRUCTURE.show_loader(@open_item, @canvas)
+			LOAD_TRUCK_FILE.load_content(@open_item, @canvas)
 			
 			DRAW_STRUCTURE.top_selection(@top, @canvas)
 			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
