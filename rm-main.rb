@@ -110,10 +110,14 @@ class RMApp < Gtk::Application
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
 
-			@dialog_grid = Gtk::Box.new(:vertical)
+			@dialog_grid = Gtk::Box.new(:vertical, 2)
+
 			@node_list = Gtk::ListBox.new()
 			@node_list.expand = true
-			@dialog_grid.add(@node_list)
+
+			@scrollbar = Gtk::ScrolledWindow.new()
+    		@dialog_grid.pack_start(@scrollbar, :fill => true, :expand => true, :padding => 0)
+    		@scrollbar.add(@node_list)
 
 			@node_property_grid = Gtk::Box.new(:horizontal)
 			@node_property_x_grid = Gtk::Box.new(:horizontal)
