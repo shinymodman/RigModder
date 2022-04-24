@@ -44,12 +44,22 @@ module LOAD_TRUCK_FILE
   		}
   	end
 
+  	def load_selected_node(widget, result_holder, canvas)
+
+  		widget.signal_connect("row-activated") {
+  			|a, b|
+  			result_holder = b.index
+  			puts result_holder
+  		}
+
+  		canvas.queue_draw
+  	end
 
   	def load_content(loader_widget, *inner_widgets_needed)
   		loader_widget.signal_connect("activate") {
   			|a|
   			filename = self.load_selected_file()
-			DRAW_STRUCTURE.load_truck(filename, inner_widgets_needed[0])
+			DRAW_STRUCTURE.show_loader(filename, inner_widgets_needed[0], inner_widgets_needed[1])
 			self.node_data_for_list(inner_widgets_needed[1], filename)
   		}
   	end
