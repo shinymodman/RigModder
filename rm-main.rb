@@ -166,6 +166,7 @@ class RMApp < Gtk::Application
 
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list)
+			DRAW_STRUCTURE.set_node_selector(@node_list)
 		}
 	end
 end
