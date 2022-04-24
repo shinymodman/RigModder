@@ -6,20 +6,17 @@ require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
 require './truck_lib/shock.rb'
 
-=begin
-
-=end
-
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
 
 module DRAW_STRUCTURE
-	@view = 0
+  @view = 0
+  @selection = 0
 
-  	def show_loader(filename, canvas)
-		self.load_truck(filename, canvas) if !(filename.empty?)
-		canvas.queue_draw
-  	end
+  def show_loader(filename, canvas)
+	self.load_truck(filename, canvas) if !(filename.empty?)
+	canvas.queue_draw
+  end
 
   @truck_beam_x = []
   @truck_beam_y = []
@@ -117,6 +114,19 @@ module DRAW_STRUCTURE
         i = i + 1
       end
       # Iterates through each node and puts its coords to its respective arrays
+  end
+
+  @selected_node_x = 0
+  @selected_node_y = 0
+  @selected_node_z = 0
+  # Similar to the beam arrays, puts its coords in these respective arrays
+  
+  def load_selected_node(trk, selection)
+    node_selector = Node.new(trk, selection)
+
+    @selected_node_x[i] = node_selector.show_x
+    @selected_node_y[i] = node_selector.show_y
+    @selected_node_z[i] = node_selector.show_z
   end
 
 	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, angle, line_to_enabled)
@@ -219,6 +229,37 @@ module DRAW_STRUCTURE
 
 				b.fill()
 				# This loop places the nodes to its respective areas
+
+				b.set_source_rgba(0, 0, 0, 0.45)
+				# Sets default color to a dark shade of green for the nodes
+
+	          	case @view
+	           	when 0
+		            b.rectangle(-@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+		            # Default front camera direction
+	           	when 1
+	             	b.rectangle(@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	# Default back camera direction
+	           	when 2
+	             	b.rectangle(@selected_node_z[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	# Default right camera direction
+	           	when 3
+	             	b.rectangle(-@selected_node_z[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	# Default left camera direction
+	           	when 4
+	             	b.rectangle(@selected_node_x[i] * @size, @selected_node_z[i] * @size, 10, 10)
+	             	# Default top camera direction 
+	           	when 5
+	             	b.rectangle(-@selected_node_x[i] * @size, @selected_node_z[i] * @size, 10, 10)
+	             	# Default bottom camera direction         
+	           	else
+	             	b.rectangle(-@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	# Default camera direction
+	           	end
+
+				b.fill()
+				# This loop places the nodes to its respective areas
+
 
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
