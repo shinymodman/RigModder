@@ -12,6 +12,7 @@ include EVENT_FOR_STRUCTURE
 module DRAW_STRUCTURE
   @view = 0
   @selection = 0
+  @node_selector_obj = nil
 
   def show_loader(filename, canvas)
 	self.load_truck(filename, canvas) if !(filename.empty?)
@@ -120,14 +121,6 @@ module DRAW_STRUCTURE
   @selected_node_y = 0
   @selected_node_z = 0
   # Similar to the beam arrays, puts its coords in these respective arrays
-  
-  def load_selected_node(trk, selection)
-    node_selector = Node.new(trk, selection)
-
-    @selected_node_x[i] = node_selector.show_x
-    @selected_node_y[i] = node_selector.show_y
-    @selected_node_z[i] = node_selector.show_z
-  end
 
 	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, angle, line_to_enabled)
 
@@ -166,6 +159,11 @@ module DRAW_STRUCTURE
 	# On if true
 	# Off if false
 
+	def set_node_selector(widget)
+		@node_selector_obj = widget
+	end
+	# Placeholder for different files
+
 	def load_truck(trk, canvas)
 		i = 0
 		trk = Truck.new(trk)
@@ -178,6 +176,17 @@ module DRAW_STRUCTURE
     	load_beams(trk)
     	load_hydros(trk)
     	load_shocks(trk)
+
+    	@node_selector_obj.signal_connect("row-activated") {
+  			|a, b|
+  			node_selector = Node.new(trk, b.index)
+
+    		@selected_node_x = node_selector.show_x
+    		@selected_node_y = node_selector.show_y
+    		@selected_node_z = node_selector.show_z
+  			puts "#{@selected_node_x}, #{@selected_node_y}, #{@selected_node_z}"
+  			canvas.queue_draw()
+  		}
 
 		canvas.signal_connect("draw") {
 			|a, b|
@@ -235,25 +244,25 @@ module DRAW_STRUCTURE
 
 	          	case @view
 	           	when 0
-		            b.rectangle(-@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+		            b.rectangle(-@selected_node_x * @size, @selected_node_y * @size, 10, 10)
 		            # Default front camera direction
 	           	when 1
-	             	b.rectangle(@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	b.rectangle(@selected_node_x * @size, @selected_node_y * @size, 10, 10)
 	             	# Default back camera direction
 	           	when 2
-	             	b.rectangle(@selected_node_z[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	b.rectangle(@selected_node_z * @size, @selected_node_y * @size, 10, 10)
 	             	# Default right camera direction
 	           	when 3
-	             	b.rectangle(-@selected_node_z[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	b.rectangle(-@selected_node_z * @size, @selected_node_y * @size, 10, 10)
 	             	# Default left camera direction
 	           	when 4
-	             	b.rectangle(@selected_node_x[i] * @size, @selected_node_z[i] * @size, 10, 10)
+	             	b.rectangle(@selected_node_x * @size, @selected_node_z * @size, 10, 10)
 	             	# Default top camera direction 
 	           	when 5
-	             	b.rectangle(-@selected_node_x[i] * @size, @selected_node_z[i] * @size, 10, 10)
+	             	b.rectangle(-@selected_node_x * @size, @selected_node_z * @size, 10, 10)
 	             	# Default bottom camera direction         
 	           	else
-	             	b.rectangle(-@selected_node_x[i] * @size, @selected_node_y[i] * @size, 10, 10)
+	             	b.rectangle(-@selected_node_x * @size, @selected_node_y * @size, 10, 10)
 	             	# Default camera direction
 	           	end
 
