@@ -171,11 +171,13 @@ module DRAW_STRUCTURE
 
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
-		
+		# variables that center the sketch.
+
 		load_nodes(trk)
     	load_beams(trk)
     	load_hydros(trk)
     	load_shocks(trk)
+    	# Loads all content into DrawingArea widget (or sketch of truck file).
 
     	@node_selector_obj.signal_connect("row-activated") {
   			|a, b|
@@ -186,6 +188,7 @@ module DRAW_STRUCTURE
     		@selected_node_z = node_selector.show_z
   			canvas.queue_draw()
   		}
+  		# The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 
 		canvas.signal_connect("draw") {
 			|a, b|
@@ -264,6 +267,8 @@ module DRAW_STRUCTURE
 	             	b.rectangle(-@selected_node_x * @size, @selected_node_y * @size, 10, 10)
 	             	# Default camera direction
 	           	end
+	           	# Places selected node visual on the sketch which is the DrawingArea widget.
+
 
 				b.fill()
 				# This loop places the nodes to its respective areas

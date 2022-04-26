@@ -109,35 +109,42 @@ class RMApp < Gtk::Application
 
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
+			# Object to create Node window
 
 			@dialog_grid = Gtk::Box.new(:vertical, 2)
+			# Widget object to place multiple widgets on node dialog.
 
 			@node_list = Gtk::ListBox.new()
+			# Widget object to show each node object in one line
+
 			@node_list.expand = true
+			# Property to set node widget expanded by Gtk3
 
 			@scrollbar = Gtk::ScrolledWindow.new()
     		@dialog_grid.pack_start(@scrollbar, :fill => true, :expand => true, :padding => 0)
     		@scrollbar.add(@node_list)
+    		# Adds scrolling ability to make room for dialog on editor widgets.
 
 			@node_property_grid = Gtk::Box.new(:horizontal)
 			@node_property_x_grid = Gtk::Box.new(:horizontal)
 			@node_property_y_grid = Gtk::Box.new(:horizontal)
 			@node_property_z_grid = Gtk::Box.new(:horizontal)
 			@node_property_opt_grid = Gtk::Box.new(:horizontal)
+			# Grids to place node property widgets in its respecitve areas.
 
 			@label_node = Gtk::Label.new()
 			@node_entry = Gtk::Entry.new()
 			@label_node.set_text("Node:")
 			@node_property_grid.add(@label_node)
 			@node_property_grid.pack_end(@node_entry, :expand => true, :fill => true, :padding => 0)
-
+			# Sets up widgets for showing node id.
 
 			@label_node_x = Gtk::Label.new()
 			@node_x_entry = Gtk::Entry.new()
 			@label_node_x.set_text("X:")			
 			@node_property_x_grid.add(@label_node_x)
 			@node_property_x_grid.pack_end(@node_x_entry, :expand => true, :fill => true, :padding => 0)
-
+			# Sets up widgets for showing node X coord.
 
 
 			@label_node_y = Gtk::Label.new()
@@ -145,29 +152,34 @@ class RMApp < Gtk::Application
 			@label_node_y.set_text("Y:")			
 			@node_property_y_grid.add(@label_node_y)
 			@node_property_y_grid.pack_end(@node_y_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing node Y coord.
 
 			@label_node_z = Gtk::Label.new()
 			@node_z_entry = Gtk::Entry.new()
 			@label_node_z.set_text("Z:")			
 			@node_property_z_grid.add(@label_node_z)
 			@node_property_z_grid.pack_end(@node_z_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing node Z coord.
 
 			@label_node_opt = Gtk::Label.new()
 			@node_opt_entry = Gtk::Entry.new()
 			@label_node_opt.set_text("Opt:")			
 			@node_property_opt_grid.add(@label_node_opt)
 			@node_property_opt_grid.pack_end(@node_opt_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing node option data.
 
 			@dialog_grid.add(@node_property_grid)
 			@dialog_grid.add(@node_property_x_grid)
 			@dialog_grid.add(@node_property_y_grid)
 			@dialog_grid.add(@node_property_z_grid)
 			@dialog_grid.add(@node_property_opt_grid)
+			# Places widgets and their placeholder to show widgets properly.
 
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list, @node_entry, @node_x_entry,
 				@node_y_entry, @node_z_entry, @node_opt_entry)
 			DRAW_STRUCTURE.set_node_selector(@node_list)
+			# Procedural methods that load content into the app.
 		}
 	end
 end

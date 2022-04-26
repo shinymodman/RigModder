@@ -36,6 +36,7 @@ module LOAD_TRUCK_FILE
   		node_list = Array.new()
 
   		truck = Truck.new(file)
+  		# Gathers node data for listbox and the node dialog.
 
   		truck.view_nodes.count.times {
   			|i|
@@ -43,6 +44,7 @@ module LOAD_TRUCK_FILE
   			node_list[i] = Gtk::Label.new("#{node[:node_id]}, #{node[:node_x]}, #{node[:node_y]}, #{node[:node_z]}, #{node[:node_opt]}")
   			widget.add(node_list[i])
   		}
+  		# Adds all node data into one line in listbox.
 
   		widget.signal_connect("row-activated") {
   			|a, b|
@@ -53,6 +55,7 @@ module LOAD_TRUCK_FILE
   			node_entries[3].set_text(node.show_z.to_s)
   			node_entries[4].set_text(node.show_options.to_s)
   		}
+  		# Writes properties in respective entries in node dialog.
   	end
 
   	def load_content(loader_widget, *inner_widgets_needed)
