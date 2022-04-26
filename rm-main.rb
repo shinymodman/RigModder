@@ -109,6 +109,7 @@ class RMApp < Gtk::Application
 
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
+			@window.type_hint = :dialog
 			# Object to create Node window
 
 			@dialog_grid = Gtk::Box.new(:vertical, 2)
