@@ -38,6 +38,11 @@ module LOAD_TRUCK_FILE
   		truck = Truck.new(file)
   		# Gathers node data for listbox and the node dialog.
 
+  		widget.children.each {
+  			|a|
+  			widget.remove(a)
+  		}
+
   		truck.view_nodes.count.times {
   			|i|
   			node = Node.new(truck, i).show_node_properties()
@@ -64,7 +69,7 @@ module LOAD_TRUCK_FILE
   			filename = self.load_selected_file()
 			DRAW_STRUCTURE.show_loader(filename, inner_widgets_needed[0])
 			self.node_data_for_list(inner_widgets_needed[1], filename, inner_widgets_needed[2], 
-				inner_widgets_needed[3], inner_widgets_needed[4], inner_widgets_needed[5], inner_widgets_needed[6])
+				inner_widgets_needed[3], inner_widgets_needed[4], inner_widgets_needed[5], inner_widgets_needed[6]) if !(filename.empty?)
 
   		}
   	end
