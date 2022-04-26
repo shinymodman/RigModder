@@ -88,12 +88,12 @@ module EVENT_FOR_STRUCTURE
 	def load_dialog(widget, window, height, width, *inner_widgets)
     	widget.signal_connect("activate") {
       	  window.set_default_size(height, width)
-      	  window.hide_on_delete()
+
       	  inner_widgets.each {
       	  	|i|
-      	  	window.add(i) if (i.nil?)
+      	  	window.add(i) if (window.each_all.count < inner_widgets.count)
       	  }
-
+      	  
       	  window.show_all()
     	}
 
