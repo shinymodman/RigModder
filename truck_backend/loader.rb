@@ -31,9 +31,10 @@ module LOAD_TRUCK_FILE
 		return filename
   	end
 
-	def node_data_for_list(widget, file)
+	def node_data_for_list(widget, file, *node_entries)
   		nodes_in_hash = Hash.new()
   		node_list = Array.new()
+
   		truck = Truck.new(file)
 
   		truck.view_nodes.count.times {
@@ -42,6 +43,16 @@ module LOAD_TRUCK_FILE
   			node_list[i] = Gtk::Label.new("#{node[:node_id]}, #{node[:node_x]}, #{node[:node_y]}, #{node[:node_z]}, #{node[:node_opt]}")
   			widget.add(node_list[i])
   		}
+
+  		widget.signal_connect("row-activated") {
+  			|a, b|
+  			node = Node.new(truck, b.index.to_i)
+  			node_entries[0].set_text(node.show_id.to_s)
+  			node_entries[1].set_text(node.show_x.to_s)
+  			node_entries[2].set_text(node.show_y.to_s)
+  			node_entries[3].set_text(node.show_z.to_s)
+  			node_entries[4].set_text(node.show_options.to_s)
+  		}
   	end
 
   	def load_content(loader_widget, *inner_widgets_needed)
@@ -49,7 +60,8 @@ module LOAD_TRUCK_FILE
   			|a|
   			filename = self.load_selected_file()
 			DRAW_STRUCTURE.show_loader(filename, inner_widgets_needed[0])
-			self.node_data_for_list(inner_widgets_needed[1], filename)
+			self.node_data_for_list(inner_widgets_needed[1], filename, inner_widgets_needed[2], 
+				inner_widgets_needed[3], inner_widgets_needed[4], inner_widgets_needed[5], inner_widgets_needed[6])
 
   		}
   	end
