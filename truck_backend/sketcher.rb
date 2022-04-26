@@ -184,7 +184,6 @@ module DRAW_STRUCTURE
     		@selected_node_x = node_selector.show_x
     		@selected_node_y = node_selector.show_y
     		@selected_node_z = node_selector.show_z
-  			puts "#{@selected_node_x}, #{@selected_node_y}, #{@selected_node_z}"
   			canvas.queue_draw()
   		}
 
