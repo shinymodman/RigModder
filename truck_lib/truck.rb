@@ -85,10 +85,10 @@ class Truck
 	end
 
 	def strip_arg(str)
-		if /\s/.match(str.to_s) then
-			return str.to_s.strip!
+		if (/\s/.match(str.to_s)) then
+			return str.strip
 		else
-			return str.to_s
+			return str.to_s.strip
 		end
 	end
 
