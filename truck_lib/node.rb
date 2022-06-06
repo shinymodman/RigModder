@@ -3,7 +3,7 @@ require_relative 'truck'
 class Node
 	def initialize(req, node_index)
 		@truck = req
-		nodes = @truck.view_nodes()
+		nodes = @truck.view_nodes
 
 		@main_node = {
 			node_id: nodes[node_index.to_i][0],
