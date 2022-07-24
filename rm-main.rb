@@ -105,13 +105,6 @@ class RMApp < Gtk::Application
 				@main_window.destroy()
 			}
 			# Will tell gtk to end program when program is x'ed out.
-			
-			DRAW_STRUCTURE.top_selection(@top, @canvas)
-			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
-			DRAW_STRUCTURE.left_selection(@left, @canvas)
-			DRAW_STRUCTURE.right_selection(@right, @canvas)
-			DRAW_STRUCTURE.front_selection(@front, @canvas)
-			DRAW_STRUCTURE.back_selection(@back, @canvas)
 
 			EVENT_FOR_STRUCTURE.click(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.drag_struct(@main_window, @canvas)
