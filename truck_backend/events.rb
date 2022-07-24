@@ -88,12 +88,19 @@ module EVENT_FOR_STRUCTURE
 	def load_dialog(widget, window, height, width, *inner_widgets)
     	widget.signal_connect("activate") {
       	  window.set_default_size(height, width)
+
       	  inner_widgets.each {
       	  	|i|
-      	  	window.add(i)
+      	  	window.add(i) if (window.each_all.count < inner_widgets.count)
       	  }
-
+      	  
       	  window.show_all()
+    	}
+
+    	window.signal_connect("delete-event") {
+    		|a|
+
+    		a.hide()
     	}
     end
     # Shows a dialog using the menu selection's activate signal.

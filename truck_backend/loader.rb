@@ -1,5 +1,7 @@
 require 'gtk3'
 require './truck_lib/truck.rb'
+require './truck_lib/node.rb'
+require './truck_lib/beam.rb'
 
 require_relative './sketcher.rb'
 include DRAW_STRUCTURE
@@ -30,30 +32,81 @@ module LOAD_TRUCK_FILE
 		return filename
   	end
 
+	def node_data_for_list(widget, file, *node_entries)
+  		nodes_in_hash = Hash.new()
+  		node_list = Array.new()
+
+  		truck = Truck.new(file)
+  		# Gathers node data for listbox and the node dialog.
+
+  		widget.children.each {
+  			|a|
+  			widget.remove(a)
+  		}
+
+  		truck.view_nodes.count.times {
+  			|i|
+  			node = Node.new(truck, i).show_node_properties()
+  			node_list[i] = Gtk::Label.new("#{node[:node_id]}, #{node[:node_x]}, #{node[:node_y]}, #{node[:node_z]}, #{node[:node_opt]}")
+  			widget.add(node_list[i])
+  		}
+  		# Adds all node data into one line in listbox.
+
+  		widget.signal_connect("row-activated") {
+  			|a, b|
+  			node = Node.new(truck, b.index.to_i)
+  			node_entries[0].set_text(node.show_id.to_s)
+  			node_entries[1].set_text(node.show_x.to_s)
+  			node_entries[2].set_text(node.show_y.to_s)
+  			node_entries[3].set_text(node.show_z.to_s)
+  			node_entries[4].set_text(node.show_options.to_s)
+  		}
+  		# Writes properties in respective entries in node dialog.
+  	end
+
+    def beam_data_for_list(widget, file, *beam_entries)
+      beam_in_hash = Hash.new()
+      beam_list = Array.new()
+
+      truck = Truck.new(file)
+      # Gathers beam data for listbox and the beam dialog.
+
+      widget.children.each {
+        |a|
+        widget.remove(a)
+      }
+
+      truck.view_beams.count.times {
+        |i|
+        beam = Beam.new(truck, i)
+        beam_list[i] = Gtk::Label.new("#{beam.show_first_node}, #{beam.show_second_node}, #{beam.show_options}")
+        widget.add(beam_list[i])
+      }
+      # Adds all beam data into one line in listbox.
+
+      widget.signal_connect("row-activated") {
+        |a, b|
+        beam = Beam.new(truck, b.index.to_i)
+        beam_entries[0].set_text(beam.show_first_node.to_s)
+        beam_entries[1].set_text(beam.show_second_node.to_s)
+        beam_entries[2].set_text(beam.show_options.to_s)
+      }
+      # Writes properties in respective entries in beam dialog.
+    end
+
   	def load_content(loader_widget, *inner_widgets_needed)
   		loader_widget.signal_connect("activate") {
   			|a|
   			filename = self.load_selected_file()
-			DRAW_STRUCTURE.load_truck(filename, inner_widgets_needed[0])
-			inner_widgets_needed[0].queue_draw
-  		}
-  	end
 
-  	def list_nodes(file, selected_content)
-  		nodes_in_hash = Hash.new()
+			  DRAW_STRUCTURE.show_loader(filename, inner_widgets_needed[0])
 
-  		Truck.new(file).view_nodes.each {
-  			|id, x, y, z, o|
-  			nodes_in_hash[id.to_i] = {
-  				id: id.to_i,
-  				x: x.to_i,
-  				y: y.to_i,
-  				z: z.to_i,
-  				opt: o.to_s.strip!,
-  				is_selected: id.to_i == selected_content.to_i 
-  			}
-  		}
+			  self.node_data_for_list(inner_widgets_needed[1], filename, inner_widgets_needed[2], 
+				inner_widgets_needed[3], inner_widgets_needed[4], inner_widgets_needed[5], inner_widgets_needed[6]) if !(filename.empty?)
 
-  		return nodes_in_hash
+        self.beam_data_for_list(inner_widgets_needed[7], filename, inner_widgets_needed[8], 
+        inner_widgets_needed[9], inner_widgets_needed[10]) if !(filename.empty?)
+
+      }
   	end
 end
