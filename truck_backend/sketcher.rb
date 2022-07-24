@@ -201,7 +201,34 @@ module DRAW_STRUCTURE
   				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
 				
+				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
+				# Projection matrix for all coordinates
 
+				angX = 0.1
+				angY = 0.1
+				angZ = 0.1
+				# Angle rotations for each coordinate
+
+				rot_x = Matrix[
+					[1, 0, 0],
+					[0, Math.cos(ang), -Math.sin(ang)],
+					[0, Math.sin(ang), Math.cos(ang)]
+				]
+
+				rot_y = Matrix[
+					[Math.cos(angY), 0, Math.sin(angY)],
+					[0, 1, 0],
+					[-Math.sin(angY), 0, Math.cos(angY)]
+				]
+
+				rot_z = Matrix[
+					[Math.cos(angZ), -Math.sin(angZ), 0],
+					[Math.sin(angZ), Math.cos(angZ), 0],
+					[0, 0, 1]
+				]		
+
+				# Rotation matrices for each coordinates
+				
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
