@@ -41,7 +41,11 @@ What you need to do by steps:
 - The structure has an issue with centering to the interface
 	~~- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.~~
 
+<<<<<<< HEAD
 	**UPDATE: It will still use cairo but I will figure out how to make it 3d.**
+=======
+	**UPDATE: I figured out a way to make it render using 3d projection, Will use this time in this project to make that work first.**
+>>>>>>> 7d419002903efa83be71d9bd506af8a3745eac6b
 
 **This is all the issues I can think of as of now. If you find more, let me know on Discord at shinymodman#0114.**
 
@@ -50,7 +54,11 @@ The features of this software I'm thinking about implementing are the following:
 
 - The features currently being worked on:
 	1. ~~Shocks~~ (Finished this one)
+<<<<<<< HEAD
 	1. Interfaces for better sight of the truck file. **AND making 3d projection for the structure! (UPDATE)**
+=======
+	1. Interfaces for better sight of the truck file. **AND making visual render in 3D (UPDATE)**
+>>>>>>> 7d419002903efa83be71d9bd506af8a3745eac6b
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
