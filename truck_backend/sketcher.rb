@@ -1,5 +1,6 @@
 require 'gtk3'
 require 'cairo'
+require 'matrix'
 
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
@@ -19,24 +20,21 @@ module DRAW_STRUCTURE
 	canvas.queue_draw
   end
 
-  @truck_beam_x = []
-  @truck_beam_y = []
-  @truck_beam_z = []
+  @beam_src_matrix = []
+  @beam_dst_matrix = []
   # Organizes beam coords to its respective arrays
     
   def load_beams(trk)
       i = 0
   	
-  	  @truck_beam_x.clear()
-  	  @truck_beam_y.clear()
-  	  @truck_beam_z.clear()
+  	  @beam_src_matrix.clear()
+  	  @beam_dst_matrix.clear()
 
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
-  
-        @truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
-        @truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
-        @truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
+
+        @beam_src_matrix[i] = Matrix[[truck_beam_counter.show_source_x], [truck_beam_counter.show_source_y], [truck_beam_counter.show_source_z]]
+        @beam_dst_matrix[i] = Matrix[[truck_beam_counter.show_dest_x], [truck_beam_counter.show_dest_y], [truck_beam_counter.show_dest_z]]
 
         i = i + 1
       end
@@ -122,42 +120,10 @@ module DRAW_STRUCTURE
   @selected_node_z = 0
   # Similar to the beam arrays, puts its coords in these respective arrays
 
-	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, angle, line_to_enabled)
-
-		case angle
-		  when 0
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-		    #Camera on front direction
-		  when 1
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-		    #Camera on back direction
-	 	  when 2
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-	    #Camera on left direction
-  		  when 3
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-            #Camera on left direction
-      	  when 4
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-            # Default top camera direction 
-      	  when 5
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-            # Default bottom camera direction         
-		  else
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-		end
+	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, line_to_enabled)
+	   context.move_to(-sketch_x * size, sketch_y * size)
+	   context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
 	end
-	# Wrapper for line creation in cairo w/ line_to (on/off) switch
-	# ^^
-	# On if true
-	# Off if false
 
 	def set_node_selector(widget)
 		@node_selector_obj = widget
@@ -204,15 +170,15 @@ module DRAW_STRUCTURE
 				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
 				# Projection matrix for all coordinates
 
-				angX = 0.1
-				angY = 0.1
+				angX = EVENT_FOR_STRUCTURE.get_x(canvas)
+				angY = EVENT_FOR_STRUCTURE.get_y(canvas)
 				angZ = 0.1
 				# Angle rotations for each coordinate
 
 				rot_x = Matrix[
 					[1, 0, 0],
-					[0, Math.cos(ang), -Math.sin(ang)],
-					[0, Math.sin(ang), Math.cos(ang)]
+					[0, Math.cos(angX), -Math.sin(angX)],
+					[0, Math.sin(angX), Math.cos(angX)]
 				]
 
 				rot_y = Matrix[
@@ -228,7 +194,7 @@ module DRAW_STRUCTURE
 				]		
 
 				# Rotation matrices for each coordinates
-				
+
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
@@ -236,91 +202,34 @@ module DRAW_STRUCTURE
 				b.set_source_rgba(0, 0.5, 0, 0.45)
 				# Sets default color to a dark shade of green for the nodes
 
-
-				@truck_node_x.length.times {
-					|i|
-		          	case @view
-		           	when 0
-			            b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-			            # Default front camera direction
-		           	when 1
-		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default back camera direction
-		           	when 2
-		             	b.rectangle(@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default right camera direction
-		           	when 3
-		             	b.rectangle(-@truck_node_z[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default left camera direction
-		           	when 4
-		             	b.rectangle(@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
-		             	# Default top camera direction 
-		           	when 5
-		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_z[i] * @size, 10, 10)
-		             	# Default bottom camera direction         
-		           	else
-		             	b.rectangle(-@truck_node_x[i] * @size, @truck_node_y[i] * @size, 10, 10)
-		             	# Default camera direction
-		           	end
-							
-				}
-
-				b.fill()
-				# This loop places the nodes to its respective areas
-
-				b.set_source_rgba(0, 0, 0, 0.45)
-				# Sets default color to a dark shade of green for the nodes
-
-	          	case @view
-	           	when 0
-		            b.rectangle(-@selected_node_x * @size, @selected_node_y * @size, 10, 10)
-		            # Default front camera direction
-	           	when 1
-	             	b.rectangle(@selected_node_x * @size, @selected_node_y * @size, 10, 10)
-	             	# Default back camera direction
-	           	when 2
-	             	b.rectangle(@selected_node_z * @size, @selected_node_y * @size, 10, 10)
-	             	# Default right camera direction
-	           	when 3
-	             	b.rectangle(-@selected_node_z * @size, @selected_node_y * @size, 10, 10)
-	             	# Default left camera direction
-	           	when 4
-	             	b.rectangle(@selected_node_x * @size, @selected_node_z * @size, 10, 10)
-	             	# Default top camera direction 
-	           	when 5
-	             	b.rectangle(-@selected_node_x * @size, @selected_node_z * @size, 10, 10)
-	             	# Default bottom camera direction         
-	           	else
-	             	b.rectangle(-@selected_node_x * @size, @selected_node_y * @size, 10, 10)
-	             	# Default camera direction
-	           	end
-	           	# Places selected node visual on the sketch which is the DrawingArea widget.
-
-
-				b.fill()
-				# This loop places the nodes to its respective areas
-
-
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
 
-				@truck_beam_x.length.times {
+				@beam_src_matrix.length.times {
 					|i|
-					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_y[i][0], @truck_beam_x[i][1], @truck_beam_y[i][1], @size, 0, true) if @view == 0
-					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_y[i][0], @truck_beam_x[i][1], @truck_beam_y[i][1], @size, 1, true) if @view == 1
-					load_beam_sketch(b, @truck_beam_z[i][0], @truck_beam_y[i][0], @truck_beam_z[i][1], @truck_beam_y[i][1], @size, 2, true) if @view == 2
-					load_beam_sketch(b, @truck_beam_z[i][0], @truck_beam_y[i][0], @truck_beam_z[i][1], @truck_beam_y[i][1], @size, 3, true) if @view == 3
-					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_z[i][0], @truck_beam_x[i][1], @truck_beam_z[i][1], @size, 4, true) if @view == 4
-					load_beam_sketch(b, @truck_beam_x[i][0], @truck_beam_z[i][0], @truck_beam_x[i][1], @truck_beam_z[i][1], @size, 5, true) if @view == 5
+
+					rotated_src_beam_z = rot_z * @beam_src_matrix[i]
+					rotated_src_beam_y = rot_y * rotated_src_beam_z
+					rotated_src_beam = rot_x * rotated_src_beam_y
+
+					rotated_dst_beam_z = rot_z * @beam_dst_matrix[i]
+					rotated_dst_beam_y = rot_y * rotated_dst_beam_z
+					rotated_dst_beam = rot_x * rotated_dst_beam_y
+
+					@projected_src_2d = proj_mat * rotated_src_beam
+					@projected_dst_2d = proj_mat * rotated_dst_beam
+
+					#puts @projected_src_2d.inspect()
+					puts @projected_src_2d[1, 0]
+
+					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
+					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
           		}
-          		# Sets the camera direction based on what's changed from the @view instance variable.
 
 				b.stroke()
 				# This loop draws out the beams
-
-
           		# Adds the extra beams since it doesn't get visualized.
-
+=begin
 				b.set_source_rgb(0.5, 0.3, 0.5)
 				b.set_line_width(5)
 
@@ -357,53 +266,9 @@ module DRAW_STRUCTURE
           		
 				b.new_path()
 			}
+=end
+		}
 		end
 
-		def front_selection(widget, canvas) 
-			widget.signal_connect("activate") {
-			  @view = 0
-			  canvas.queue_draw()
-			}
-		end
-		# Sets the camera direction to front using the menu selection's activate signal.
 
-		def back_selection(widget, canvas)
-			widget.signal_connect("activate") {
-			  @view = 1
-			  canvas.queue_draw()
-			}
-		end
-	    # Sets the camera direction to back using the menu selection's activate signal.
-		
-		def right_selection(widget, canvas)
-		    widget.signal_connect("activate") {
-		      @view = 2
-		      canvas.queue_draw()
-		    }
-		end
-		# Sets the camera direction to left using the menu selection's activate signal.
-
-		def left_selection(widget, canvas)
-		    widget.signal_connect("activate") {
-		      @view = 3
-		      canvas.queue_draw()
-		    }
-		end
-		# Sets the camera direction to right using the menu selection's activate signal.
-
-		def top_selection(widget, canvas)
-		    widget.signal_connect("activate") {
-		      @view = 4
-		      canvas.queue_draw()
-		    }
-	    end
-	    # Sets the camera direction to top using the menu selection's activate signal.
-	    
-	    def bottom_selection(widget, canvas)
-	    	widget.signal_connect("activate") {
-	      	  @view = 5
-	      	  canvas.queue_draw()
-	    	}
-	    end
-	    # Sets the camera direction to bottom using the menu selection's activate signal.
 end
