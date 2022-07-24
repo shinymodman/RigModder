@@ -39,9 +39,7 @@ What you need to do by steps:
 	- This can be when hold clicking, it takes it to the right path of where the cursor is coming from. *Although,* it does not recognize where the cursor is located exactly. Meaning it could be anyhwere and when clicked, it will directly come to where the cursor actually is. **For example:** The structure is on the left side of the canvas, when the cursor is on the right, if its clicked there, the structure will go right to where the cursor is.
 
 - The structure has an issue with centering to the interface
-	~~- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.~~
-
-	**UPDATE: I figured out a way to make it render using 3d projection, Will use this time in this project to make that work first.**
+	- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.
 
 **This is all the issues I can think of as of now. If you find more, let me know on Discord at shinymodman#0114.**
 
@@ -50,7 +48,9 @@ The features of this software I'm thinking about implementing are the following:
 
 - The features currently being worked on:
 	1. ~~Shocks~~ (Finished this one)
-	1. Interfaces for better sight of the truck file. **AND making visual render in 3D (UPDATE)**
+	1. Interfaces for better sight of the truck file. 
+	1. ** AND making visual render in 3D (UPDATE)**
+		1. **NOTE: I figured out a way to make it render using 3d projection, Will use this time in this project to make that work first.**
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
