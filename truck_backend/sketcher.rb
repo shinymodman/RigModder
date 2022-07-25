@@ -139,6 +139,12 @@ module DRAW_STRUCTURE
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
 		# variables that center the sketch.
 
+		
+		@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
+		@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
+		@angZ = 0.1
+		# Angle rotations for each coordinate
+
 		load_nodes(trk)
     	load_beams(trk)
     	load_hydros(trk)
@@ -170,26 +176,26 @@ module DRAW_STRUCTURE
 				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
 				# Projection matrix for all coordinates
 
-				angX = EVENT_FOR_STRUCTURE.get_x(canvas)
-				angY = EVENT_FOR_STRUCTURE.get_y(canvas)
-				angZ = 0.1
+				@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
+				@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
+				@angZ = 0.1
 				# Angle rotations for each coordinate
 
 				rot_x = Matrix[
 					[1, 0, 0],
-					[0, Math.cos(angX), -Math.sin(angX)],
-					[0, Math.sin(angX), Math.cos(angX)]
+					[0, Math.cos(@angX), -Math.sin(@angX)],
+					[0, Math.sin(@angX), Math.cos(@angX)]
 				]
 
 				rot_y = Matrix[
-					[Math.cos(angY), 0, Math.sin(angY)],
+					[Math.cos(@angY), 0, Math.sin(@angY)],
 					[0, 1, 0],
-					[-Math.sin(angY), 0, Math.cos(angY)]
+					[-Math.sin(@angY), 0, Math.cos(@angY)]
 				]
 
 				rot_z = Matrix[
-					[Math.cos(angZ), -Math.sin(angZ), 0],
-					[Math.sin(angZ), Math.cos(angZ), 0],
+					[Math.cos(@angZ), -Math.sin(@angZ), 0],
+					[Math.sin(@angZ), Math.cos(@angZ), 0],
 					[0, 0, 1]
 				]		
 
@@ -218,9 +224,6 @@ module DRAW_STRUCTURE
 
 					@projected_src_2d = proj_mat * rotated_src_beam
 					@projected_dst_2d = proj_mat * rotated_dst_beam
-
-					#puts @projected_src_2d.inspect()
-					puts @projected_src_2d[1, 0]
 
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
