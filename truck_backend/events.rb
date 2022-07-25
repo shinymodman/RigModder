@@ -4,6 +4,13 @@ module EVENT_FOR_STRUCTURE
 	@click_result = nil
 	@real_x = 0
 	@real_y = 0
+
+	@real_ang_x = 0
+	@real_ang_y = 0
+
+	@prev_ang_x = 0
+	@prev_ang_y = 0
+
 	@size = 250
 
 	def click(widget, canvas)
@@ -24,19 +31,58 @@ module EVENT_FOR_STRUCTURE
 	end
 	# The signal that will detect a left click
 
+	def right_click(widget, canvas)
+
+		widget.signal_connect("button-press-event") {
+			|a, b|
+      		@click_result = Gdk::BUTTON_SECONDARY
+      		canvas.queue_draw()
+		}
+		# The signal that will detect the right button press in order for the user to move the position of the structure.
+
+		widget.signal_connect("button-release-event") {
+			|a, b|
+		  	@click_result = nil
+		  	@prev_ang_x = b.X
+		  	@prev_ang_y = b.Y
+		  	canvas.queue_draw()
+		}
+		# The signal that will detect the right button release in order for the user to confirm the position of the structure.
+	end
+	# The signal that will detect a right click
+
 	def drag_struct(widget, canvas)
 
 		widget.signal_connect("motion-notify-event") {
 		  |a, b|
-		  
+=begin
+		  if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i) && (@click_result != nil)
+		    @real_x = b.x
+		    @real_y = b.y
+		    canvas.queue_draw()
+		    # The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
+		  end
+=end
 		  if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
-		      @real_x = b.x
-		      @real_y = b.y
-		      canvas.queue_draw()
+
+		  	if (@prev_ang_x < @real_ang_x) then
+		  		@real_ang_x += 0.1
+		  	else
+		  		@real_ang_x -= 0.1
+		  	end
+
+
+		  	if (@prev_ang_y < @real_ang_y) then
+		  		@real_ang_y += 0.1
+		  	else
+		  		@real_ang_y -= 0.1
+		  	end
+
+		  	canvas.queue_draw()
+		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
 		  end
 		}
 
-		# The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
 	end
 
 	def zoom_in_or_out(widget, canvas)
@@ -72,6 +118,18 @@ module EVENT_FOR_STRUCTURE
 		canvas.queue_draw()
 	end
 	# Returns y value of cursor.
+
+	def get_ang_x(canvas)
+		return @real_ang_x
+		canvas.queue_draw()
+	end
+	# Returns x angled value of cursor
+
+	def get_ang_y(canvas)
+		return @real_ang_y
+		canvas.queue_draw()
+	end
+	# Returns y angled value of cursor.
 
 	def centered_x(canvas)
 		return canvas.allocated_width / 2
