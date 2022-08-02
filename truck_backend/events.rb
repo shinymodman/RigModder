@@ -2,6 +2,8 @@ require 'gtk3'
 
 module EVENT_FOR_STRUCTURE
 	@click_result = nil
+	@press_result = nil
+
 	@real_x = 0
 	@real_y = 0
 
@@ -28,6 +30,21 @@ module EVENT_FOR_STRUCTURE
 		  	canvas.queue_draw()
 		}
 		# The signal that will detect the left button release in order for the user to confirm the position of the structure.
+
+		widget.signal_connect("key-press-event") {
+			|a, b|
+			if b.keyval == Gdk::Keyval::KEY_Shift_L then
+				@press_result = Gdk::Keyval::KEY_Shift_L
+			elsif b.keyval == Gdk::Keyval::KEY_Control_L
+				@press_result = Gdk::Keyval::KEY_Control_L
+			elsif b.keyval == Gdk::Keyval::KEY_Alt_L
+				@press_result = Gdk::Keyval::KEY_Alt_L
+			end
+		}
+
+		widget.signal_connect("key-release-event") {
+			@press_result = nil
+		}
 	end
 	# The signal that will detect a left click
 
@@ -43,6 +60,7 @@ module EVENT_FOR_STRUCTURE
 		widget.signal_connect("button-release-event") {
 			|a, b|
 		  	@click_result = nil
+		  	@press_result = nil
 		  	@prev_ang_x = b.X
 		  	@prev_ang_y = b.Y
 		  	canvas.queue_draw()
@@ -54,35 +72,25 @@ module EVENT_FOR_STRUCTURE
 	def drag_struct(widget, canvas)
 
 		widget.signal_connect("motion-notify-event") {
-		  |a, b|
-=begin
-		  if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i) && (@click_result != nil)
-		    @real_x = b.x
-		    @real_y = b.y
-		    canvas.queue_draw()
-		    # The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
-		  end
-=end
-		  if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
+			|a, b|
 
-		  	if (@prev_ang_x < @real_ang_x) then
-		  		@real_ang_x += 0.1
-		  	else
-		  		@real_ang_x -= 0.1
-		  	end
+			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
 
+				if (@real_ang_x <= @prev_ang_x) then
+					@real_ang_x += 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
+				else
+					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
+				end
 
-		  	if (@prev_ang_y < @real_ang_y) then
-		  		@real_ang_y += 0.1
-		  	else
-		  		@real_ang_y -= 0.1
-		  	end
-
+			  	if (@prev_ang_y < @real_ang_y) then
+			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
+			  	else
+			  		@real_ang_y -= 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
+			  	end
+			end
 		  	canvas.queue_draw()
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
-		  end
 		}
-
 	end
 
 	def zoom_in_or_out(widget, canvas)
