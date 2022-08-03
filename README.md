@@ -40,6 +40,8 @@ What you need to do by steps:
 
 - The structure has an issue with centering to the interface
 	- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.
+	- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.
+	- **UPDATE: I figured out a way to make it render using 3d projection, Will use this time in this project to make that work first.**
 
 **This is all the issues I can think of as of now. If you find more, let me know on Discord at shinymodman#0114.**
 

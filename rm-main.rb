@@ -105,18 +105,10 @@ class RMApp < Gtk::Application
 				@main_window.destroy()
 			}
 			# Will tell gtk to end program when program is x'ed out.
-			
-			DRAW_STRUCTURE.top_selection(@top, @canvas)
-			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
-			DRAW_STRUCTURE.left_selection(@left, @canvas)
-			DRAW_STRUCTURE.right_selection(@right, @canvas)
-			DRAW_STRUCTURE.front_selection(@front, @canvas)
-			DRAW_STRUCTURE.back_selection(@back, @canvas)
 
 			EVENT_FOR_STRUCTURE.click(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.drag_struct(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.zoom_in_or_out(@main_window, @canvas)
-
 
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
@@ -234,7 +226,7 @@ class RMApp < Gtk::Application
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 			EVENT_FOR_STRUCTURE.load_dialog(@beam_dialog, @beam_window, 800, 350, @beam_container)
 			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list, @node_entry, @node_x_entry,
-				@node_y_entry, @node_z_entry, @node_opt_entry)
+				@node_y_entry, @node_z_entry, @node_opt_entry, @beam_list, @beam_id1_entry, @beam_id2_entry, @beam_opt_entry)
 			DRAW_STRUCTURE.set_node_selector(@node_list)
 			# Procedural methods that load content into the app.
 		}
