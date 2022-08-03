@@ -142,7 +142,7 @@ module DRAW_STRUCTURE
 		
 		@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
 		@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
-		@angZ = 0.1
+		@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas)
 		# Angle rotations for each coordinate
 
 		load_nodes(trk)
@@ -178,7 +178,7 @@ module DRAW_STRUCTURE
 
 				@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
 				@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
-				@angZ = 0.1
+				@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas)
 				# Angle rotations for each coordinate
 
 				rot_x = Matrix[
