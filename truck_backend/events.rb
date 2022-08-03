@@ -10,8 +10,10 @@ module EVENT_FOR_STRUCTURE
 	@real_ang_x = 0
 	@real_ang_y = 0
 
-	@prev_ang_x = 0
-	@prev_ang_y = 0
+	@cur_x = 0
+	@cur_y = 0
+	@prev_cur_x = 0
+	@prev_cur_y = 0
 
 	@size = 250
 
@@ -75,18 +77,30 @@ module EVENT_FOR_STRUCTURE
 			|a, b|
 
 			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
-				if (@real_ang_x < @prev_ang_x) then
+
+				puts @cur_y.to_s + ", " + @prev_cur_y.to_s + ", " + (@cur_y < @prev_cur_y).to_s
+
+				@cur_x = b.x
+				@cur_y = b.y
+
+				if (@cur_x <= @prev_cur_x) then
 					@real_ang_x += 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
 				else
 					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
 				end
 
-			  	if (@prev_ang_y < @real_ang_y) then
+			  	if (@cur_y <= @prev_cur_y) then
 			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
 			  	else
 			  		@real_ang_y -= 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
 			  	end
 			end
+
+			if (@press_result & Gdk::EventMask::BUTTON_RELEASE_MASK.to_i) then
+				@prev_cur_x = @cur_x
+				@prev_cur_y = @cur_y
+			end
+
 		  	canvas.queue_draw()
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
 		}
