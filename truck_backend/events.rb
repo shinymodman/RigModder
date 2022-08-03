@@ -83,9 +83,6 @@ module EVENT_FOR_STRUCTURE
 
 			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
 
-				#puts @cur_y.to_s + ", " + @prev_cur_y.to_s + ", " + (@cur_y < @prev_cur_y).to_s
-				puts @cur_x.to_s + ", " + @prev_cur_x.to_s + ", " + (@cur_x < @prev_cur_x).to_s
-
 				if (@cur_x < @prev_cur_x) then
 					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
 				else
