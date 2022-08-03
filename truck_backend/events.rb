@@ -9,11 +9,15 @@ module EVENT_FOR_STRUCTURE
 
 	@real_ang_x = 0
 	@real_ang_y = 0
+	@real_ang_z = 0
 
 	@cur_x = 0
 	@cur_y = 0
+	@cur_z = 0
+
 	@prev_cur_x = 0
 	@prev_cur_y = 0
+	@prev_cur_z = 0
 
 	@size = 250
 
@@ -95,6 +99,11 @@ module EVENT_FOR_STRUCTURE
 			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
 			  	end
 
+			  	if (@cur_z < @prev_cur_z) then
+			  		@real_ang_z -= 0.02 if @press_result == Gdk::Keyval::KEY_Alt_L
+			  	else
+			  		@real_ang_z += 0.02 if @press_result == Gdk::Keyval::KEY_Alt_L
+			  	end
 			end
 
 			if (@press_result & Gdk::EventMask::BUTTON_RELEASE_MASK.to_i) then
@@ -151,6 +160,12 @@ module EVENT_FOR_STRUCTURE
 
 	def get_ang_y(canvas)
 		return @real_ang_y
+		canvas.queue_draw()
+	end
+	# Returns y angled value of cursor.
+
+	def get_ang_z(canvas)
+		return @real_ang_z
 		canvas.queue_draw()
 	end
 	# Returns y angled value of cursor.
