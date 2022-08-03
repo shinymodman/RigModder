@@ -76,24 +76,28 @@ module EVENT_FOR_STRUCTURE
 		widget.signal_connect("motion-notify-event") {
 			|a, b|
 
-			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
-
-				puts @cur_y.to_s + ", " + @prev_cur_y.to_s + ", " + (@cur_y < @prev_cur_y).to_s
-
+			if (@press_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
 				@cur_x = b.x
 				@cur_y = b.y
+			end
 
-				if (@cur_x <= @prev_cur_x) then
-					@real_ang_x += 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
-				else
+			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
+
+				#puts @cur_y.to_s + ", " + @prev_cur_y.to_s + ", " + (@cur_y < @prev_cur_y).to_s
+				puts @cur_x.to_s + ", " + @prev_cur_x.to_s + ", " + (@cur_x < @prev_cur_x).to_s
+
+				if (@cur_x < @prev_cur_x) then
 					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
+				else
+					@real_ang_x += 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
 				end
 
-			  	if (@cur_y <= @prev_cur_y) then
-			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
-			  	else
+			  	if (@cur_y < @prev_cur_y) then
 			  		@real_ang_y -= 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
+			  	else
+			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
 			  	end
+
 			end
 
 			if (@press_result & Gdk::EventMask::BUTTON_RELEASE_MASK.to_i) then
@@ -103,7 +107,9 @@ module EVENT_FOR_STRUCTURE
 
 		  	canvas.queue_draw()
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
+
 		}
+
 	end
 
 	def zoom_in_or_out(widget, canvas)
