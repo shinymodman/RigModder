@@ -13,11 +13,6 @@ class Beam
 
 	end
 
-	def show_beam_properties()
-		return @beam_properties
-	end
-	# Gets all beam properties and places them into hash.
-
 	def show_first_node_properties()
 		return {
 			node_id: @beam_properties[:node1].show_id,
