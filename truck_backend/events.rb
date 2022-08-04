@@ -67,8 +67,6 @@ module EVENT_FOR_STRUCTURE
 			|a, b|
 		  	@click_result = nil
 		  	@press_result = nil
-		  	@prev_ang_x = b.X
-		  	@prev_ang_y = b.Y
 		  	canvas.queue_draw()
 		}
 		# The signal that will detect the right button release in order for the user to confirm the position of the structure.
@@ -83,32 +81,40 @@ module EVENT_FOR_STRUCTURE
 			if (@press_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
 				@cur_x = b.x
 				@cur_y = b.y
+				@cur_z = b.x
 			end
 
 			if (@press_result & Gdk::EventMask::BUTTON_MOTION_MASK.to_i) then
 
 				if (@cur_x < @prev_cur_x) then
-					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
-				else
+					@prev_cur_x = 0
 					@real_ang_x += 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
+				else
+					@prev_cur_x = 0
+					@real_ang_x -= 0.02 if @press_result == Gdk::Keyval::KEY_Shift_L
 				end
 
 			  	if (@cur_y < @prev_cur_y) then
-			  		@real_ang_y -= 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
-			  	else
+			  		@prev_cur_y = 0
 			  		@real_ang_y += 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
+			  	else
+			  		@prev_cur_y = 0
+			  		@real_ang_y -= 0.02 if @press_result == Gdk::Keyval::KEY_Control_L
 			  	end
 
 			  	if (@cur_z < @prev_cur_z) then
-			  		@real_ang_z -= 0.02 if @press_result == Gdk::Keyval::KEY_Alt_L
-			  	else
+			  		@prev_cur_z = 0
 			  		@real_ang_z += 0.02 if @press_result == Gdk::Keyval::KEY_Alt_L
+			  	else
+			  		@prev_cur_z = 0
+			  		@real_ang_z -= 0.02 if @press_result == Gdk::Keyval::KEY_Alt_L
 			  	end
 			end
 
 			if (@press_result & Gdk::EventMask::BUTTON_RELEASE_MASK.to_i) then
 				@prev_cur_x = @cur_x
 				@prev_cur_y = @cur_y
+				@prev_cur_z = @cur_z
 			end
 
 		  	canvas.queue_draw()
