@@ -75,7 +75,7 @@ module EVENT_FOR_STRUCTURE
 	end
 	# The signal that will detect a right click
 
-	def rotate_struct(widget, canvas)
+	def drag_struct(widget, canvas)
 
 		widget.signal_connect("motion-notify-event") {
 			|a, b|
