@@ -73,7 +73,7 @@ module EVENT_FOR_STRUCTURE
 	end
 	# The signal that will detect a right click
 
-	def rotate_struct(widget, canvas)
+	def drag_or_rotate_struct(widget, canvas)
 
 		widget.signal_connect("motion-notify-event") {
 			|a, b|
@@ -116,6 +116,11 @@ module EVENT_FOR_STRUCTURE
 				@prev_cur_y = @cur_y
 				@prev_cur_z = @cur_z
 			end
+
+			if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
+		      	@real_x = b.x if @press_result == nil
+		      	@real_y = b.y if @press_result == nil
+		  	end
 
 		  	canvas.queue_draw()
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.

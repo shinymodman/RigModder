@@ -41,62 +41,74 @@ module DRAW_STRUCTURE
       # This loop iterates through all node arguments for each beam and places its respective coords in their array
   end
 
-  @hydro_src_matrix = []
-  @hydro_dst_matrix = []
+  @truck_hydro_x = []
+  @truck_hydro_y = []
+  @truck_hydro_z = []
   # Organizes beam coords to its respective arrays
     
   def load_hydros(trk)
       i = 0
   	
-  	  @hydro_src_matrix.clear()
-  	  @hydro_dst_matrix.clear()
+  	  @truck_hydro_x.clear()
+  	  @truck_hydro_y.clear()
+  	  @truck_hydro_z.clear()
 
       while i != trk.view_hydros.length do
         truck_hydro_counter = Hydrolic.new(trk, i)
 
-        @hydro_src_matrix[i] = Matrix[[truck_hydro_counter.show_source_x], [truck_hydro_counter.show_source_y], [truck_hydro_counter.show_source_z]]
-        @hydro_dst_matrix[i] = Matrix[[truck_hydro_counter.show_dest_x], [truck_hydro_counter.show_dest_y], [truck_hydro_counter.show_dest_z]]
+        @truck_hydro_x[i] = [truck_hydro_counter.show_source_x, truck_hydro_counter.show_dest_x]
+        @truck_hydro_y[i] = [truck_hydro_counter.show_source_y, truck_hydro_counter.show_dest_y]
+        @truck_hydro_z[i] = [truck_hydro_counter.show_source_z, truck_hydro_counter.show_dest_z]
 
         i = i + 1
       end
       # This loop iterates through all node arguments for each hydraulic and places its respective coords in their array
   end
 
-  @shock_src_matrix = []
-  @shock_dst_matrix = []
+  @truck_shock_x = []
+  @truck_shock_y = []
+  @truck_shock_z = []
   # Organizes beam coords to its respective arrays
 
 
   def load_shocks(trk)
       i = 0
   	
-  	  @shock_src_matrix.clear()
-  	  @shock_dst_matrix.clear()
+  	  @truck_shock_x.clear()
+  	  @truck_shock_y.clear()
+  	  @truck_shock_z.clear()
 
       while i != trk.view_shocks.length do
         truck_shock_counter = Shock.new(trk, i)
 
-        @shock_src_matrix[i] = Matrix[[truck_shock_counter.show_source_x], [truck_shock_counter.show_source_y], [truck_shock_counter.show_source_z]]
-        @shock_dst_matrix[i] = Matrix[[truck_shock_counter.show_dest_x], [truck_shock_counter.show_dest_y], [truck_shock_counter.show_dest_z]]
+        @truck_shock_x[i] = [truck_shock_counter.show_source_x, truck_shock_counter.show_dest_x]
+        @truck_shock_y[i] = [truck_shock_counter.show_source_y, truck_shock_counter.show_dest_y]
+        @truck_shock_z[i] = [truck_shock_counter.show_source_z, truck_shock_counter.show_dest_z]
 
         i = i + 1
       end
       # This loop iterates through all node arguments for each shock and places its respective coords in their array
   end
   
-  @node_matrix = []
+  @truck_node_x = []
+  @truck_node_y = []
+  @truck_node_z = []
   # Similar to the beam arrays, puts its coords in these respective arrays
   
   def load_nodes(trk)
   
       i = 0
 
-      @node_matrix.clear()
-
+      @truck_node_x.clear()
+  	  @truck_node_y.clear()
+  	  @truck_node_z.clear()
+  
       while i != trk.view_nodes.length do
         truck_node_counter = Node.new(trk, i)
   
-        @node_matrix[i] = Matrix[[truck_node_counter.show_x], [truck_node_counter.show_y], [truck_node_counter.show_z]]
+        @truck_node_x[i] = truck_node_counter.show_x
+        @truck_node_y[i] = truck_node_counter.show_y
+        @truck_node_z[i] = truck_node_counter.show_z
   
         i = i + 1
       end
@@ -133,22 +145,22 @@ module DRAW_STRUCTURE
 		@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas)
 		# Angle rotations for each coordinate
 
-	  load_nodes(trk)
-  	load_beams(trk)
-  	load_hydros(trk)
-  	load_shocks(trk)
-  	# Loads all content into DrawingArea widget (or sketch of truck file).
+		load_nodes(trk)
+    	load_beams(trk)
+    	load_hydros(trk)
+    	load_shocks(trk)
+    	# Loads all content into DrawingArea widget (or sketch of truck file).
 
-  	@node_selector_obj.signal_connect("row-activated") {
-			|a, b|
-			node_selector = Node.new(trk, b.index)
+    	@node_selector_obj.signal_connect("row-activated") {
+  			|a, b|
+  			node_selector = Node.new(trk, b.index)
 
-  		@selected_node_x = node_selector.show_x
-  		@selected_node_y = node_selector.show_y
-  		@selected_node_z = node_selector.show_z
-			canvas.queue_draw()
-		}
-		# The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
+    		@selected_node_x = node_selector.show_x
+    		@selected_node_y = node_selector.show_y
+    		@selected_node_z = node_selector.show_z
+  			canvas.queue_draw()
+  		}
+  		# The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 
 		canvas.signal_connect("draw") {
 			|a, b|
@@ -158,7 +170,7 @@ module DRAW_STRUCTURE
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
-  			@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
+  				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
 				
 				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
@@ -196,35 +208,8 @@ module DRAW_STRUCTURE
 				b.set_source_rgba(0, 0.5, 0, 0.45)
 				# Sets default color to a dark shade of green for the nodes
 
-        @node_matrix.length.times {
-          |i|
-
-          rotated_node_z = rot_z * @node_matrix[i]
-          rotated_node_y = rot_y * rotated_node_z
-          rotated_node = rot_x * rotated_node_y
-
-          projected_2d = proj_mat * rotated_node
-
-          b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
-              
-        }
-
-        b.fill()
-
-        b.set_source_rgba(0, 0, 0, 0.45)
-        # Sets selected node color to transparent black
-
-        rotated_snode_z = rot_z * Matrix[[@selected_node_x], [@selected_node_y], [@selected_node_z]]
-        rotated_snode_y = rot_y * rotated_snode_z
-        rotated_snode = rot_x * rotated_snode_y
-
-        projected_2d = proj_mat * rotated_snode
-
-        b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
-        b.fill()
-
-        b.set_source_rgb(1, 0.5, 0)
-        # Sets default color to orange
+				b.set_source_rgb(1, 0.5, 0)
+				# Sets default color to orange
 
 				@beam_src_matrix.length.times {
 					|i|
@@ -242,76 +227,49 @@ module DRAW_STRUCTURE
 
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          		
-        }
+          		}
 
 				b.stroke()
 				# This loop draws out the beams
-        # Adds the extra beams since it doesn't get visualized.
-
+          		# Adds the extra beams since it doesn't get visualized.
+=begin
 				b.set_source_rgb(0.5, 0.3, 0.5)
 				b.set_line_width(5)
 
-        # This loop draws out the beams
-        # Adds the extra beams since it doesn't get visualized.
-
-				@hydro_src_matrix.length.times {
+				@truck_hydro_x.length.times {
 					|i|
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_y[i][0], @truck_hydro_x[i][1], @truck_hydro_y[i][1], @size, 0, true) if @view == 0
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_y[i][0], @truck_hydro_x[i][1], @truck_hydro_y[i][1], @size, 1, true) if @view == 1
+					load_beam_sketch(b, @truck_hydro_z[i][0], @truck_hydro_y[i][0], @truck_hydro_z[i][1], @truck_hydro_y[i][1], @size, 2, true) if @view == 2
+					load_beam_sketch(b, @truck_hydro_z[i][0], @truck_hydro_y[i][0], @truck_hydro_z[i][1], @truck_hydro_y[i][1], @size, 3, true) if @view == 3
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_z[i][0], @truck_hydro_x[i][1], @truck_hydro_z[i][1], @size, 4, true) if @view == 4
+					load_beam_sketch(b, @truck_hydro_x[i][0], @truck_hydro_z[i][0], @truck_hydro_x[i][1], @truck_hydro_z[i][1], @size, 5, true) if @view == 5
 
-          rotated_src_hydro_z = rot_z * @hydro_src_matrix[i]
-          rotated_src_hydro_y = rot_y * rotated_src_hydro_z
-          rotated_src_hydro = rot_x * rotated_src_hydro_y
+          		# Sets the camera direction based on what's changed from the @view instance variable.
+          		}
 
-          rotated_dst_hydro_z = rot_z * @hydro_dst_matrix[i]
-          rotated_dst_hydro_y = rot_y * rotated_dst_hydro_z
-          rotated_dst_hydro = rot_x * rotated_dst_hydro_y
-
-          @projected_src_2d = proj_mat * rotated_src_hydro
-          @projected_dst_2d = proj_mat * rotated_dst_hydro
-
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-
-          # Sets the camera direction based on what's changed from the @view instance variable.
-        }
-
-        b.stroke()
-        # This loop draws out the hydraulics.
-
-        b.set_source_rgb(0.8, 0.8, 0.1)
+          		b.stroke()
+          		# This loop draws out the hydraulics.
+          		b.set_source_rgb(0.8, 0.8, 0.1)
 				b.set_line_width(5)
 
-				@shock_src_matrix.length.times {
+				@truck_shock_x.length.times {
 					|i|
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_y[i][0], @truck_shock_x[i][1], @truck_shock_y[i][1], @size, 0, true) if @view == 0
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_y[i][0], @truck_shock_x[i][1], @truck_shock_y[i][1], @size, 1, true) if @view == 1
+					load_beam_sketch(b, @truck_shock_z[i][0], @truck_shock_y[i][0], @truck_shock_z[i][1], @truck_shock_y[i][1], @size, 2, true) if @view == 2
+					load_beam_sketch(b, @truck_shock_z[i][0], @truck_shock_y[i][0], @truck_shock_z[i][1], @truck_shock_y[i][1], @size, 3, true) if @view == 3
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_z[i][0], @truck_shock_x[i][1], @truck_shock_z[i][1], @size, 4, true) if @view == 4
+					load_beam_sketch(b, @truck_shock_x[i][0], @truck_shock_z[i][0], @truck_shock_x[i][1], @truck_shock_z[i][1], @size, 5, true) if @view == 5
 
-          rotated_src_shock_z = rot_z * @shock_src_matrix[i]
-          rotated_src_shock_y = rot_y * rotated_src_shock_z
-          rotated_src_shock = rot_x * rotated_src_shock_y
+          		# Sets the camera direction based on what's changed from the @view instance variable.
+          		}
 
-          rotated_dst_shock_z = rot_z * @shock_dst_matrix[i]
-          rotated_dst_shock_y = rot_y * rotated_dst_shock_z
-          rotated_dst_shock = rot_x * rotated_dst_shock_y
-
-          @projected_src_2d = proj_mat * rotated_src_shock
-          @projected_dst_2d = proj_mat * rotated_dst_shock
-
-
-					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
-          # Sets the camera direction based on what's changed from the @view instance variable.
-
-          b.stroke()
+          		b.stroke()
           		
 				b.new_path()
 			}
+=end
 		}
 		end
 
