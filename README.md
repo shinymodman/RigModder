@@ -3,11 +3,14 @@ For Rigs of Rods, it edits and maybe visualizes objects attached to nodes. Such 
 
 ### App Preview
 
-- With a sample box that comes with this repo:
+- With a sample box that comes with this repo *now with actual 3d perspective projection*:
 ![main_app_window_1](./rm_screenshots/app_preview.png)
 
-- With actual vehicle:
+- ~~With actual vehicle~~:
 ![main_app_window_2](./rm_screenshots/app_preview_2.png)
+
+- With an actual vehicle that can *now be rendered in 3d!*
+![main_app_window_3](./rm_screenshots/app_preview_3.png)
 
 ### Please Note:
 This software is still under development and I will not actually release it or put it into beta just yet. As this is an okay functioning program, you are more than welcome to test it out.
@@ -30,27 +33,21 @@ What you need to do by steps:
 	- On the command line via `cmd` or `bash`, type in `ruby viewer.rb` to execute the app.
 
 ### Known Bugs and Perfromance Issues
-**Please note that I have not been tought many algorithms for mouse movement within the structure, performance optimization and somewhat others. As these issues will mainly relate to these topics.** As you know, I've tought myself basic code via videos and websites.
+**Please note that I have not been tought many algorithms for ~~mouse movement within the structure~~ (Already did this on my own), performance optimization and somewhat others. As these issues will mainly relate to these topics.** As you know, I've tought myself basic code via videos and websites.
 
 - Takes a minute or so to load after pressing the open button on the file selector which is shown here:
 ![the_file_chooser](./rm_screenshots/file_loader.png)
-
-- Dragging the node/beam structure on the app can be difficult.
-	- This can be when hold clicking, it takes it to the right path of where the cursor is coming from. *Although,* it does not recognize where the cursor is located exactly. Meaning it could be anyhwere and when clicked, it will directly come to where the cursor actually is. **For example:** The structure is on the left side of the canvas, when the cursor is on the right, if its clicked there, the structure will go right to where the cursor is.
-
-- The structure has an issue with centering to the interface
-	- The graphics library being used in this software, known as "Cairo", only recognizes translation for the whole sketch. When I programmed something for the nodes and beams themselves, it worsened perfromance of the application. Using its built in translation was the only key to make it better.
-
-**This is all the issues I can think of as of now. If you find more, let me know on Discord at shinymodman#0114.**
 
 ### Program Features
 The features of this software I'm thinking about implementing are the following:
 
 - The features currently being worked on:
 	1. ~~Shocks~~ (Finished this one)
+	1. ~~**Visual render in 3D (UPDATE)** (Finished this one) ~~
+	**Note about 2d perspective selections**
+	I have to remove the camera menu that selects the 2d perspective projections due to a problem with the GTK signals handling some instance variables based off the selections. (In other words, cant find an idea for an algorithm to make this feature work.) *BUT,* I may put them back if I or anyone else in the repo comes up with an idea to fix or put up an algorithm for this.
 	1. Interfaces for better sight of the truck file. 
-	1. ** AND making visual render in 3D (UPDATE)**
-		1. **NOTE: I figured out a way to make it render using 3d projection, Will use this time in this project to make that work first.**
+	**Now, I can work on this feature!** 
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
