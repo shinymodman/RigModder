@@ -335,4 +335,5 @@ module DRAW_STRUCTURE
 				b.new_path()
 			}
 		}
+  end
 end
