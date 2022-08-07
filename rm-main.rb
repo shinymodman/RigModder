@@ -54,36 +54,6 @@ class RMApp < Gtk::Application
 			@menu.append(@view_sel)
 			# Adds whole view menu to the whole user interface.
 
-			@camera_menu = Gtk::Menu.new()
-			@camera_sel = Gtk::MenuItem.new(:label => "Camera")
-		    @camera_sel.set_submenu(@camera_menu)
-		    # This adds the View dropdown to the top menu.
-		    
-		    @front = Gtk::MenuItem.new(:label => "Front")
-		    @camera_menu.append(@front)
-		    # Creates and adds the selection saying front to the View dropdown.
-		    
-		    @back = Gtk::MenuItem.new(:label => "Back")
-		    @camera_menu.append(@back)
-		    # Creates and adds the selection saying back to the View dropdown.
-		    
-		    @left = Gtk::MenuItem.new(:label => "Left")
-		    @camera_menu.append(@left)
-		    # Creates and adds the selection saying left to the View dropdown.
-		    
-		    @right = Gtk::MenuItem.new(:label => "Right")
-		    @camera_menu.append(@right)
-		    # Creates and adds the selection saying right to the View dropdown.
-		    
-		    @top = Gtk::MenuItem.new(:label => "Top")
-		    @camera_menu.append(@top)
-		    # Creates and adds the selection saying top to the View dropdown.
-		    
-		    @bottom = Gtk::MenuItem.new(:label => "Bottom")
-		    @camera_menu.append(@bottom)
-		    # Creates and adds the selection saying bottom to the View dropdown.
-	    	
-			@menu.append(@camera_sel)
 			@grid.add(@menu)
 			# Creates and inserts the dropdown menu widget to the window.
 			
