@@ -2,6 +2,8 @@ require 'gtk3'
 
 module EVENT_FOR_STRUCTURE
 	@click_result = nil
+	@press_result = nil
+
 	@real_x = 0
 	@real_y = 0
 
@@ -34,6 +36,21 @@ module EVENT_FOR_STRUCTURE
 		  	canvas.queue_draw()
 		}
 		# The signal that will detect the left button release in order for the user to confirm the position of the structure.
+
+		widget.signal_connect("key-press-event") {
+			|a, b|
+			if b.keyval == Gdk::Keyval::KEY_Shift_L then
+				@press_result = Gdk::Keyval::KEY_Shift_L
+			elsif b.keyval == Gdk::Keyval::KEY_Control_L
+				@press_result = Gdk::Keyval::KEY_Control_L
+			elsif b.keyval == Gdk::Keyval::KEY_Alt_L
+				@press_result = Gdk::Keyval::KEY_Alt_L
+			end
+		}
+
+		widget.signal_connect("key-release-event") {
+			@press_result = nil
+		}
 	end
 	# The signal that will detect a left click
 
@@ -109,6 +126,7 @@ module EVENT_FOR_STRUCTURE
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
 
 		}
+
 	end
 
 	def zoom_in_or_out(widget, canvas)

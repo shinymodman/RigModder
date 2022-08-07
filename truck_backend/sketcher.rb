@@ -1,5 +1,6 @@
 require 'gtk3'
 require 'cairo'
+require 'matrix'
 
 require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
@@ -25,9 +26,9 @@ module DRAW_STRUCTURE
     
   def load_beams(trk)
       i = 0
-    
-      @beam_src_matrix.clear()
-      @beam_dst_matrix.clear()
+  	
+  	  @beam_src_matrix.clear()
+  	  @beam_dst_matrix.clear()
 
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
@@ -108,41 +109,9 @@ module DRAW_STRUCTURE
   # Similar to the beam arrays, puts its coords in these respective arrays
 
 	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, line_to_enabled)
-
-		case angle
-		  when 0
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-		    #Camera on front direction
-		  when 1
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-		    #Camera on back direction
-	 	  when 2
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-	    #Camera on left direction
-  		  when 3
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-            #Camera on left direction
-      	  when 4
-            context.move_to(sketch_x * size, sketch_y * size)
-            context.line_to(dest_x * size, dest_y * size) if line_to_enabled == true
-            # Default top camera direction 
-      	  when 5
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-            # Default bottom camera direction         
-		  else
-		    context.move_to(-sketch_x * size, sketch_y * size)
-		    context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
-		end
+	   context.move_to(-sketch_x * size, sketch_y * size)
+	   context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
 	end
-	# Wrapper for line creation in cairo w/ line_to (on/off) switch
-	# ^^
-	# On if true
-	# Off if false
 
 	def set_node_selector(widget)
 		@node_selector_obj = widget
@@ -157,6 +126,7 @@ module DRAW_STRUCTURE
 		@real_x = EVENT_FOR_STRUCTURE.centered_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) == 0
 		@real_y = EVENT_FOR_STRUCTURE.centered_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) == 0
 		# variables that center the sketch.
+
 		
 		@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
 		@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
@@ -216,6 +186,9 @@ module DRAW_STRUCTURE
 					[Math.sin(@angZ), Math.cos(@angZ), 0],
 					[0, 0, 1]
 				]		
+
+				# Rotation matrices for each coordinates
+
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
@@ -253,27 +226,19 @@ module DRAW_STRUCTURE
         b.set_source_rgb(1, 0.5, 0)
         # Sets default color to orange
 
-				b.fill()
-				# This loop places the nodes to its respective areas
-
-
-				b.set_source_rgb(1, 0.5, 0)
-				# Sets default color to orange
-
 				@beam_src_matrix.length.times {
-          |i|
+					|i|
 
-          rotated_src_beam_z = rot_z * @beam_src_matrix[i]
-          rotated_src_beam_y = rot_y * rotated_src_beam_z
-          rotated_src_beam = rot_x * rotated_src_beam_y
+					rotated_src_beam_z = rot_z * @beam_src_matrix[i]
+					rotated_src_beam_y = rot_y * rotated_src_beam_z
+					rotated_src_beam = rot_x * rotated_src_beam_y
 
-          rotated_dst_beam_z = rot_z * @beam_dst_matrix[i]
-          rotated_dst_beam_y = rot_y * rotated_dst_beam_z
-          rotated_dst_beam = rot_x * rotated_dst_beam_y
+					rotated_dst_beam_z = rot_z * @beam_dst_matrix[i]
+					rotated_dst_beam_y = rot_y * rotated_dst_beam_z
+					rotated_dst_beam = rot_x * rotated_dst_beam_y
 
-          @projected_src_2d = proj_mat * rotated_src_beam
-          @projected_dst_2d = proj_mat * rotated_dst_beam
-
+					@projected_src_2d = proj_mat * rotated_src_beam
+					@projected_dst_2d = proj_mat * rotated_dst_beam
 
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
@@ -286,6 +251,9 @@ module DRAW_STRUCTURE
 
 				b.set_source_rgb(0.5, 0.3, 0.5)
 				b.set_line_width(5)
+
+        # This loop draws out the beams
+        # Adds the extra beams since it doesn't get visualized.
 
 				@hydro_src_matrix.length.times {
 					|i|
@@ -345,5 +313,7 @@ module DRAW_STRUCTURE
 				b.new_path()
 			}
 		}
-  end
+		end
+
+
 end

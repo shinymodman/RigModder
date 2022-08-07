@@ -110,7 +110,6 @@ class RMApp < Gtk::Application
 			EVENT_FOR_STRUCTURE.drag_or_rotate_struct(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.zoom_in_or_out(@main_window, @canvas)
 
-
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
 			@window.type_hint = :dialog
@@ -227,7 +226,7 @@ class RMApp < Gtk::Application
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 			EVENT_FOR_STRUCTURE.load_dialog(@beam_dialog, @beam_window, 800, 350, @beam_container)
 			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list, @node_entry, @node_x_entry,
-				@node_y_entry, @node_z_entry, @node_opt_entry)
+				@node_y_entry, @node_z_entry, @node_opt_entry, @beam_list, @beam_id1_entry, @beam_id2_entry, @beam_opt_entry)
 			DRAW_STRUCTURE.set_node_selector(@node_list)
 			# Procedural methods that load content into the app.
 		}
