@@ -19,24 +19,21 @@ module DRAW_STRUCTURE
 	canvas.queue_draw
   end
 
-  @truck_beam_x = []
-  @truck_beam_y = []
-  @truck_beam_z = []
+  @beam_src_matrix = []
+  @beam_dst_matrix = []
   # Organizes beam coords to its respective arrays
     
   def load_beams(trk)
       i = 0
-  	
-  	  @truck_beam_x.clear()
-  	  @truck_beam_y.clear()
-  	  @truck_beam_z.clear()
+    
+      @beam_src_matrix.clear()
+      @beam_dst_matrix.clear()
 
       while i != trk.view_beams.length do
         truck_beam_counter = Beam.new(trk, i)
-  
-        @truck_beam_x[i] = [truck_beam_counter.show_source_x, truck_beam_counter.show_dest_x]
-        @truck_beam_y[i] = [truck_beam_counter.show_source_y, truck_beam_counter.show_dest_y]
-        @truck_beam_z[i] = [truck_beam_counter.show_source_z, truck_beam_counter.show_dest_z]
+
+        @beam_src_matrix[i] = Matrix[[truck_beam_counter.show_source_x], [truck_beam_counter.show_source_y], [truck_beam_counter.show_source_z]]
+        @beam_dst_matrix[i] = Matrix[[truck_beam_counter.show_dest_x], [truck_beam_counter.show_dest_y], [truck_beam_counter.show_dest_z]]
 
         i = i + 1
       end
@@ -110,7 +107,7 @@ module DRAW_STRUCTURE
   @selected_node_z = 0
   # Similar to the beam arrays, puts its coords in these respective arrays
 
-	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, angle, line_to_enabled)
+	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, line_to_enabled)
 
 		case angle
 		  when 0
@@ -263,7 +260,20 @@ module DRAW_STRUCTURE
 				b.set_source_rgb(1, 0.5, 0)
 				# Sets default color to orange
 
-				@truck_beam_x.length.times {
+				@beam_src_matrix.length.times {
+          |i|
+
+          rotated_src_beam_z = rot_z * @beam_src_matrix[i]
+          rotated_src_beam_y = rot_y * rotated_src_beam_z
+          rotated_src_beam = rot_x * rotated_src_beam_y
+
+          rotated_dst_beam_z = rot_z * @beam_dst_matrix[i]
+          rotated_dst_beam_y = rot_y * rotated_dst_beam_z
+          rotated_dst_beam = rot_x * rotated_dst_beam_y
+
+          @projected_src_2d = proj_mat * rotated_src_beam
+          @projected_dst_2d = proj_mat * rotated_dst_beam
+
 
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
 					load_beam_sketch(b, @projected_src_2d[0, 0], @projected_src_2d[1, 0], @projected_dst_2d[0, 0], @projected_dst_2d[1, 0], @size, true)
