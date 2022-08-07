@@ -114,7 +114,7 @@ class RMApp < Gtk::Application
 			DRAW_STRUCTURE.back_selection(@back, @canvas)
 
 			EVENT_FOR_STRUCTURE.click(@main_window, @canvas)
-			EVENT_FOR_STRUCTURE.drag_struct(@main_window, @canvas)
+			EVENT_FOR_STRUCTURE.drag_or_rotate_struct(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.zoom_in_or_out(@main_window, @canvas)
 
 
