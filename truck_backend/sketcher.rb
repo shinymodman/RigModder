@@ -11,13 +11,13 @@ require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
 
 module DRAW_STRUCTURE
-  @view = nil
+  @view = 0
   @selection = 0
   @node_selector_obj = nil
 
   def show_loader(filename, canvas)
-  	self.load_truck(filename, canvas) if !(filename.empty?)
-  	canvas.queue_draw
+	self.load_truck(filename, canvas) if !(filename.empty?)
+	canvas.queue_draw
   end
 
   @beam_src_matrix = []
@@ -158,7 +158,7 @@ module DRAW_STRUCTURE
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
-  				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
+  			@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
 				
 				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
@@ -166,9 +166,8 @@ module DRAW_STRUCTURE
 
 				@angX = EVENT_FOR_STRUCTURE.get_ang_x(canvas)
 				@angY = EVENT_FOR_STRUCTURE.get_ang_y(canvas)
-				@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas) 
-
-        # Angle rotations for each coordinate
+				@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas)
+				# Angle rotations for each coordinate
 
 				rot_x = Matrix[
 					[1, 0, 0],
@@ -314,58 +313,7 @@ module DRAW_STRUCTURE
 				b.new_path()
 			}
 		}
-	end
+		end
 
-  def front_selection(widget, canvas) 
-    widget.signal_connect("activate") {
-      @view = 0
-      canvas.queue_draw()
-      @view = nil
-    }
-  end
-  # Sets the camera direction to front using the menu selection's activate signal.
 
-  def back_selection(widget, canvas)
-    widget.signal_connect("activate") {
-      @view = 1
-      canvas.queue_draw()
-      @view = nil
-    }
-  end
-    # Sets the camera direction to back using the menu selection's activate signal.
-
-  def right_selection(widget, canvas)
-    widget.signal_connect("activate") {
-      @view = 2
-      canvas.queue_draw()
-      @view = nil
-    }
-  end
-  # Sets the camera direction to left using the menu selection's activate signal.
-
-  def left_selection(widget, canvas)
-    widget.signal_connect("activate") {
-      @view = 3
-      canvas.queue_draw()
-      @view = nil
-    }
-  end
-  # Sets the camera direction to right using the menu selection's activate signal.
-
-  def top_selection(widget, canvas)
-    widget.signal_connect("activate") {
-      @view = 4
-      canvas.queue_draw()
-      @view = nil
-    }
-  end
-  # Sets the camera direction to top using the menu selection's activate signal.
-    
-  def bottom_selection(widget, canvas)
-    widget.signal_connect("activate") {
-      @view = 5
-      canvas.queue_draw()
-    }
-  end
-  # Sets the camera direction to bottom using the menu selection's activate signal.
 end

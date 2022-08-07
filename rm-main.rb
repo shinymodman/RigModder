@@ -107,14 +107,8 @@ class RMApp < Gtk::Application
 			# Will tell gtk to end program when program is x'ed out.
 
 			EVENT_FOR_STRUCTURE.click(@main_window, @canvas)
-			EVENT_FOR_STRUCTURE.rotate_struct(@main_window, @canvas)
+			EVENT_FOR_STRUCTURE.drag_or_rotate_struct(@main_window, @canvas)
 			EVENT_FOR_STRUCTURE.zoom_in_or_out(@main_window, @canvas)
-			DRAW_STRUCTURE.front_selection(@front, @canvas)
-			DRAW_STRUCTURE.back_selection(@back, @canvas)
-			DRAW_STRUCTURE.top_selection(@top, @canvas)
-			DRAW_STRUCTURE.bottom_selection(@bottom, @canvas)
-			DRAW_STRUCTURE.left_selection(@left, @canvas)
-			DRAW_STRUCTURE.right_selection(@right, @canvas)
 
 			@window = Gtk::Window.new()
 			@window.set_title("Nodes")
