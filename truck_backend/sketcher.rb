@@ -158,7 +158,7 @@ module DRAW_STRUCTURE
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
   				# Initial size for the whole n/b structure
   				
-  			@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
+  				@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
 				
 				proj_mat = Matrix[[1, 0 ,0], [0, 1, 0]]
