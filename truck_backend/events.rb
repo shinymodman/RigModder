@@ -4,8 +4,6 @@ module EVENT_FOR_STRUCTURE
 	@click_result = nil
 	@real_x = 0
 	@real_y = 0
-<<<<<<< HEAD
-=======
 
 	@real_ang_x = 0
 	@real_ang_y = 0
@@ -19,7 +17,6 @@ module EVENT_FOR_STRUCTURE
 	@prev_cur_y = 0
 	@prev_cur_z = 0
 
->>>>>>> 1d7efc6fa03695e5cfd17592f5843a69809bc0dc
 	@size = 250
 
 	def click(widget, canvas)
@@ -40,21 +37,6 @@ module EVENT_FOR_STRUCTURE
 	end
 	# The signal that will detect a left click
 
-<<<<<<< HEAD
-	def drag_struct(widget, canvas)
-
-		widget.signal_connect("motion-notify-event") {
-		  |a, b|
-		  
-		  if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
-		      @real_x = b.x
-		      @real_y = b.y
-		      canvas.queue_draw()
-		  end
-		}
-
-		# The signal that will detect a left click hold in order for the user to drag the structure to a different position of the interface.
-=======
 	def right_click(widget, canvas)
 
 		widget.signal_connect("button-press-event") {
@@ -118,12 +100,16 @@ module EVENT_FOR_STRUCTURE
 				@prev_cur_z = @cur_z
 			end
 
+			if (@click_result & Gdk::EventMask::BUTTON_PRESS_MASK.to_i)
+		      @real_x = b.x
+		      @real_y = b.y
+		      canvas.queue_draw()
+		  	end
+
 		  	canvas.queue_draw()
 		  	# The signal that will detect a right click hold in order for the user to rotate the structure to a different angle of the interface.
 
 		}
-
->>>>>>> 1d7efc6fa03695e5cfd17592f5843a69809bc0dc
 	end
 
 	def zoom_in_or_out(widget, canvas)
@@ -160,8 +146,6 @@ module EVENT_FOR_STRUCTURE
 	end
 	# Returns y value of cursor.
 
-<<<<<<< HEAD
-=======
 	def get_ang_x(canvas)
 		return @real_ang_x
 		canvas.queue_draw()
@@ -180,7 +164,6 @@ module EVENT_FOR_STRUCTURE
 	end
 	# Returns y angled value of cursor.
 
->>>>>>> 1d7efc6fa03695e5cfd17592f5843a69809bc0dc
 	def centered_x(canvas)
 		return canvas.allocated_width / 2
 		canvas.queue_draw
