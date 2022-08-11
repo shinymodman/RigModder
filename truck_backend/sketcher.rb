@@ -193,7 +193,7 @@ module DRAW_STRUCTURE
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
 
-				b.set_source_rgba(0, 0.5, 0, 0.45)
+				b.set_source_rgb(0, 0.5, 0)
 				# Sets default color to a dark shade of green for the nodes
 
         @node_matrix.length.times {
@@ -223,7 +223,7 @@ module DRAW_STRUCTURE
         b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
         b.fill()
 
-        b.set_source_rgb(1, 0.5, 0)
+        b.set_source_rgba(1, 0.5, 0, 0.5)
         # Sets default color to orange
 
 				@beam_src_matrix.length.times {
