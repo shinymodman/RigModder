@@ -249,6 +249,7 @@ class RMApp < Gtk::Application
 				@node_y_entry, @node_z_entry, @node_opt_entry, @beam_list, @beam_id1_entry, @beam_id2_entry, @beam_opt_entry,
 				@hydro_list, @hydro_id1_entry, @hydro_id2_entry, @hydro_fctr_entry)
 			DRAW_STRUCTURE.set_node_selector(@node_list)
+			DRAW_STRUCTURE.set_beam_selector(@beam_list)
 			# Procedural methods that load content into the app.
 		}
 	end
