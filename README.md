@@ -30,7 +30,7 @@ What you need to do by steps:
 1. After the installation of the `gtk3` ruby gem, run the software like this:
 	- On Windows, press Win + R, then type in ``cmd``
 		- Please note that with Linux platforms, you have to load Terminal from their app menu.
-	- On the command line via `cmd` or `bash`, type in `ruby viewer.rb` to execute the app.
+	- On the command line via `cmd` or `bash`, type in `ruby rm-main.rb` to execute the app.
 
 ### Known Bugs and Perfromance Issues
 **Please note that I have not been tought many algorithms for ~~mouse movement within the structure~~ (Already did this on my own), performance optimization and somewhat others. As these issues will mainly relate to these topics.** As you know, I've tought myself basic code via videos and websites.

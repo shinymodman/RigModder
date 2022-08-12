@@ -94,6 +94,36 @@ module LOAD_TRUCK_FILE
       # Writes properties in respective entries in beam dialog.
     end
 
+    def hydro_data_for_list(widget, file, *hydro_entries)
+      hydro_in_hash = Hash.new()
+      hydro_list = Array.new()
+
+      truck = Truck.new(file)
+      # Gathers hydro data for listbox and the hydro dialog.
+
+      widget.children.each {
+        |a|
+        widget.remove(a)
+      }
+
+      truck.view_hydros.count.times {
+        |i|
+        hydro = Hydrolic.new(truck, i)
+        hydro_list[i] = Gtk::Label.new("#{hydro.show_first_node}, #{hydro.show_second_node}, #{hydro.show_lengthening_factor}")
+        widget.add(hydro_list[i])
+      }
+      # Adds all hydro data into one line in listbox.
+
+      widget.signal_connect("row-activated") {
+        |a, b|
+        hydro = Hydrolic.new(truck, b.index.to_i)
+        hydro_entries[0].set_text(hydro.show_first_node.to_s)
+        hydro_entries[1].set_text(hydro.show_second_node.to_s)
+        hydro_entries[2].set_text(hydro.show_lengthening_factor.to_s)
+      }
+      # Writes properties in respective entries in hydro dialog.
+    end
+
   	def load_content(loader_widget, *inner_widgets_needed)
   		loader_widget.signal_connect("activate") {
   			|a|
@@ -106,6 +136,9 @@ module LOAD_TRUCK_FILE
 
         self.beam_data_for_list(inner_widgets_needed[7], filename, inner_widgets_needed[8], 
         inner_widgets_needed[9], inner_widgets_needed[10]) if !(filename.empty?)
+
+        self.hydro_data_for_list(inner_widgets_needed[11], filename, inner_widgets_needed[12], 
+        inner_widgets_needed[13], inner_widgets_needed[14]) if !(filename.empty?)
 
       }
   	end
