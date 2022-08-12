@@ -51,6 +51,10 @@ class RMApp < Gtk::Application
 	    	@view_menu.append(@beam_dialog)
 	    	#Creates a way to view dialog with a beam list
 
+	    	@hydro_dialog = Gtk::MenuItem.new(:label => "Hydros")
+	    	@view_menu.append(@hydro_dialog)
+	    	#Creates a way to view dialog with a hydraulic beam list
+
 			@menu.append(@view_sel)
 			# Adds whole view menu to the whole user interface.
 
@@ -193,10 +197,57 @@ class RMApp < Gtk::Application
 			@beam_container.add(@beam_property_opt_grid)
 			@beam_window.add(@beam_container)
 
+			@hydro_window = Gtk::Window.new()
+			@hydro_window.set_title("Hydros")
+			@hydro_window.type_hint = :dialog
+
+			@hydro_list = Gtk::ListBox.new()
+			@hydro_list.expand = true
+
+			@hydro_container = Gtk::Box.new(:vertical, 2)
+			@hydro_scrollbar = Gtk::ScrolledWindow.new()
+
+			@hydro_property_fctr_grid = Gtk::Box.new(:horizontal)
+			@hydro_property_id1_grid = Gtk::Box.new(:horizontal)
+			@hydro_property_id2_grid = Gtk::Box.new(:horizontal)
+			# Grids to place node property widgets in its respecitve areas.
+
+			@label_hydro_id1 = Gtk::Label.new()
+			@hydro_id1_entry = Gtk::Entry.new()
+			@label_hydro_id1.set_text("Node 1:")
+			@hydro_property_id1_grid.add(@label_hydro_id1)
+			@hydro_property_id1_grid.pack_end(@hydro_id1_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing primary node id data.
+
+			@label_hydro_id2 = Gtk::Label.new()
+			@hydro_id2_entry = Gtk::Entry.new()
+			@label_hydro_id2.set_text("Node 2:")
+			@hydro_property_id2_grid.add(@label_hydro_id2)
+			@hydro_property_id2_grid.pack_end(@hydro_id2_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing secondary node id data.
+
+			@label_hydro_fctr = Gtk::Label.new()
+			@hydro_fctr_entry = Gtk::Entry.new()
+			@label_hydro_fctr.set_text("Factor:")
+			@hydro_property_fctr_grid.add(@label_hydro_fctr)
+			@hydro_property_fctr_grid.pack_end(@hydro_fctr_entry, :expand => true, :fill => true, :padding => 0)
+			# Sets up widgets for showing node option data.
+
+
+			@hydro_scrollbar.add(@hydro_list)
+			@hydro_container.add(@hydro_scrollbar)
+
+			@hydro_container.add(@hydro_property_id1_grid)
+			@hydro_container.add(@hydro_property_id2_grid)
+			@hydro_container.add(@hydro_property_fctr_grid)
+			@hydro_window.add(@hydro_container)
+
 			EVENT_FOR_STRUCTURE.load_dialog(@node_dialog, @window, 800, 350, @dialog_grid)
 			EVENT_FOR_STRUCTURE.load_dialog(@beam_dialog, @beam_window, 800, 350, @beam_container)
+			EVENT_FOR_STRUCTURE.load_dialog(@hydro_dialog, @hydro_window, 800, 350, @hydro_container)
 			LOAD_TRUCK_FILE.load_content(@open_item, @canvas, @node_list, @node_entry, @node_x_entry,
-				@node_y_entry, @node_z_entry, @node_opt_entry, @beam_list, @beam_id1_entry, @beam_id2_entry, @beam_opt_entry)
+				@node_y_entry, @node_z_entry, @node_opt_entry, @beam_list, @beam_id1_entry, @beam_id2_entry, @beam_opt_entry,
+				@hydro_list, @hydro_id1_entry, @hydro_id2_entry, @hydro_fctr_entry)
 			DRAW_STRUCTURE.set_node_selector(@node_list)
 			# Procedural methods that load content into the app.
 		}
