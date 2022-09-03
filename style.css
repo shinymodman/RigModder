@@ -2,6 +2,16 @@ html {
 	background-color: #B4B2B2;
 }
 
+p {
+	font-family: Arial;
+	text-indent: 50px;
+}
+
+code {
+	background-color: rgb(91, 91, 91);
+	color: white;
+}
+
 .text-centered {
 	font-family: Arial;
 	text-align: center;
