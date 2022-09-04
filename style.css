@@ -5,6 +5,8 @@ html {
 p {
 	font-family: Arial;
 	text-indent: 50px;
+	margin-left: 15%;
+	margin-right: 15%;
 }
 
 code {
