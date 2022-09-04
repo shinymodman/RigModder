@@ -17,6 +17,12 @@ code {
 	text-align: center;
 }
 
+.img-centered {
+	height: 50%;
+	width: 75%;
+	margin: auto;
+}
+
 #nav-bar {
 	color: white;
 	border-radius: 5px;
