@@ -28,14 +28,14 @@ class Truck
 			!(/\D/.match(a[0])) && # Checks if it has only letters, symbols and whitespace, which is only supported in the beams and this column and section
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 			(/\d/.match(a[2])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
-			(/\d/.match(a[3])) # Checks if it has only numbers, which is only supported in the beams and this column and section
+			(/\d/.match(a[3])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 		}
 		# Lists node objects in flare section
 	end
 
 	def view_beams()
 
-		return @file.to_a.select {
+		puts @file.to_a.select {
 			|a|
 
 			a if (a.length == 3) && # The amount content that a beam object is only supposed to have
