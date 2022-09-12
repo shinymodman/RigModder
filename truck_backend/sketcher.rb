@@ -108,6 +108,14 @@ module DRAW_STRUCTURE
   @selected_node_z = 0
   # Similar to the beam arrays, puts its coords in these respective arrays
 
+  @selected_strt_beam_x = 0
+  @selected_strt_beam_y = 0
+  @selected_strt_beam_z = 0
+
+  @selected_dest_beam_x = 0
+  @selected_dest_beam_y = 0
+  @selected_dest_beam_z = 0
+
 	def load_beam_sketch(context, sketch_x, sketch_y, dest_x, dest_y, size, line_to_enabled)
 	   context.move_to(-sketch_x * size, sketch_y * size)
 	   context.line_to(-dest_x * size, dest_y * size) if line_to_enabled == true
@@ -117,6 +125,11 @@ module DRAW_STRUCTURE
 		@node_selector_obj = widget
 	end
 	# Placeholder for different files
+
+  def set_beam_selector(widget)
+    @beam_selector_obj = widget
+  end
+  # Placeholder for different files for beams.
 
 	def load_truck(trk, canvas)
 		i = 0
@@ -150,6 +163,20 @@ module DRAW_STRUCTURE
 		}
 		# The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 
+    @beam_selector_obj.signal_connect("row-activated") {
+      |a, b|
+      beam_selector = Beam.new(trk, b.index)
+
+      @selected_strt_beam_x = beam_selector.show_source_x
+      @selected_strt_beam_y = beam_selector.show_source_y
+      @selected_strt_beam_z = beam_selector.show_source_z
+
+      @selected_dest_beam_x = beam_selector.show_dest_x
+      @selected_dest_beam_y = beam_selector.show_dest_y
+      @selected_dest_beam_z = beam_selector.show_dest_z
+      canvas.queue_draw()
+    }
+    # The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 		canvas.signal_connect("draw") {
 			|a, b|
 
@@ -223,7 +250,27 @@ module DRAW_STRUCTURE
         b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
         b.fill()
 
+        b.set_source_rgb(1, 0, 0)
+        b.set_line_width(5)
+
+        rotated_fbeam_z = rot_z * Matrix[[@selected_strt_beam_x], [@selected_strt_beam_y], [@selected_strt_beam_z]]
+        rotated_fbeam_y = rot_y * rotated_fbeam_z
+        rotated_fbeam = rot_x * rotated_fbeam_y
+
+        projected_fbeam_2d = proj_mat * rotated_fbeam
+
+        rotated_sbeam_z = rot_z * Matrix[[@selected_dest_beam_x], [@selected_dest_beam_y], [@selected_dest_beam_z]]
+        rotated_sbeam_y = rot_y * rotated_sbeam_z
+        rotated_sbeam = rot_x * rotated_sbeam_y
+
+        projected_sbeam_2d = proj_mat * rotated_sbeam
+
+        load_beam_sketch(b, projected_fbeam_2d[0, 0], projected_fbeam_2d[1, 0], projected_sbeam_2d[0, 0], projected_sbeam_2d[1, 0], @size, true)
+        
+        b.stroke()
+
         b.set_source_rgba(1, 0.5, 0, 0.5)
+        b.set_line_width(2)
         # Sets default color to orange
 
 				@beam_src_matrix.length.times {
