@@ -35,7 +35,7 @@ class Truck
 
 	def view_beams()
 
-		puts @file.to_a.select {
+		return @file.to_a.select {
 			|a|
 
 			a if (a.length == 3) && # The amount content that a beam object is only supposed to have
