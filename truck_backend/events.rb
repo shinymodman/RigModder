@@ -20,6 +20,7 @@ module EVENT_FOR_STRUCTURE
 	@prev_cur_z = 0
 
 	@size = 250
+	@size_for_flares = @size * 2
 
 	def click(widget, canvas)
 
@@ -135,10 +136,12 @@ module EVENT_FOR_STRUCTURE
 			|a, b|
 			if (b.direction == Gdk::ScrollDirection::UP)
 		  	  @size += 10
+		  	  @size_for_flares += 10
 		  	  canvas.queue_draw()
 		  	  # Shrinks structure
 		  	elsif (b.direction == Gdk::ScrollDirection::DOWN)
 		  	  @size -= 10
+		  	  @size_for_flares -= 10
 		  	  canvas.queue_draw()
 		  	  # Grows structure
 		  	end
@@ -148,6 +151,11 @@ module EVENT_FOR_STRUCTURE
 
 	def get_size(canvas)
 		return @size
+	end
+	# Returns size value of structure.
+
+	def get_size_for_flares(canvas)
+		return @size_for_flares
 	end
 	# Returns size value of structure.
 
