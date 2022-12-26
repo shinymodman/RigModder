@@ -6,6 +6,7 @@ require './truck_lib/node.rb'
 require './truck_lib/beam.rb'
 require './truck_lib/hydrolic.rb'
 require './truck_lib/shock.rb'
+require './truck_lib/flare.rb'
 
 require './truck_backend/events.rb'
 include EVENT_FOR_STRUCTURE
@@ -103,6 +104,34 @@ module DRAW_STRUCTURE
       # Iterates through each node and puts its coords to its respective arrays
   end
 
+  @flare_matrix = []
+  # Similar to the beam arrays, puts its coords in these respective arrays
+
+  def load_flares(trk, rot_z)
+  
+      i = 0
+
+      @flare_matrix.clear()
+
+      while i != trk.view_flares.length do
+        truck_flare_counter = Flare.new(trk, i)
+
+        node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
+        x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
+        y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
+
+        @reference_matrix = Matrix[[node_placehold_counter.show_x],[node_placehold_counter.show_y],[0]]
+
+        @flare_matrix[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
+                                  [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
+                                  [0]]
+
+        @flare_matrix[i] + @reference_matrix
+        i = i + 1
+      end
+      # Iterates through each node and puts its coords to its respective arrays
+  end
+
   @selected_node_x = 0
   @selected_node_y = 0
   @selected_node_z = 0
@@ -147,6 +176,7 @@ module DRAW_STRUCTURE
 		# Angle rotations for each coordinate
 
 	  load_nodes(trk)
+    load_flares(trk)
   	load_beams(trk)
   	load_hydros(trk)
   	load_shocks(trk)
@@ -183,7 +213,9 @@ module DRAW_STRUCTURE
 				b.new_path()
 
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
-  				# Initial size for the whole n/b structure
+  			# Initial size for the whole n/b structure
+
+        @size_for_flares = EVENT_FOR_STRUCTURE.get_size_for_flares(canvas)
   				
   			@real_x = EVENT_FOR_STRUCTURE.get_x(canvas) if EVENT_FOR_STRUCTURE.get_x(canvas) != 0
 				@real_y = EVENT_FOR_STRUCTURE.get_y(canvas) if EVENT_FOR_STRUCTURE.get_y(canvas) != 0
@@ -219,6 +251,28 @@ module DRAW_STRUCTURE
 				b.translate(@real_x, @real_y)
 				b.rotate(3.145)
 				# Helps move structure anywhere in the Drawing Area
+
+
+        b.set_source_rgb(1, 0, 1)
+        # Sets default color to a dark shade of green for the nodes
+
+        @flare_matrix.length.times {
+          |i|
+
+          rotated_flare_z = rot_z * @flare_matrix[i]
+          rotated_flare_y = rot_y * rotated_flare_z
+          rotated_flare = rot_x * rotated_flare_y
+
+          projected_2d = proj_mat * rotated_flare
+
+          b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
+              
+        }
+
+        b.fill()
+
+        b.set_source_rgba(0, 0, 0, 0.45)
+        # Sets selected node color to transparent black
 
 				b.set_source_rgb(0, 0.5, 0)
 				# Sets default color to a dark shade of green for the nodes
