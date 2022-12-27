@@ -113,7 +113,6 @@ module DRAW_STRUCTURE
       z_placehold = Array.new
 
       @flare_matrix.clear()
-      z_placehold.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
@@ -122,19 +121,27 @@ module DRAW_STRUCTURE
         x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
+        flare_arr = []
+        flare_arr[i] = Matrix[[node_placehold_counter.show_x],
+                            [node_placehold_counter.show_y],
+                            [node_placehold_counter.show_z]]
 
-        @reference_matrix = Matrix[[node_placehold_counter.show_x],
-                                   [node_placehold_counter.show_y],
-                                   [0]]
+        f_x = []
+        f_x[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
+                        [x_placehold_counter.show_y],
+                        [x_placehold_counter.show_z]]
+        f_y = []
+        f_y[i] = Matrix[[y_placehold_counter.show_x],
+                        [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
+                        [y_placehold_counter.show_z]]
 
-        @flare_matrix[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
-                                  [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                                  [0]]
+        @flare_matrix[i] = Matrix[[0], [0], [0]]
 
-        @flare_matrix[i] + @reference_matrix
         i = i + 1
       end
       # Iterates through each node and puts its coords to its respective arrays
+
+      puts f_x_matrix.inspect
   end
 
   @selected_node_x = 0
@@ -271,7 +278,6 @@ module DRAW_STRUCTURE
           projected_2d = proj_mat * rotated_flare
 
           b.rectangle(-projected_2d[0, 0] * @size, projected_2d[1, 0] * @size, 10, 10)
-              
         }
 
         b.fill()
