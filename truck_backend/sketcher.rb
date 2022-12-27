@@ -110,9 +110,15 @@ module DRAW_STRUCTURE
   def load_flares(trk)
   
       i = 0
-      z_placehold = Array.new
+      flare_arr = []
+      x_arr = []
+      y_arr = []
 
       @flare_matrix.clear()
+
+      flare_arr.clear()
+      x_arr.clear()
+      y_arr.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
@@ -121,27 +127,33 @@ module DRAW_STRUCTURE
         x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
-        flare_arr = []
         flare_arr[i] = Matrix[[node_placehold_counter.show_x],
-                            [node_placehold_counter.show_y],
-                            [node_placehold_counter.show_z]]
+                              [node_placehold_counter.show_y],
+                              [node_placehold_counter.show_z]]
+        # This matrix stores coords from the Reference Node
 
-        f_x = []
-        f_x[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
-                        [x_placehold_counter.show_y],
-                        [x_placehold_counter.show_z]]
-        f_y = []
-        f_y[i] = Matrix[[y_placehold_counter.show_x],
-                        [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                        [y_placehold_counter.show_z]]
+        x_arr[i] = Matrix[[x_placehold_counter.show_x],
+                          [x_placehold_counter.show_y],
+                          [x_placehold_counter.show_z]]
 
-        @flare_matrix[i] = Matrix[[0], [0], [0]]
+        x_arr[i] = x_arr[i] + flare_arr[i]
+        # This matrix stores coords from the RefX node and gets added from the ref matrix
+
+        y_arr[i] = Matrix[[y_placehold_counter.show_x],
+                          [y_placehold_counter.show_y],
+                          [y_placehold_counter.show_z]]
+
+        y_arr[i] = y_arr[i] + flare_arr[i]
+        # This matrix stores coords from the RefY node and gets added from the ref matrix
+
+
+        @flare_matrix[i] = Matrix[[y_arr[i][0,0] + truck_flare_counter.get_coord_x.abs], 
+                                  [y_arr[i][1,0] + truck_flare_counter.get_coord_y.abs], 
+                                  [y_arr[i][2,0]]]
 
         i = i + 1
       end
       # Iterates through each node and puts its coords to its respective arrays
-
-      puts f_x_matrix.inspect
   end
 
   @selected_node_x = 0
