@@ -107,11 +107,13 @@ module DRAW_STRUCTURE
   @flare_matrix = []
   # Similar to the beam arrays, puts its coords in these respective arrays
 
-  def load_flares(trk, rot_z)
+  def load_flares(trk)
   
       i = 0
+      z_placehold = Array.new
 
       @flare_matrix.clear()
+      z_placehold.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
@@ -120,7 +122,10 @@ module DRAW_STRUCTURE
         x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
-        @reference_matrix = Matrix[[node_placehold_counter.show_x],[node_placehold_counter.show_y],[0]]
+
+        @reference_matrix = Matrix[[node_placehold_counter.show_x],
+                                   [node_placehold_counter.show_y],
+                                   [0]]
 
         @flare_matrix[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
                                   [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
