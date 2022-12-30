@@ -17,8 +17,8 @@ module DRAW_STRUCTURE
   @node_selector_obj = nil
 
   def show_loader(filename, canvas)
-	self.load_truck(filename, canvas) if !(filename.empty?)
-	canvas.queue_draw
+  	  self.load_truck(filename, canvas) if !(filename.empty?)
+  	  canvas.queue_draw
   end
 
   @beam_src_matrix = []
@@ -107,7 +107,7 @@ module DRAW_STRUCTURE
   @flare_matrix = []
   # Similar to the beam arrays, puts its coords in these respective arrays
 
-  def load_flares(trk)
+  def load_flares(trk, angle)
   
       i = 0
       flare_arr = []
@@ -136,24 +136,24 @@ module DRAW_STRUCTURE
                           [x_placehold_counter.show_y],
                           [x_placehold_counter.show_z]]
 
-        x_arr[i] = x_arr[i] + flare_arr[i]
-        # This matrix stores coords from the RefX node and gets added from the ref matrix
 
         y_arr[i] = Matrix[[y_placehold_counter.show_x],
                           [y_placehold_counter.show_y],
                           [y_placehold_counter.show_z]]
 
-        y_arr[i] = y_arr[i] + flare_arr[i]
-        # This matrix stores coords from the RefY node and gets added from the ref matrix
-
-
-        @flare_matrix[i] = Matrix[[y_arr[i][0,0] + truck_flare_counter.get_coord_x.abs], 
-                                  [y_arr[i][1,0] + truck_flare_counter.get_coord_y.abs], 
-                                  [y_arr[i][2,0]]]
+        
+        @flare_matrix[i] = Matrix[[((x_arr[i][0,0] - flare_arr[i][0,0])*Math.cos(angle) - 
+                                    (x_arr[i][1,0] - flare_arr[i][1,0])*Math.sin(angle) + 
+                                    flare_arr[i][0,0])], 
+                                  [((y_arr[i][0,0] - flare_arr[i][0,0])*Math.cos(angle) + 
+                                    (y_arr[i][1,0] - flare_arr[i][1,0])*Math.sin(angle) + 
+                                    flare_arr[i][1,0])], 
+                                  [0]]
 
         i = i + 1
       end
       # Iterates through each node and puts its coords to its respective arrays
+      return @flare_matrix
   end
 
   @selected_node_x = 0
@@ -199,12 +199,14 @@ module DRAW_STRUCTURE
 		@angZ = EVENT_FOR_STRUCTURE.get_ang_z(canvas)
 		# Angle rotations for each coordinate
 
+    @view = EVENT_FOR_STRUCTURE.get_cosine(canvas)
+
 	  load_nodes(trk)
-    load_flares(trk)
   	load_beams(trk)
   	load_hydros(trk)
   	load_shocks(trk)
   	# Loads all content into DrawingArea widget (or sketch of truck file).
+
 
   	@node_selector_obj.signal_connect("row-activated") {
 			|a, b|
@@ -233,6 +235,8 @@ module DRAW_STRUCTURE
     # The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 		canvas.signal_connect("draw") {
 			|a, b|
+
+        load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
 
 				b.new_path()
 
