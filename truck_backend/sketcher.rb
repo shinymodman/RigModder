@@ -132,18 +132,24 @@ module DRAW_STRUCTURE
                               [node_placehold_counter.show_z]]
         # This matrix stores coords from the Reference Node
 
-        x_arr[i] = Matrix[[x_placehold_counter.show_x + truck_flare_counter.get_coord_x],
+        x_arr[i] = Matrix[[x_placehold_counter.show_x],
                           [x_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                          [x_placehold_counter.show_z]]
+                          [x_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
+
+        x_arr[i] = flare_arr[i] + x_arr[i]
 
 
-        y_arr[i] = Matrix[[y_placehold_counter.show_x + truck_flare_counter.get_coord_x],
+
+        y_arr[i] = Matrix[[y_placehold_counter.show_x],
                           [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                          [y_placehold_counter.show_z]]
+                          [y_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
 
-        
-        @flare_matrix[i] = Matrix[[flare_arr[i][0,0] + x_arr[i][0,0] + y_arr[i][0,0]], 
-                                  [flare_arr[i][1,0] + x_arr[i][1,0] + y_arr[i][1,0]], 
+        y_arr[i] = flare_arr[i] + y_arr[i]
+
+
+
+        @flare_matrix[i] = Matrix[[flare_arr[i][0,0] + x_arr[i][0,0]], 
+                                  [flare_arr[i][1,0] + y_arr[i][1,0]], 
                                   [flare_arr[i][2,0]]]
 
         i = i + 1
