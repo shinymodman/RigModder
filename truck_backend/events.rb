@@ -162,8 +162,8 @@ module EVENT_FOR_STRUCTURE
 	end
 	# Returns size value of structure.
 
-	def get_size_for_flares(canvas)
-		return @size_for_flares
+	def get_size_for_flares()
+		return @size / 3
 	end
 	# Returns size value of structure.
 
