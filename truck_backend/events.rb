@@ -20,6 +20,10 @@ module EVENT_FOR_STRUCTURE
 	@prev_cur_z = 0
 
 	@size = 250
+	@size_for_flares = @size * 2
+
+	@cosine = 0
+	@prev_cosine = 0
 
 	def click(widget, canvas)
 
@@ -45,7 +49,12 @@ module EVENT_FOR_STRUCTURE
 				@press_result = Gdk::Keyval::KEY_Control_L
 			elsif b.keyval == Gdk::Keyval::KEY_Alt_L
 				@press_result = Gdk::Keyval::KEY_Alt_L
+			elsif (b.keyval == Gdk::Keyval::KEY_s) then
+				@cosine += 30
+				puts @cosine
 			end
+
+			canvas.queue_draw()
 		}
 
 		widget.signal_connect("key-release-event") {
@@ -135,10 +144,12 @@ module EVENT_FOR_STRUCTURE
 			|a, b|
 			if (b.direction == Gdk::ScrollDirection::UP)
 		  	  @size += 10
+		  	  @size_for_flares += 10
 		  	  canvas.queue_draw()
 		  	  # Shrinks structure
 		  	elsif (b.direction == Gdk::ScrollDirection::DOWN)
 		  	  @size -= 10
+		  	  @size_for_flares -= 10
 		  	  canvas.queue_draw()
 		  	  # Grows structure
 		  	end
@@ -148,6 +159,11 @@ module EVENT_FOR_STRUCTURE
 
 	def get_size(canvas)
 		return @size
+	end
+	# Returns size value of structure.
+
+	def get_size_for_flares()
+		return @size / 3
 	end
 	# Returns size value of structure.
 
@@ -192,6 +208,11 @@ module EVENT_FOR_STRUCTURE
 		canvas.queue_draw
 	end
 	# Returns the y coord that centers the whole structure
+
+	def get_cosine(canvas)
+		return @cosine
+		canvas.queue_draw
+	end
 
 	def load_dialog(widget, window, height, width, *inner_widgets)
     	widget.signal_connect("activate") {
