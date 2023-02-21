@@ -58,3 +58,6 @@ build-iPhoneSimulator/
 # Eclipse Config Files
 .project
 .buildpath
+
+# Submlime Config Files
+.sublime-workspace
