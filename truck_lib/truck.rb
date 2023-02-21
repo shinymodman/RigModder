@@ -41,8 +41,8 @@ class Truck
 			a if (a.length == 3 || a.length == 2) && # The amount content that a beam object is only supposed to have
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
-			!(/([\w]+[.\/][\w]+|[0-9]{4,})/.match(a[2])) # Checks if it has only numbers on the last argument of the beam itself.
-			
+			!(/([\w]+[.\/][\w]+|[0-9]{4,})/.match(a[2])) && # Checks if it has only numbers on the last argument of the beam itself.
+			((/[^0-9]{2,}/.match(a[2]))) # Checks if it the third argument does not have any numbers.
 		}
 		# Lists beam objects in flare section
 	end
@@ -96,7 +96,3 @@ class Truck
 		return @req
 	end
 end
-
-trk = Truck.new("D://ror_mods//mine//ford_e350_corbeil_schoolbus//ford_e350_corbeil.truck")
-
-puts trk.view_beams.each.inspect()
