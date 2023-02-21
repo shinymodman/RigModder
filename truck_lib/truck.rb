@@ -95,16 +95,3 @@ class Truck
 		return @req
 	end
 end
-
-
-trks = {
-  corbeil: Truck.new("C://Users//Owner//Desktop//ford_e350_corbeil.truck"), 
-  shorty: Truck.new("C://Users//Owner//Desktop//ThomasShorty.truck"),
-  wishbone: Truck.new("C://Users//Owner//Downloads//suspension-demo-double-wishbone.truck")
-}
-
-trks.each {
-  |a, b|
-  
-  puts a.to_s + ", " + b.view_beams.inspect().to_s
-}
