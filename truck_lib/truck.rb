@@ -24,7 +24,7 @@ class Truck
 		return @file.to_a.select {
 			|a|
 
-			a if (a.length == 5 || a.length == 4) && 
+			a if (a.length <= 5) && 
 			!(/\D/.match(a[0])) && # Checks if it has only letters, symbols and whitespace, which is only supported in the beams and this column and section
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 			(/\d/.match(a[2])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
@@ -38,10 +38,11 @@ class Truck
 		return @file.to_a.select {
 			|a|
 
-			a if (a.length <= 3) && # The amount content that a beam object is only supposed to have
+			a if (a.length == 3 || a.length == 2) && # The amount content that a beam object is only supposed to have
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
-			!(/\d/.match(a[2])) # Checks if it has only numbers on the last argument of the beam itself.
+			!(/([\w]+[.\/][\w]+|[0-9]{4,})/.match(a[2])) # Checks if it has only numbers on the last argument of the beam itself.
+			
 		}
 		# Lists beam objects in flare section
 	end
@@ -95,3 +96,7 @@ class Truck
 		return @req
 	end
 end
+
+trk = Truck.new("D://ror_mods//mine//ford_e350_corbeil_schoolbus//ford_e350_corbeil.truck")
+
+puts trk.view_beams.each.inspect()
