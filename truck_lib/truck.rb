@@ -38,11 +38,14 @@ class Truck
 		return @file.to_a.select {
 			|a|
 
-			a if (a.length == 3 || a.length == 2) && # The amount content that a beam object is only supposed to have
+			a if (a.length <= 3) && # The amount content that a beam object is only supposed to have
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
-			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
+			!(/[0-9]\.[0-9]{0,3}/.match(a[1])) &&  # Checks if it has only numbers, which is only supported in the beams section
+			!(/[a-zA-Z]/.match(a[1])) &&
+			!(/[0-9]{4,}/.match(a[1])) && 
 			!(/([\w]+[.\/][\w]+|[0-9]{4,})/.match(a[2])) && # Checks if it has only numbers on the last argument of the beam itself.
-			((/[^0-9]{2,}/.match(a[2]))) # Checks if it the third argument does not have any numbers.
+			!((/[0-9]{1}/.match(a[2]))) && # Checks if it the third argument does not have any numbers.
+			!(a.empty?)
 		}
 		# Lists beam objects in flare section
 	end
