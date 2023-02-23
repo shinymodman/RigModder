@@ -28,7 +28,9 @@ class Truck
 			!(/\D/.match(a[0])) && # Checks if it has only letters, symbols and whitespace, which is only supported in the beams and this column and section
 			(/\d/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
 			(/\d/.match(a[2])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
-			(/\d/.match(a[3])) # Checks if it has only numbers, which is only supported in the beams and this column and section
+			!(/[a-zA-Z0-9]{2,}.[a-zA-Z]{2,}$/.match(a[3])) &&
+			(/\d/.match(a[3])) && # Checks if it has only numbers, which is only supported in the beams and this column and section
+			(/[^[0-9]*]/.match(a[4]) || a[4].nil?)
 		}
 		# Lists node objects in flare section
 	end
@@ -38,7 +40,7 @@ class Truck
 		return @file.to_a.select {
 			|a|
 
-			a if (a.length <= 3) && # The amount content that a beam object is only supposed to have
+			a if (a.length > 1 && a.length <= 3) && # The amount content that a beam object is only supposed to have
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
 			!(/[0-9]\.[0-9]{0,3}/.match(a[1])) &&  # Checks if it has only numbers, which is only supported in the beams section
 			!(/[a-zA-Z]/.match(a[1])) &&
@@ -71,7 +73,9 @@ class Truck
 			|a|
 
 			a if (a.length == 8 || a.length == 7) && # The amount content that a beam object is only supposed to have	
-			!(/\D/.match(a[0])) # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+			!(/[a-zA-Z]\d*/.match(a[3])) &&
+			(/[a-zA-Z]*/.match(a[7]))
 		}
 		# Lists shock objects in flare section
 	end
