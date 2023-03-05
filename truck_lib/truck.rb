@@ -41,7 +41,8 @@ class Truck
 			|a|
 
 			a if (a.length > 1 && a.length <= 3) && # The amount content that a beam object is only supposed to have
-			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+			!((/\D/.match(a[0]))) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
+			!((/[0-9]{4,}/.match(a[0]))) && 
 			!(/[0-9]\.[0-9]{0,3}/.match(a[1])) &&  # Checks if it has only numbers, which is only supported in the beams section
 			!(/[a-zA-Z]/.match(a[1])) &&
 			!(/[0-9]{4,}/.match(a[1])) && 
