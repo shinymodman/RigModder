@@ -37,20 +37,21 @@ class Truck
 
 	def view_beams()
 
-		return @file.to_a.select {
+		beams =  @file.to_a.select {
 			|a|
 
 			a if (a.length > 1 && a.length <= 3) && # The amount content that a beam object is only supposed to have
 			!((/\D/.match(a[0]))) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
-			!((/[0-9]{4,}/.match(a[0]))) && 
+			!((/[0-9]{4,}/.match(a[0]))) &&
 			!(/[0-9]\.[0-9]{0,3}/.match(a[1])) &&  # Checks if it has only numbers, which is only supported in the beams section
 			!(/[a-zA-Z]/.match(a[1])) &&
 			!(/[0-9]{4,}/.match(a[1])) && 
 			!(/([\w]+[.\/][\w]+|[0-9]{4,})/.match(a[2])) && # Checks if it has only numbers on the last argument of the beam itself.
 			!((/[0-9]{1}/.match(a[2]))) && # Checks if it the third argument does not have any numbers.
-			!(a.empty?)
+			!(a.empty? || a[2].nil?)
 		}
 		# Lists beam objects in flare section
+
 	end
 
 	def view_hydros()
