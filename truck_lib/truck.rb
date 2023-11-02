@@ -6,6 +6,12 @@ class Truck
 	def initialize(req)
 		@file = (File.exist?(req) && File.extname(".truck")) ? CSV.parse(File.new(req)) : "invalid_file"
 		@req = req
+		@file.collect {
+			|a|
+
+			a[0] ? a[0].strip : a
+
+		}
 	end
 	# Gathers all content of file if the file exists or is valid and has the .truck extension. Otherwise writes the string: "invaid_file"
 
@@ -63,7 +69,8 @@ class Truck
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
 			!(/\d*[.]/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
 			(/[-0-9]+\.[0-9]+/.match(a[2])) && # Checks if the argument is only an decimal/floating point number which is only supported there.
-			((/[^isareuvxygh][^\s]/.match(a[3])) || a[3].nil?)
+			!(/[isareuvxygh]+[^\s]+/.match(a[3])) &&
+			!(/[-.]/.match(a[3]))
 
 		}
 		# Lists beam objects in flare section
