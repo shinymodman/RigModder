@@ -53,7 +53,7 @@ class Truck
 			!(/[.a-zA-Z]/.match(a[1])) && # Checks if it has only numbers on the last argument of the beam itself.
 			(/[0-9]/.match(a[1])) &&
 			!(/\-[0-9]+/.match(a[1])) &&
-			!(/[0-9]{4,}/.match(a[1])) &&
+			!(/[0-9]{4,}/.match(a[0])) &&
 			!(a[0].strip == a[1].strip) &&
 			!(/[0-9A-Z\_]/.match(a[2]))
 		}
