@@ -70,8 +70,7 @@ class Truck
 			!(/\D/.match(a[0])) && # Checks 1st column for non letters, whitespaces and symbols. Which is not supported in this section
 			!(/\d*[.]/.match(a[1])) && # Checks if it has only numbers, which is only supported in the beams section
 			(/[-0-9]+\.[0-9]+/.match(a[2])) && # Checks if the argument is only an decimal/floating point number which is only supported there.
-			!(/[isareuvxygh]+[^\s]+/.match(a[3])) &&
-			!(/[-.]/.match(a[3]))
+			!(/[^isareuvxygh][^\s]/.match(a[3]) && (/[-0-9]+\.[0-9]+/.match(a[3])) || /[-0-9]+\.[a-zA-Z]+/.match(a[3]))
 
 		}
 		# Lists beam objects in flare section
