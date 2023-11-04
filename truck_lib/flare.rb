@@ -5,7 +5,7 @@ require_relative 'truck'
 class Flare
 
 	public
-	def initialize(req, flare_id)
+	def initialize(req, flare_id, zoom_index = 0)
 		@truck = req
 		flares = @truck.view_flares
 
@@ -13,8 +13,8 @@ class Flare
 			ref_node: flares[flare_id][0].to_i,
 			ref_x: flares[flare_id][1].to_i,
 			ref_y: flares[flare_id][2].to_i,
-			pos_x: flares[flare_id][3].to_f,
-			pos_y: flares[flare_id][4].to_f,
+			pos_x: (flares[flare_id][3].to_f * zoom_index.to_f),
+			pos_y: (flares[flare_id][4].to_f * zoom_index.to_f),
 			f_type: flares[flare_id][5]
 		}
 	end

@@ -107,7 +107,7 @@ module DRAW_STRUCTURE
   @flare_matrix = []
   # Similar to the beam arrays, puts its coords in these respective arrays
 
-  def load_flares(trk, angle)
+  def load_flares(trk, angle, size = 0)
   
       i = 0
       flare_arr = []
@@ -121,7 +121,7 @@ module DRAW_STRUCTURE
       y_arr.clear()
 
       while i != trk.view_flares.length do
-        truck_flare_counter = Flare.new(trk, i)
+        truck_flare_counter = Flare.new(trk, i, size)
 
         node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
         x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
@@ -233,7 +233,7 @@ module DRAW_STRUCTURE
 		canvas.signal_connect("draw") {
 			|a, b|
 
-        load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
+        load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas), @size_for_flares)
 
 				b.new_path()
 
@@ -290,7 +290,7 @@ module DRAW_STRUCTURE
 
           projected_2d = proj_mat * rotated_flare
 
-          b.rectangle(-projected_2d[0, 0] * (@size_for_flares), projected_2d[1, 0] * (@size_for_flares), 10, 10)
+          b.rectangle(-projected_2d[0, 0], projected_2d[1, 0], 10, 10)
         }
 
         b.fill()
