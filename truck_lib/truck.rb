@@ -54,7 +54,7 @@ class Truck
 			(/[0-9]/.match(a[1])) &&
 			!(/\-[0-9]+/.match(a[1])) &&
 			!(/[0-9]{4,}/.match(a[0])) &&
-			!(a[1].strip == a[2].strip) &&
+			#!(a[1].strip == a[2].strip) &&
 			!(/[0-9A-Z\_]/.match(a[2])) &&
 			(a.to_a.count(nil) == 0)
 		}
@@ -116,3 +116,6 @@ class Truck
 		return @req
 	end
 end
+
+trk = Truck.new("C://Users//User//Projects//RigModder//sample_truck.truck")
+puts trk.view_beams.count()
