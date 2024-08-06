@@ -129,20 +129,18 @@ module DRAW_STRUCTURE
 
         flare_arr[i] = Matrix[[node_placehold_counter.show_x],
                               [((EVENT_FOR_STRUCTURE::get_size_for_flares() * node_placehold_counter.show_y) + 
-                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_y) / 2)],
+                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_y))],
                               [((EVENT_FOR_STRUCTURE::get_size_for_flares() * node_placehold_counter.show_z) + 
-                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_x) / 2)]]
+                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_x))]]
         # This matrix stores coords from the Reference Node
 
         x_arr[i] = Matrix[[x_placehold_counter.show_x],
                           [x_placehold_counter.show_y],
-                          [((EVENT_FOR_STRUCTURE::get_size_for_flares() * node_placehold_counter.show_z) + 
-                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_x) / 2)]]
+                          [x_placehold_counter.show_z]]
 
         y_arr[i] = Matrix[[y_placehold_counter.show_x],
                           [y_placehold_counter.show_y],
-                          [((EVENT_FOR_STRUCTURE::get_size_for_flares() * node_placehold_counter.show_z) + 
-                                (EVENT_FOR_STRUCTURE::get_size_for_flares() * truck_flare_counter.get_coord_x) / 2)]]
+                          [y_placehold_counter.show_z]]
 
         y_arr[i] = flare_arr[i] + x_arr[i]
 
