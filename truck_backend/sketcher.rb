@@ -128,17 +128,17 @@ module DRAW_STRUCTURE
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
         flare_arr[i] = Matrix[[node_placehold_counter.show_x],
-                              [((node_placehold_counter.show_y) + (truck_flare_counter.get_coord_y))],
-                              [((node_placehold_counter.show_z) + (truck_flare_counter.get_coord_x))]]
+                              [(node_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2],
+                              [(node_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
         # This matrix stores coords from the Reference Node
 
         x_arr[i] = Matrix[[x_placehold_counter.show_x],
-                          [x_placehold_counter.show_y],
-                          [x_placehold_counter.show_z]]
+                          [((2 * x_placehold_counter.show_y - truck_flare_counter.get_coord_y) + truck_flare_counter.get_coord_y) / 2],
+                          [((2 * x_placehold_counter.show_z - truck_flare_counter.get_coord_x) + truck_flare_counter.get_coord_x) / 2]]
 
         y_arr[i] = Matrix[[y_placehold_counter.show_x],
-                          [y_placehold_counter.show_y],
-                          [y_placehold_counter.show_z]]
+                          [((2 * y_placehold_counter.show_y - truck_flare_counter.get_coord_y) + truck_flare_counter.get_coord_y)],
+                          [((2 * y_placehold_counter.show_z - truck_flare_counter.get_coord_x) + truck_flare_counter.get_coord_x)]]
 
         y_arr[i] = flare_arr[i] + x_arr[i]
 
