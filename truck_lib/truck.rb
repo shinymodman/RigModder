@@ -115,6 +115,3 @@ class Truck
 		return @req
 	end
 end
-
-trk = Truck.new("C://Users//User//Projects//RigModder//sample_truck.truck")
-puts trk.view_beams.count()
