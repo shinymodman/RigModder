@@ -133,12 +133,12 @@ module DRAW_STRUCTURE
         # This matrix stores coords from the Reference Node
 
         x_arr[i] = Matrix[[x_placehold_counter.show_x],
-                          [x_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                          [x_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
+                          [(x_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2],
+                          [(x_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
 
         y_arr[i] = Matrix[[y_placehold_counter.show_x],
-                          [y_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                          [y_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
+                          [(y_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2],
+                          [(y_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
 
         flare_arr[i] += y_arr[i]
 
