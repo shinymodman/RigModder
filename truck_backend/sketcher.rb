@@ -111,7 +111,7 @@ module DRAW_STRUCTURE
   @flare_x_arr = []
   @flare_y_arr = []
 
-  def load_flares(trk, angle)
+  def load_flares(trk)
   
       i = 0
 
@@ -205,6 +205,7 @@ module DRAW_STRUCTURE
   	load_beams(trk)
   	load_hydros(trk)
   	load_shocks(trk)
+    load_flares(trk)
   	# Loads all content into DrawingArea widget (or sketch of truck file).
 
 
@@ -235,8 +236,6 @@ module DRAW_STRUCTURE
     # The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 		canvas.signal_connect("draw") {
 			|a, b|
-
-        load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
 
 				b.new_path()
 
