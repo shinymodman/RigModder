@@ -107,48 +107,49 @@ module DRAW_STRUCTURE
   @flare_matrix = []
   # Similar to the beam arrays, puts its coords in these respective arrays
 
+  @flare_arr = []
+  @flare_x_arr = []
+  @flare_y_arr = []
+
   def load_flares(trk, angle)
   
       i = 0
-      flare_arr = []
-      x_arr = []
-      y_arr = []
 
       @flare_matrix.clear()
 
-      flare_arr.clear()
-      x_arr.clear()
-      y_arr.clear()
+      @flare_arr.clear()
+      @flare_x_arr.clear()
+      @flare_y_arr.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
 
-        node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
-        x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
-        y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
+        @flare_node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
+        @flare_x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
+        @flare_y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
-        flare_arr[i] = Matrix[[node_placehold_counter.show_x],
-                              [(((node_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2) * 3) - 2.125],
-                              [(((node_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 8.5) - 2]]
+        @flare_arr[i] = Matrix[[@flare_node_placehold_counter.show_x],
+                              [(((@flare_node_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2) * 3) - 2.125],
+                              [(((@flare_node_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 8.5) - 2]]
         # This matrix stores coords from the Reference Node
 
-        x_arr[i] = Matrix[[x_placehold_counter.show_x],
-                          [(x_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
-                          [(((x_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 8.5) - 2]]
+        @flare_x_arr[i] = Matrix[[@flare_x_placehold_counter.show_x],
+                          [(@flare_x_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
+                          [(((@flare_x_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 8.5) - 2]]
 
-        y_arr[i] = Matrix[[y_placehold_counter.show_x],
-                          [(y_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
-                          [(y_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
+        @flare_y_arr[i] = Matrix[[@flare_y_placehold_counter.show_x],
+                          [(@flare_y_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
+                          [(@flare_y_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
 
         #flare_arr[i] += y_arr[i]
 
-        flare_arr[i] += x_arr[i]
+        @flare_arr[i] += @flare_x_arr[i]
 
 
 
-        @flare_matrix[i] = Matrix[[flare_arr[i][0,0] + x_arr[i][0,0]], 
-                                  [flare_arr[i][1,0] + y_arr[i][1,0]], 
-                                  [flare_arr[i][2,0]]]
+        @flare_matrix[i] = Matrix[[@flare_arr[i][0,0] + @flare_x_arr[i][0,0]], 
+                                  [@flare_arr[i][1,0] + @flare_y_arr[i][1,0]], 
+                                  [@flare_arr[i][2,0]]]
 
         i = i + 1
       end
