@@ -43,12 +43,11 @@ The features of this software I'm thinking about implementing are the following:
 
 - The features currently being worked on:
 	1. ~~Shocks~~ (Finished this one)
-	1. ~~**Visual render in 3D (UPDATE)** (Finished this one) ~~
-	**Note about 2d perspective selections**
+	1. ~~Visual render in 3D~~ (Finished this one)
+	1. Flare positioning <- **Now, I can work on this feature!** 
+
+- **Note about 2d perspective selections**
 	I have to remove the camera menu that selects the 2d perspective projections due to a problem with the GTK signals handling some instance variables based off the selections. (In other words, cant find an idea for an algorithm to make this feature work.) *BUT,* I may put them back if I or anyone else in the repo comes up with an idea to fix or put up an algorithm for this.
-	1. Flare positioning
-	1. Interfaces for better sight of the truck file. 
-	**Now, I can work on this feature!** 
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
