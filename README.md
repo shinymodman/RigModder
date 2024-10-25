@@ -51,9 +51,7 @@ The features of this software I'm thinking about implementing are the following:
 
 **UPDATE**
 - What will be next thing to work on (**In Order**):
-	1. ~~Hydros (Hyrdraulics)~~ (Already finished this one)
 	1. Wheels
-**UPDATE**
 	
 - What I am thinking about implementing soon:
 	- Implementing ways to edit the truck itself with visualization.
