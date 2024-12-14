@@ -107,18 +107,19 @@ module DRAW_STRUCTURE
   @flare_matrix = []
   # Similar to the beam arrays, puts its coords in these respective arrays
 
+  @flare_arr = []
+  @x_arr = []
+  @y_arr = []
+
   def load_flares(trk, angle)
   
       i = 0
-      flare_arr = []
-      x_arr = []
-      y_arr = []
 
       @flare_matrix.clear()
 
-      flare_arr.clear()
-      x_arr.clear()
-      y_arr.clear()
+      @flare_arr.clear()
+      @x_arr.clear()
+      @y_arr.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
@@ -127,26 +128,26 @@ module DRAW_STRUCTURE
         x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
-        flare_arr[i] = Matrix[[node_placehold_counter.show_x],
+        @flare_arr[i] = Matrix[[node_placehold_counter.show_x],
                               [node_placehold_counter.show_y + truck_flare_counter.get_coord_y],
                               [node_placehold_counter.show_z - truck_flare_counter.get_coord_x]]
         # This matrix stores coords from the Reference Node
 
-        x_arr[i] = Matrix[[x_placehold_counter.show_x],
+        @x_arr[i] = Matrix[[x_placehold_counter.show_x],
                           [x_placehold_counter.show_y],
                           [x_placehold_counter.show_z]]
 
-        y_arr[i] = Matrix[[y_placehold_counter.show_x],
+        @y_arr[i] = Matrix[[y_placehold_counter.show_x],
                           [y_placehold_counter.show_y],
                           [y_placehold_counter.show_z]]
 
-        y_arr[i] = flare_arr[i] + x_arr[i]
+        @y_arr[i] = @flare_arr[i] + @x_arr[i]
 
 
 
-        @flare_matrix[i] = Matrix[[flare_arr[i][0,0] + x_arr[i][0,0]], 
-                                  [flare_arr[i][1,0] + y_arr[i][1,0]], 
-                                  [flare_arr[i][2,0]]]
+        @flare_matrix[i] = Matrix[[@flare_arr[i][0,0] + @x_arr[i][0,0]], 
+                                  [@flare_arr[i][1,0] + @y_arr[i][1,0]], 
+                                  [@flare_arr[i][2,0]]]
 
         i = i + 1
       end
@@ -202,6 +203,7 @@ module DRAW_STRUCTURE
   	load_beams(trk)
   	load_hydros(trk)
   	load_shocks(trk)
+    load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
   	# Loads all content into DrawingArea widget (or sketch of truck file).
 
 
@@ -233,7 +235,7 @@ module DRAW_STRUCTURE
 		canvas.signal_connect("draw") {
 			|a, b|
 
-        load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
+        #load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
 
 				b.new_path()
 
