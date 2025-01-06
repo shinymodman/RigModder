@@ -108,10 +108,6 @@ module DRAW_STRUCTURE
   # Similar to the beam arrays, puts its coords in these respective arrays
 
   @flare_arr = []
-  @flare_x_arr = []
-  @flare_y_arr = []
-
-  def load_flares(trk)
   @x_arr = []
   @y_arr = []
 
@@ -122,40 +118,15 @@ module DRAW_STRUCTURE
       @flare_matrix.clear()
 
       @flare_arr.clear()
-      @flare_x_arr.clear()
-      @flare_y_arr.clear()
-
       @x_arr.clear()
       @y_arr.clear()
 
       while i != trk.view_flares.length do
         truck_flare_counter = Flare.new(trk, i)
 
-        @flare_node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
-        @flare_x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
-        @flare_y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
-
-        @flare_arr[i] = Matrix[[@flare_node_placehold_counter.show_x],
-                              [(((@flare_node_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2) * 3) - 2.125],
-                              [(((@flare_node_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 7.85) - 2]]
-        # This matrix stores coords from the Reference Node
-
-        @flare_x_arr[i] = Matrix[[@flare_x_placehold_counter.show_x],
-                          [(@flare_x_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
-                          [(((@flare_x_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2) * 7.85) - 2]]
-
-        @flare_y_arr[i] = Matrix[[@flare_y_placehold_counter.show_x],
-                          [(@flare_y_placehold_counter.show_y + truck_flare_counter.get_coord_y)],
-                          [(@flare_y_placehold_counter.show_z + truck_flare_counter.get_coord_x) / 2]]
-
-        #flare_arr[i] += y_arr[i]
-
-        @flare_arr[i] += @flare_x_arr[i]
-
-
-
-        @flare_matrix[i] = Matrix[[@flare_arr[i][0,0] + @flare_x_arr[i][0,0]], 
-                                  [@flare_arr[i][1,0] + @flare_y_arr[i][1,0]], 
+        node_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_node)
+        x_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_x)
+        y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
         @flare_arr[i] = Matrix[[node_placehold_counter.show_x],
                               [node_placehold_counter.show_y + truck_flare_counter.get_coord_y],
@@ -232,7 +203,6 @@ module DRAW_STRUCTURE
   	load_beams(trk)
   	load_hydros(trk)
   	load_shocks(trk)
-    load_flares(trk)
     load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
   	# Loads all content into DrawingArea widget (or sketch of truck file).
 
@@ -264,7 +234,9 @@ module DRAW_STRUCTURE
     # The Gtk signal that sets up the node selected by a user interacting with the Node listbox.
 		canvas.signal_connect("draw") {
 			|a, b|
-      
+
+        #load_flares(trk, EVENT_FOR_STRUCTURE.get_cosine(canvas))
+
 				b.new_path()
 
 				@size = EVENT_FOR_STRUCTURE.get_size(canvas)
