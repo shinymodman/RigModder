@@ -129,19 +129,20 @@ module DRAW_STRUCTURE
         y_placehold_counter = Node.new(trk, truck_flare_counter.get_reference_y)
 
         @flare_arr[i] = Matrix[[node_placehold_counter.show_x],
-                              [node_placehold_counter.show_y + truck_flare_counter.get_coord_y],
-                              [node_placehold_counter.show_z - truck_flare_counter.get_coord_x]]
+                              [(node_placehold_counter.show_y + truck_flare_counter.get_coord_y) / 2],
+                              [0]]
         # This matrix stores coords from the Reference Node
 
         @x_arr[i] = Matrix[[x_placehold_counter.show_x],
                           [x_placehold_counter.show_y],
-                          [x_placehold_counter.show_z]]
+                          [x_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
 
         @y_arr[i] = Matrix[[y_placehold_counter.show_x],
                           [y_placehold_counter.show_y],
-                          [y_placehold_counter.show_z]]
+                          [y_placehold_counter.show_z + truck_flare_counter.get_coord_x]]
 
-        @y_arr[i] = @flare_arr[i] + @x_arr[i]
+
+        @flare_arr[i] += (@y_arr[i] + @x_arr[i])
 
 
 
